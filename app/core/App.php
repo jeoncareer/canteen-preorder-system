@@ -1,4 +1,5 @@
 <?php
+
 class App
 {
     //default controller
@@ -14,10 +15,11 @@ class App
         return $URL;
     }
 
-    function loadController()
+    public function loadController()
     {
         $URL = $this->splitURL();
         /// SELECT CONTROLLER
+
         $filename = "../app/controllers/" . ucfirst($URL[0]) . ".php";
         if (file_exists($filename)) {
             require $filename;
@@ -30,15 +32,15 @@ class App
                 $this->controller = "_404";
             }
         }
-        $controller = new $this->controller;
+        $controller = new $this->controller();
         /// SELECT METHOD
         if (!empty($URL[1])) {
-            if (method_exists( $controller, $URL[1])) {
+            if (method_exists($controller, $URL[1])) {
                 $this->method = $URL[1];
                 unset($URL[1]);
             }
         }
-        
+
 
         call_user_func_array([$controller, $this->method], $URL);
     }

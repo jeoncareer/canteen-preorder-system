@@ -1,9 +1,13 @@
 <?php
 
-
-class Signup extends Controller
+class Students extends Controller
 {
     public function index()
+    {
+
+    }
+
+    public function signup()
     {
         $student = new Student();
         $college = new College();
@@ -39,4 +43,36 @@ class Signup extends Controller
 
         }
     }
+
+    public function login()
+    {
+
+        $student = new Student();
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+
+            if ($student->login_validate($_POST)) {
+                $email = $_POST["email"];
+                $_SESSION["STUDENT"] = $student->first(['email' => $email]);
+                redirect('Home');
+            } else {
+
+                $data['errors'] = $student->errors;
+                $this->view('login', $data);
+            }
+        } else {
+
+
+            $this->view('login');
+        }
+    }
+
+
+    public function logout()
+    {
+        session_destroy();
+        redirect('home');
+    }
+
 }

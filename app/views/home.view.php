@@ -6,7 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-    <a href=""><h1>I'am a student</h1></a>
+    <a href="<?=ROOT?>Students/signup"><h1>I'am a student</h1></a>
     <br>
     <a href="<?=ROOT?>Canteen/signin"><h1>I'am a Canteen Staff</h1></a>
 </body>
