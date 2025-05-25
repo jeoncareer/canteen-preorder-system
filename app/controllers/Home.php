@@ -1,16 +1,19 @@
 <?php
+
 //home class
 class Home extends Controller
 {
-    function index($a = '', $b = '', $c = '')
+    public function index()
     {
-   if(empty($_SESSION['USER'])){
-    redirect('login');
-   }
-    
-        $data['username'] = $_SESSION['USER']->email;
-        $this->view('home',$data);
+
+
+
+        $this->view('home');
     }
+
+
+
+
 
 
 }

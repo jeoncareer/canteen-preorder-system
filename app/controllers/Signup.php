@@ -1,29 +1,42 @@
 <?php
 
 
-class Signup extends Controller{
-    function index()
+class Signup extends Controller
+{
+    public function index()
     {
-        $user = new User;
-        
-        if($_SERVER["REQUEST_METHOD"]=="POST")
-        {
+        $student = new Student();
+        $college = new College();
 
-                 
-              if($user->validate($_POST)){
-                $password = $_POST['password'];
-                $password = password_hash($password,PASSWORD_DEFAULT);
-                $_POST['password'] = $password; 
-                  $user->insert($_POST);
-                  redirect('login');
-              }
-              $data['errors'] = $user->errors;
-              $this->view('signup',$data);
-        }else{
-     
-            
-            $this->view('signup');
+        $colleges = $college->findAll();
+        foreach ($colleges as $col) {
+            $data['colleges'][] = $col->college_name;
         }
-        
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+
+            if ($student->validate($_POST)) {
+
+
+                $result = $college->first(["college_name" => $_POST["college_name"]]);
+                $password = $_POST['password'];
+                $hash = password_hash($password, PASSWORD_BCRYPT);
+                $_POST['password'] = $hash;
+                $arr = array_merge($_POST, ['college_id' => $result->id]);
+                $student->insert($arr);
+                redirect('login');
+
+            } else {
+                $data['errors'] = $student->errors;
+                $this->view('signup', $data);
+            }
+        } else {
+
+
+            $this->view('signup', $data);
+
+
+        }
     }
 }

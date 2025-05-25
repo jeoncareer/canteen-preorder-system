@@ -56,14 +56,55 @@ class Canteen extends Controller
 
         if ($_SERVER['REQUEST_METHOD'] === "POST") {
             if ($canteen->login_validate($_POST)) {
+                $result = $canteen->first(["email" => $_POST["email"]]);
 
-                $_SESSION['CANTEEN'] = ["email" => $_POST['email']];
+                $_SESSION['CANTEEN'] = ["email" => $_POST['email'],"id" => $result->id];
+                print_r($_SESSION['CANTEEN']);
+
                 $this->view('canteen/home');
             } else {
                 print_r($canteen->errors);
             }
         } else {
             $this->view('canteen/login');
+        }
+    }
+
+    public function add_item()
+    {
+        $item = new Items();
+
+        if ($_SERVER['REQUEST_METHOD'] === "POST") {
+
+            $file = $_FILES['item_image'];
+            $file_name = $_FILES['item_image']['name'];
+            $ar = ["item_image" => $file_name];
+            if ($item->validate(array_merge($_POST, $ar))) {
+                $fileExt = explode('.', $file_name);
+                $fileActualExt = strtolower(end($fileExt));
+                $file_name = $_POST['item_name'].".".$fileActualExt;
+                $file_tmp = $_FILES['item_image']['tmp_name'];
+                $file_destination = "assets/images/".$file_name;
+                $canteen_id = $_SESSION["CANTEEN"]["id"];
+                move_uploaded_file($file_tmp, $file_destination);
+
+                $arr = ["name" => $_POST["item_name"],
+                        "price" => $_POST["price"],
+                        "image_location" => $file_name,
+                        "canteen_id" => $_SESSION["CANTEEN"]["id"]
+                        ];
+                $item->insert($arr);
+
+
+            } else {
+                $data['errors'] = $item->errors;
+                $this->view("canteen/add_item", $data);
+
+            }
+
+        } else {
+            $this->view("canteen/add_item");
+
         }
     }
 }

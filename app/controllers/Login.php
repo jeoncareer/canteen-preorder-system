@@ -1,27 +1,30 @@
 <?php
 
 
-class Login extends Controller{
-    function index()
+class Login extends Controller
+{
+    public function index()
     {
-    
-       $user = new User;
-        
-        if($_SERVER["REQUEST_METHOD"]=="POST")
-        {
 
-                 
-              if($user->login_validate($_POST)){
+        $student = new Student();
 
-                $this->view('login');
-              }
-              $data['errors'] = $user->errors;
-              $this->view('login',$data);
-        }else{
-   
-            
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+
+            if ($student->login_validate($_POST)) {
+                $email = $_POST["email"];
+                $_SESSION["STUDENT"] = $student->first(['email' => $email]);
+                redirect('Home');
+            } else {
+
+                $data['errors'] = $student->errors;
+                $this->view('login', $data);
+            }
+        } else {
+
+
             $this->view('login');
         }
-        
+
     }
 }
