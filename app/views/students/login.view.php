@@ -77,9 +77,9 @@
     
 <main class="form-signin w-100 m-auto">
   <form method="post">
-    <?php if(!empty($errors)):?>
+    <?php if (!empty($errors)):?>
     <div class="alert alert-danger">
-      <?=implode('<br>',$errors)?>
+      <?=implode('<br>', $errors)?>
     </div>
     <?php endif;?>
     
@@ -94,11 +94,7 @@
       <label for="floatingPassword">Password</label>
     </div>
 
-    <div class="checkbox mb-3">
-      <label>
-        <input name="terms" type="checkbox" value="1"> Accept Terms
-      </label>
-    </div>
+    
     <button class="w-100 btn btn-lg btn-primary" type="submit">Login</button>
       <a href="<?=ROOT?>">Home</a>
       <a href="<?=ROOT?>signup">Sign Up</a>

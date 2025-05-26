@@ -4,8 +4,39 @@ class Students extends Controller
 {
     public function index()
     {
+        $college = new College();
+
+        $college_id = $_SESSION["STUDENT"]->college_id;
+
+
+        $sql = "SELECT canteen.canteen_name from students join canteen on students.college_id = canteen.college_id where students.college_id = $college_id";
+
+        $result = $college->query($sql);
+        $data["canteens"] = [];
+
+        foreach ($result as $res) {
+            $data["canteens"][] = $res->canteen_name;
+        }
+
+        // foreach ($data["canteens"] as $canteen) {
+        //     echo $canteen ."<br>";
+        // }
+
+        $this->view('students/index', $data);
+
 
     }
+
+
+    public function canteen($canteen_name = "")
+    {
+        $canteen = new Canteen_db();
+
+        $result = $canteen->first(["canteen_name" => $canteen_name]);
+        show($result);
+    }
+
+
 
     public function signup()
     {
@@ -29,16 +60,16 @@ class Students extends Controller
                 $_POST['password'] = $hash;
                 $arr = array_merge($_POST, ['college_id' => $result->id]);
                 $student->insert($arr);
-                redirect('login');
+                redirect('students/login');
 
             } else {
                 $data['errors'] = $student->errors;
-                $this->view('signup', $data);
+                $this->view('students/signup', $data);
             }
         } else {
 
 
-            $this->view('signup', $data);
+            $this->view('students/signup', $data);
 
 
         }
@@ -55,16 +86,16 @@ class Students extends Controller
             if ($student->login_validate($_POST)) {
                 $email = $_POST["email"];
                 $_SESSION["STUDENT"] = $student->first(['email' => $email]);
-                redirect('Home');
+                redirect('students');
             } else {
 
                 $data['errors'] = $student->errors;
-                $this->view('login', $data);
+                $this->view('students/login', $data);
             }
         } else {
 
 
-            $this->view('login');
+            $this->view('students/login');
         }
     }
 

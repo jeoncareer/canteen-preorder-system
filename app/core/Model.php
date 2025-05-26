@@ -135,4 +135,15 @@ trait Model
 
         $this->query($query, $data);
     }
+
+    public function get_enum($table_name, $column_name)
+    {
+
+        $query = "SELECT COLUMN_TYPE 
+                  FROM INFORMATION_SCHEMA.COLUMNS
+                  WHERE TABLE_NAME = '".$table_name."'
+                  AND COLUMN_NAME = '".$column_name."'";
+        $result = $this->query($query);
+        return $result;
+    }
 }

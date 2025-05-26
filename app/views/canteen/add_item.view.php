@@ -25,7 +25,7 @@
 </head>
 <body>
     <form method = "post" enctype="multipart/form-data">
-
+       
     <div class="container">
         <?php
           if (isset($errors)) {
@@ -39,6 +39,16 @@
         <input type="text" name="item_name" placeholder="enter item name. eg:biriyani">
         <label for="">Item description:</label>
         <textarea name="description"></textarea>
+        <label for="">Category:</label>
+        <select name = "category">
+            <option >select</option>
+             <?php
+        foreach ($enums as $enum) {
+
+            ?>
+            <option value="<?=$enum?>" > <?=$enum?> </option>
+            <?php } ?>
+        </select>
         <label for="">Price:</label>
         <input type="text" name="price" placeholder="price">
         <input type="file" name="item_image">

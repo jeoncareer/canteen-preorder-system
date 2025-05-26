@@ -4,7 +4,13 @@ class Canteen extends Controller
 {
     public function index()
     {
-
+        $canteen = new Canteen_db();
+        $result = $canteen->get_enum("items", "status");
+        // print_r($result[0]->COLUMN_TYPE);
+        $result = $result[0]->COLUMN_TYPE;
+        $result  = substr($result, 5, -1);
+        $result = str_getcsv($result, ',', "'");
+        show($result);
     }
 
     public function signin()
@@ -74,6 +80,7 @@ class Canteen extends Controller
     {
         $item = new Items();
 
+        $canteen = new Canteen_db();
         if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
             $file = $_FILES['item_image'];
@@ -86,14 +93,18 @@ class Canteen extends Controller
                 $file_tmp = $_FILES['item_image']['tmp_name'];
                 $file_destination = "assets/images/".$file_name;
                 $canteen_id = $_SESSION["CANTEEN"]["id"];
+
                 move_uploaded_file($file_tmp, $file_destination);
 
                 $arr = ["name" => $_POST["item_name"],
                         "price" => $_POST["price"],
                         "image_location" => $file_name,
-                        "canteen_id" => $_SESSION["CANTEEN"]["id"]
+                        "canteen_id" => $canteen_id,
+                        "category" => $_POST["category"]
                         ];
+                //show($arr);
                 $item->insert($arr);
+
 
 
             } else {
@@ -102,9 +113,15 @@ class Canteen extends Controller
 
             }
 
-        } else {
-            $this->view("canteen/add_item");
-
         }
+        $result = $canteen->get_enum("items", "category");
+
+        $result = $result[0]->COLUMN_TYPE;
+        $result  = substr($result, 5, -1);
+        $result = str_getcsv($result, ',', "'");
+        $data["enums"] = $result;
+        $this->view("canteen/add_item", $data);
+
+
     }
 }
