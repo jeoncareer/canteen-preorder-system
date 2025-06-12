@@ -9,7 +9,7 @@ class Students extends Controller
         $college_id = $_SESSION["STUDENT"]->college_id;
 
 
-        $sql = "SELECT canteen.canteen_name from students join canteen on students.college_id = canteen.college_id where students.college_id = $college_id";
+        $sql = "SELECT canteen_name from canteen where college_id = $college_id";
 
         $result = $college->query($sql);
         $data["canteens"] = [];
