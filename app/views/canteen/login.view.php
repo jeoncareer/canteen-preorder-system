@@ -3,41 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+     <link rel="stylesheet" href="<?=ROOT?>assets/css/header.css">
+    <title>login</title>
+    <link rel="stylesheet" href="<?=ROOT?>/assets/css/login.css">
+
+   
 </head>
 <body>
-    
-   <div class="container">
-  <?php
-  if (isset($errors)) {
 
+<h1>Campus Canteen</h1>
 
-      foreach ($errors as $error) {
-          echo '<div class="alert alert-danger" role="alert">'. $error .'</div>';
-      }
-  }
-  ?>
-       <form method="post">
-         <div class="mb-3">
-           <label for="exampleInputEmail1" class="form-label">Email address</label>
-           <input autocomplete="off" name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-           <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
-         </div>
-         
-       
+<form action="<?=ROOT?>canteen/login" method="post">
+
+    <div class="container">
+        <div class="top">
+            <div class="text1">Welcome Back</div>
+            <div class="text2">Login To Your Account</div>
+            
+        </div>
         
-       
-         <div class="mb-3">
-           <label for="exampleInputPassword1" class="form-label">Password</label>
-           <input name="password" autocomplete="off" type="password" class="form-control" id="exampleInputPassword1">
-         </div>
-       
-         <button type="submit" class="btn btn-primary">Submit</button>
-       </form>
-   </div>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+        <div class="middle">
+            <input type="email" name="email" placeholder="Email">
+            <input type="text" name="password" placeholder="Password">
+            <button type="submit">Login</button>
+        </div>
+        
+        <div class="bottom">
+            <hr>
+            <div class="text3">Don't have an account? <a href="<?=ROOT?>canteen/signin">Sign Up Here</a> </span> </div>
+        </div>
+    </div>
+</form>
 </body>
-    </html>
+</html>

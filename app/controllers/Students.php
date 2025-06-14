@@ -4,6 +4,10 @@ class Students extends Controller
 {
     public function index()
     {
+
+        if (empty($_SESSION['STUDENT'])) {
+            redirect('students/login');
+        }
         $college = new College();
 
         $college_id = $_SESSION["STUDENT"]->college_id;
@@ -31,9 +35,12 @@ class Students extends Controller
     public function canteen($canteen_name = "")
     {
         $canteen = new Canteen_db();
+        $item = new Items();
 
         $result = $canteen->first(["canteen_name" => $canteen_name]);
-        show($result);
+        $items = $item->findAll(['canteen_id' => $result->id]);
+        show($items);
+        $this->view('students/items');
     }
 
 
@@ -80,6 +87,9 @@ class Students extends Controller
 
         $student = new Student();
 
+        if (isset($_SESSION['STUDENT'])) {
+            redirect('students');
+        }
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 

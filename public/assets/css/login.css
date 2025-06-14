@@ -1,33 +1,106 @@
-html,
-body {
-  height: 100%;
-}
+ .container{
+           
+            display: flex;
+            flex-direction: column;
+            width:470px;
+            margin:150px auto;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+           
 
-body {
-  display: flex;
-  align-items: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  background-color: #f5f5f5;
-}
+        }
 
-.form-signin {
-  max-width: 330px;
-  padding: 15px;
-}
+        .container > div{
+            display: flex;
+            flex-direction: column;
+        }
 
-.form-signin .form-floating:focus-within {
-  z-index: 2;
-}
+        .top{
+            width:100%;
+            background-color: #6366F1;
+            
+             color:white;
+             align-items: center;
+             padding:42px 0;
+             row-gap: 13px;
+             border-top-right-radius: 16px;
+             border-top-left-radius: 16px;
+             
+        }
 
-.form-signin input[type="email"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
 
-.form-signin input[type="password"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
+
+        .text1{
+            font-weight: bold;
+            font-size: 40px;
+        }
+
+        .text2{
+            font-size: 16px;
+        }
+        
+        .middle{
+            align-items: center;
+            row-gap: 44px;
+            
+            padding:40px 0px;
+        }
+
+        .middle input{
+            width:84%;
+            height:45px;
+            border:1px solid #B8B8B8;
+            padding-left: 20px;
+            border-radius: 3px;
+            font-size: 16px;
+        }
+
+        input::placeholder{
+            font-size:16px;
+            
+        }
+
+        .middle button{
+            width:88%;
+            height:45px;
+            font-weight: bold;
+            font-size: 24px;
+            color:white;
+            background-color: #6366F1;
+            border:none;
+            border-radius: 3px;
+        }
+
+        hr{
+            width:84%;
+            border:none;
+            height:1px;
+            background-color: gray;
+
+        }
+
+        .bottom{
+            flex-direction: row;
+            align-items: center;
+
+        }
+
+        .bottom a{
+            font-weight: bold;
+            font-size: 15px;
+            color:#6366F1;
+        }
+
+        .text3{
+            font-weight: bold;
+            font-size: 15px;
+            color:#9C9C9C;
+            padding:33px 0px;
+        }
+
+        h1{
+            text-align: center;
+            color:#6366F1;
+            margin-top: 10px;
+        }
