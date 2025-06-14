@@ -4,56 +4,151 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+
     <style>
+
+        *{
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            height:10000px;
+        }
         .container{
-            margin-top:100px;
-            border:1px solid black;
-            padding:15px;
-
+            
+            display: flex;
+            flex-direction: column;
+            width:600px;
+            border: 1px solid black;
+            margin:0 auto ;
         }
 
-        .container *{
-            display:block;
+        .top{
+            background-color: #6366F1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color:white;
+            padding:40px 0;
+            row-gap: 15px;
         }
 
-        .container input{
-
-            margin-top:5px;
+        .l{
+            display: flex;
+            flex-direction: column;
         }
+
+
+        .cred{
+            display: flex;
+            flex-direction: column;
+           padding:40px;
+           row-gap: 25px;
+        }
+
+        .cred label{
+            font-weight: bold;
+        }
+
+        .cat-pri{
+            display: flex;
+            flex-direction: row;
+        }
+
+        .cat-pri > div{
+            display: flex;
+            flex-direction: column;
+        }
+
+        
+
+          .upload-box {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #f9f9ff;
+    color: #333;
+    font-weight: bold;
+    cursor: pointer;
+    transition: border-color 0.3s;
+  }
+
+  .upload-box:hover {
+    border-color: #7f8c8d;
+  }
+
+  .upload-box img {
+    width: 20px;
+    height: 20px;
+  }
+
+  #item_image {
+    display: none;
+  }
     </style>
 </head>
 <body>
-    <form method = "post" enctype="multipart/form-data">
-       
-    <div class="container">
-        <?php
-          if (isset($errors)) {
-
-              foreach ($errors as $error) {
-                  echo '<div class="alert alert-danger" role="alert">'. $error .'</div>';
-              }
-          }
-        ?>
-        <label for="">Item name:</label>
-        <input type="text" name="item_name" placeholder="enter item name. eg:biriyani">
-        <label for="">Item description:</label>
-        <textarea name="description"></textarea>
-        <label for="">Category:</label>
-        <select name = "category">
-            <option >select</option>
-             <?php
-        foreach ($enums as $enum) {
-
-            ?>
-            <option value="<?=$enum?>" > <?=$enum?> </option>
-            <?php } ?>
-        </select>
-        <label for="">Price:</label>
-        <input type="text" name="price" placeholder="price">
-        <input type="file" name="item_image">
-        <input type="submit" value="submit">
+    <h1 style="margin-bottom:200px">Campus Canteen</h1>
+  <div class="container">
+    <div class="top">
+        <h1>Add New Item</h1>
+        <div>Add delicious items to your canteen menu</div>
     </div>
-    </form>
+
+
+
+    <div class="cred">
+        <div class="l">
+
+            <label for="">Item Name</label>
+            <input type="text" name="item_name" placeholder="e.g,Chicken Biriyani">
+        </div>
+        <div class="l">
+
+            <label for="">Item Description</label>
+            <textarea name="description" id="" placeholder="Describe your delicious item,ingredients, and what makes it special"></textarea>
+        </div>
+
+        <div class="l">
+
+            <div class="cat-pri">
+                <div>
+    
+                    <label for="">Category</label>
+                    <select name="category" id="" >
+                        <option value="">Select a category</option>
+                    </select>
+                </div>
+                <div>
+    
+                    <label for="">Price</label>
+                    <input type="number" name="price">
+                </div>
+    
+            </div>
+        </div>
+        <div class="l">
+
+            <label for="item_image" class="upload-box">
+      <img src="https://cdn-icons-png.flaticon.com/512/685/685655.png" alt="Camera Icon">
+      Choose an appetizing image of your item
+    </label>
+    <input type="file" id="item_image" name="item_image" accept="image/*">
+        </div>
+
+        <div class="l">
+
+            <button>ADD ITEM TO MENU</button>
+        </div>
+    </div>
+
+
+  </div>
 </body>
 </html>

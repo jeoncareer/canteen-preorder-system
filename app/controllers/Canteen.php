@@ -46,11 +46,12 @@ class Canteen extends Controller
                 redirect('canteen/login');
             } else {
                 $data["errors"] = $canteen->errors;
-                $this->view('canteen/signin', $data);
+                show($canteen->errors);
+                $this->view('canteen/signup', $data);
             }
 
         } else {
-            $this->view('canteen/signin', $data);
+            $this->view('canteen/signup', $data);
         }
 
     }
@@ -64,7 +65,7 @@ class Canteen extends Controller
             if ($canteen->login_validate($_POST)) {
                 $result = $canteen->first(["email" => $_POST["email"]]);
 
-                $_SESSION['CANTEEN'] = ["email" => $_POST['email'],"id" => $result->id];
+                $_SESSION['CANTEEN'] = $result;
                 print_r($_SESSION['CANTEEN']);
 
                 $this->view('canteen/home');
@@ -81,46 +82,9 @@ class Canteen extends Controller
         $item = new Items();
 
         $canteen = new Canteen_db();
-        if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
-            $file = $_FILES['item_image'];
-            $file_name = $_FILES['item_image']['name'];
-            $ar = ["item_image" => $file_name];
-            if ($item->validate(array_merge($_POST, $ar))) {
-                $fileExt = explode('.', $file_name);
-                $fileActualExt = strtolower(end($fileExt));
-                $file_name = $_POST['item_name'].".".$fileActualExt;
-                $file_tmp = $_FILES['item_image']['tmp_name'];
-                $file_destination = "assets/images/".$file_name;
-                $canteen_id = $_SESSION["CANTEEN"]["id"];
+        $this->view('canteen/add_item');
 
-                move_uploaded_file($file_tmp, $file_destination);
-
-                $arr = ["name" => $_POST["item_name"],
-                        "price" => $_POST["price"],
-                        "image_location" => $file_name,
-                        "canteen_id" => $canteen_id,
-                        "category" => $_POST["category"]
-                        ];
-                //show($arr);
-                $item->insert($arr);
-
-
-
-            } else {
-                $data['errors'] = $item->errors;
-                $this->view("canteen/add_item", $data);
-
-            }
-
-        }
-        $result = $canteen->get_enum("items", "category");
-
-        $result = $result[0]->COLUMN_TYPE;
-        $result  = substr($result, 5, -1);
-        $result = str_getcsv($result, ',', "'");
-        $data["enums"] = $result;
-        $this->view("canteen/add_item", $data);
 
 
     }

@@ -7,11 +7,6 @@
 </head>
 <body>
     <h1>Canteen home page</h1>
-    <?= $_SESSION['CANTEEN']['email']?>
-    <form method="post" enctype="multipart/form-data">
-        <input type="text" name="item-name">
-        <br>
-        <input type="file" name="item_image">
-    </form>
+ 
 </body>
 </html>
