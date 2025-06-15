@@ -82,6 +82,25 @@ class Canteen extends Controller
         $item = new Items();
 
         $canteen = new Canteen_db();
+        $category = new Categories();
+        $dcategory = new Dcategories();
+
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            show(array_merge($_POST, $_FILES['item_image']));
+            if ($item->validate(array_merge($_POST, $_FILES['item_image']))) {
+
+                show($_POST);
+                show($_FILES);
+                $arr = $_POST;
+
+
+                die;
+            } else {
+                show($item->errors);
+
+            }
+        }
 
         $this->view('canteen/add_item');
 

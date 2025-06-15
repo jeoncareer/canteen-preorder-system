@@ -12,7 +12,8 @@ class Items
         'name',
         'canteen_id',
         'price',
-        'image_location'
+        'image_location',
+        'description'
     ];
 
 
@@ -29,8 +30,12 @@ class Items
         if (empty($data['price'])) {
             $this->errors["price"] = "Please enter price";
         }
-        if (empty($data['item_image'])) {
+        if (empty($data['name'])) {
             $this->errors["item_image"] = "please give item image";
+        }
+
+        if (empty($data['category'])) {
+            $this->errors["category"] = "please select a category";
         }
 
         if (empty($this->errors)) {
