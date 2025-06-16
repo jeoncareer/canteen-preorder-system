@@ -117,3 +117,11 @@
             height: 45px;
             
         }
+
+        .error{
+            color:red;
+            font-size: 13px;
+            margin-top: 2px;
+            margin-left: 5px;
+            
+        }

@@ -82,8 +82,27 @@ class Canteen extends Controller
         $item = new Items();
 
         $canteen = new Canteen_db();
+        $canteen_id = $_SESSION['CANTEEN']->id;
+
+        //taking category names from category and default_category database
         $category = new Categories();
         $dcategory = new Dcategories();
+
+        $categories = $category->where(['canteen_id' => $canteen_id]);
+        if (empty($categories)) {
+            $categories = (array)$dcategory->findAll();
+        } else {
+            $categories = array_merge((array)$dcategory->findAll(), $categories);
+        }
+
+        foreach ($categories as $category) {
+            $data['categories'][] = $category->name;
+        }
+
+
+
+
+
 
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -97,12 +116,13 @@ class Canteen extends Controller
 
                 die;
             } else {
-                show($item->errors);
+
+                $data['errors'] = $item->errors;
 
             }
         }
 
-        $this->view('canteen/add_item');
+        $this->view('canteen/add_item', $data);
 
 
 

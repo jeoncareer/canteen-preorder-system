@@ -31,12 +31,18 @@
       
                   <label for="">Item Name</label>
                   <input class="item-name" type="text" name="item_name" placeholder="e.g,Chicken Biriyani">
+                  <?php if (!empty($errors['item_name'])):?>
+                  <span class="error">&bull; <?=$errors['item_name']?></span>
+                  <?php endif; ?>
               </div>
               <div class="l">
       
                   <label for="">Item Description</label>
                   <textarea class="description" name="description" id="" 
                   placeholder="Describe your delicious item,ingredients, and what makes it special........"></textarea>
+                    <?php if (!empty($errors['description'])):?>
+                  <span class="error">&bull; <?=$errors['description']?></span>
+                  <?php endif; ?>
               </div>
       
               <div class="l">
@@ -46,13 +52,22 @@
           
                           <label for="">Category</label>
                           <select name="category" id="" >
-                              <option value="">Select a category</option>
+                              <option value="" disabled selected>Select a category</option>
+                              <?php foreach ($categories as $category):?>
+                                <option value="<?=$category?>"><?=$category?></option>
+                                <?php endforeach; ?>
                           </select>
+                            <?php if (!empty($errors['category'])):?>
+                  <span class="error">&bull; <?=$errors['category']?></span>
+                  <?php endif; ?>
                       </div>
                       <div>
           
                           <label for="">Price</label>
                           <input type="number" name="price">
+                            <?php if (!empty($errors['price'])):?>
+                  <span class="error">&bull; <?=$errors['price']?></span>
+                  <?php endif; ?>
                       </div>
           
                   </div>
@@ -61,6 +76,9 @@
       
                 <label for="">Item Image</label>
                 <input class="item-image" type="file" name="item_image">
+                  <?php if (!empty($errors['item_image'])):?>
+                  <span class="error">&bull; <?=$errors['item_image']?></span>
+                  <?php endif; ?>
               </div>
       
               <div class="l">
