@@ -8,15 +8,16 @@
     <style>
 
 
-        
-
 
 
 
     </style>
 </head>
 <body>
-    <form action="<?=ROOT?>/canteen/add_item" method="post" enctype="multipart/form-data">
+
+
+  <div class="main">
+    <form action="<?=ROOT?>canteen/add_item" method="post" enctype="multipart/form-data">
 
         <div class="container">
           <div class="top">
@@ -51,10 +52,10 @@
                       <div>
           
                           <label for="">Category</label>
-                          <select name="category" id="" >
+                          <select name="category_id" id="" >
                               <option value="" disabled selected>Select a category</option>
                               <?php foreach ($categories as $category):?>
-                                <option value="<?=$category?>"><?=$category?></option>
+                                <option value="<?=$category->id?>"><?=ucfirst($category->name)?></option>
                                 <?php endforeach; ?>
                           </select>
                             <?php if (!empty($errors['category'])):?>
@@ -90,5 +91,22 @@
       
         </div>
     </form>
+      <form action="<?=ROOT?>canteen/category" method="post">
+
+  <div class="form-container">
+    <h2>Add New Category</h2>
+    <form action="add_category.php" method="POST">
+      <label for="category_name">Category Name</label>
+      <input type="text" id="category_name" name="category_name" placeholder="e.g., Snacks, Drinks" required>
+
+      <input type="submit" value="Add Category">
+    </form>
+  </div>
+    </form>
+  </div>
+
+
+
+
 </body>
 </html>

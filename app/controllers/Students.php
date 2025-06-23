@@ -39,8 +39,9 @@ class Students extends Controller
 
         $result = $canteen->first(["canteen_name" => $canteen_name]);
         $items = $item->findAll(['canteen_id' => $result->id]);
-        show($items);
-        $this->view('students/items');
+        $data['items'] = $items;
+
+        $this->view('students/menu', $data);
     }
 
 

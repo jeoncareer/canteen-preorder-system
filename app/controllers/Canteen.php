@@ -5,12 +5,14 @@ class Canteen extends Controller
     public function index()
     {
         $canteen = new Canteen_db();
-        $result = $canteen->get_enum("items", "status");
-        // print_r($result[0]->COLUMN_TYPE);
-        $result = $result[0]->COLUMN_TYPE;
-        $result  = substr($result, 5, -1);
-        $result = str_getcsv($result, ',', "'");
-        show($result);
+        // $result = $canteen->get_enum("items", "status");
+        // // print_r($result[0]->COLUMN_TYPE);
+        // $result = $result[0]->COLUMN_TYPE;
+        // $result  = substr($result, 5, -1);
+        // $result = str_getcsv($result, ',', "'");
+        // show($result);
+
+        $this->view('canteen/home');
     }
 
     public function signin()
@@ -77,6 +79,11 @@ class Canteen extends Controller
         }
     }
 
+    public function orders()
+    {
+        $this->view('canteen/orders');
+    }
+
     public function add_item()
     {
         $item = new Items();
@@ -84,19 +91,16 @@ class Canteen extends Controller
         $canteen = new Canteen_db();
         $canteen_id = $_SESSION['CANTEEN']->id;
 
+
         //taking category names from category and default_category database
         $category = new Categories();
         $dcategory = new Dcategories();
 
         $categories = $category->where(['canteen_id' => $canteen_id]);
-        if (empty($categories)) {
-            $categories = (array)$dcategory->findAll();
-        } else {
-            $categories = array_merge((array)$dcategory->findAll(), $categories);
-        }
+
 
         foreach ($categories as $category) {
-            $data['categories'][] = $category->name;
+            $data['categories'][] = $category;
         }
 
 
@@ -106,15 +110,56 @@ class Canteen extends Controller
 
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            show(array_merge($_POST, $_FILES['item_image']));
+
             if ($item->validate(array_merge($_POST, $_FILES['item_image']))) {
 
+
+                $fileName = $_FILES['item_image']['name'];
+                $fileTmpName = $_FILES['item_image']['tmp_name'];
+                $fileSize = $_FILES['item_image']['size'];
+                $fileError = $_FILES['item_image']['error'];
+                $fileType = $_FILES['item_image']['type'];
                 show($_POST);
-                show($_FILES);
-                $arr = $_POST;
+                $fileExt = explode('.', $fileName);
+
+                $fileActualExt = strtolower(end($fileExt));
+                $allowed = array('jpg','jpeg','png');
+                if (in_array($fileActualExt, $allowed)) {
+                    if ($fileError === 0) {
+                        $fileNameNew = uniqid('', true).$fileExt[0].'.'.$fileActualExt;
+                        $fileDestination = 'assets/images/'.$fileNameNew;
+                        move_uploaded_file($fileTmpName, $fileDestination);
+
+                        $name = $fileExt[0];
+                        $price = $_POST['price'];
+
+                        $image_location = $fileNameNew;
+                        $description = $_POST['description'];
+
+                        $arr = [
+                            'name' => $name,
+                            'price' => $price,
+                            'canteen_id' => $canteen_id,
+                            'image_location' => $image_location,
+                            'category_id' => $_POST['category_id'],
+                            'description' => $description
+
+                        ];
+                        show($arr);
+                        $item->insert($arr);
 
 
-                die;
+                    } else {
+                        echo "There was an error uploading your file!";
+                    }
+                } else {
+                    echo "You cannot upload files of this type!";
+                }
+
+
+
+
+
             } else {
 
                 $data['errors'] = $item->errors;
@@ -126,5 +171,19 @@ class Canteen extends Controller
 
 
 
+    }
+
+    public function category()
+    {
+
+        $category = new Categories();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $name = strtolower($_POST['category_name']);
+
+            $arr = ['name' => $name,'canteen_id' => $_SESSION['CANTEEN']->id];
+            $category->insert($arr);
+            echo "inserted successfully";
+
+        }
     }
 }

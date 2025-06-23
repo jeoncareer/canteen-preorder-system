@@ -13,6 +13,7 @@ class Items
         'canteen_id',
         'price',
         'image_location',
+        'category_id',
         'description'
     ];
 
@@ -34,8 +35,8 @@ class Items
             $this->errors["item_image"] = "please give item image";
         }
 
-        if (empty($data['category'])) {
-            $this->errors["category"] = "please select a category";
+        if (empty($data['category_id'])) {
+            $this->errors["category_id"] = "please select a category";
         }
 
         if (empty($this->errors)) {

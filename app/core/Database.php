@@ -1,4 +1,5 @@
 <?php
+
 trait Database
 {
     private function connect()
@@ -34,6 +35,7 @@ trait Database
 
             if (is_array($result) && count($result)) {
                 return $result[0];
+
             }
         }
         return false;
