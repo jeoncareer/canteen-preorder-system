@@ -40,6 +40,7 @@ class Students extends Controller
         $result = $canteen->first(["canteen_name" => $canteen_name]);
         $items = $item->findAll(['canteen_id' => $result->id]);
         $data['items'] = $items;
+        show($items);
 
         $this->view('students/menu', $data);
     }
@@ -115,6 +116,23 @@ class Students extends Controller
     {
         session_destroy();
         redirect('home');
+    }
+
+
+    public function cart()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === "POST") {
+            $cart = new Cart();
+            $student_id = $_SESSION['STUDENT']->id;
+            $item_id = $_POST['item_id'];
+            $arr = ['item_id' => $item_id,'student_id' => $student_id];
+            $cart->insert($arr);
+            show($arr);
+        } else {
+
+            $this->view('students/cart');
+        }
+
     }
 
 }

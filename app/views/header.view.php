@@ -17,6 +17,9 @@
             <?php if ($page === 'login'):?>
             <a href="<?=ROOT?>students/signup">Signup</a>
             <?php endif;?>
+            <?php if ($page === 'menu'):?>
+            <a href="<?=ROOT?>students/cart">Cart</a>
+            <?php endif;?>
         </div>
     </nav>
 </body>
