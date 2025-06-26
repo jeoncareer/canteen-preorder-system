@@ -3,13 +3,13 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
     define('DBNAME', 'canteen_system');
     define('DBHOST', 'localhost');
     define('DBUSER', 'root');
-    define('DBPASS', 'yourpassword');
+    define('DBPASS', '');
     define('ROOT', 'http://localhost/canteen-preorder-system/public/');
 } else {
     define('DBNAME', 'canteen_sysem');
     define('DBHOST', 'localhost');
     define('DBUSER', 'root');
-    define('DBPASS', 'yourpassword');
+    define('DBPASS', '');
     define('ROOT', 'https://www.yourwebsite.com');
 }
 

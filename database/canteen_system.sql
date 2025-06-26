@@ -24,16 +24,40 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `canteen`
+-- Table structure for table `college`
 --
 
+CREATE TABLE `college` (
+  `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `college_name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `college`
+--
+
+INSERT INTO `college` (`id`, `college_name`) VALUES
+(2, 'Mangalam engineering college'),
+(1, 'Mangalam MC Varghese college arts and science'),
+(5, 'MES college '),
+(4, 'Rajagiri college kakanad'),
+(6, 'Thalayolaparamb College');
+
+-- --------------------------------------------------------
+--
+-- Table structure for table `canteen`
+--
 CREATE TABLE `canteen` (
-  `id` int NOT NULL,
-  `college_id` int NOT NULL,
-  `canteen_name` varchar(20) DEFAULT NULL,
-  `email` varchar(50) NOT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `college_id` INT NOT NULL,
+  `canteen_name` VARCHAR(20) DEFAULT NULL,
+  `email` VARCHAR(50) NOT NULL UNIQUE,
+  `password` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  FOREIGN KEY (`college_id`) REFERENCES `college`(`id`)
+    ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
 
 --
 -- Dumping data for table `canteen`
@@ -53,7 +77,7 @@ CREATE TABLE `cart` (
   `item_id` int NOT NULL,
   `student_id` int NOT NULL,
   `date` datetime DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -65,7 +89,7 @@ CREATE TABLE `categories` (
   `id` int NOT NULL,
   `canteen_id` int DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `categories`
@@ -77,27 +101,6 @@ INSERT INTO `categories` (`id`, `canteen_id`, `name`) VALUES
 
 -- --------------------------------------------------------
 
---
--- Table structure for table `college`
---
-
-CREATE TABLE `college` (
-  `id` int NOT NULL,
-  `college_name` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `college`
---
-
-INSERT INTO `college` (`id`, `college_name`) VALUES
-(2, 'Mangalam engineering college'),
-(1, 'Mangalam MC Varghese college arts and science'),
-(5, 'MES college '),
-(4, 'Rajagiri college kakanad'),
-(6, 'Thalayolaparamb College');
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `default_categories`
@@ -106,7 +109,7 @@ INSERT INTO `college` (`id`, `college_name`) VALUES
 CREATE TABLE `default_categories` (
   `id` int NOT NULL,
   `name` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `default_categories`
@@ -129,10 +132,10 @@ CREATE TABLE `items` (
   `price` decimal(5,0) NOT NULL,
   `canteen_id` int DEFAULT NULL,
   `image_location` varchar(255) DEFAULT NULL,
-  `status` enum('out of stock','available','not ready') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'available',
+  `status` enum('out of stock','available','not ready') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'available',
   `description` text NOT NULL,
   `category_id` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `items`
@@ -154,7 +157,7 @@ CREATE TABLE `orders` (
   `student_id` int NOT NULL,
   `time` datetime DEFAULT CURRENT_TIMESTAMP,
   `status` enum('processing','declined','accepted','ready') NOT NULL DEFAULT 'processing'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -167,7 +170,7 @@ CREATE TABLE `order_items` (
   `order_id` int NOT NULL,
   `item_id` int NOT NULL,
   `quantity` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -179,8 +182,8 @@ CREATE TABLE `students` (
   `id` int NOT NULL,
   `college_id` int NOT NULL,
   `email` varchar(50) NOT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `students`
@@ -196,13 +199,7 @@ INSERT INTO `students` (`id`, `college_id`, `email`, `password`) VALUES
 -- Indexes for dumped tables
 --
 
---
--- Indexes for table `canteen`
---
-ALTER TABLE `canteen`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`),
-  ADD KEY `college_id` (`college_id`);
+
 
 --
 -- Indexes for table `cart`
