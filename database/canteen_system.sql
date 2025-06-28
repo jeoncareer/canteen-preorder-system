@@ -220,7 +220,6 @@ ALTER TABLE `categories`
 -- Indexes for table `college`
 --
 ALTER TABLE `college`
-  ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `college_name` (`college_name`);
 
 --

@@ -13,13 +13,13 @@ class Students extends Controller
         $college_id = $_SESSION["STUDENT"]->college_id;
 
 
-        $sql = "SELECT canteen_name from canteen where college_id = $college_id";
+        $sql = "SELECT id,canteen_name from canteen where college_id = $college_id";
 
         $result = $college->query($sql);
         $data["canteens"] = [];
 
         foreach ($result as $res) {
-            $data["canteens"][] = $res->canteen_name;
+            $data["canteens"][] = $res;
         }
 
         // foreach ($data["canteens"] as $canteen) {
@@ -32,15 +32,16 @@ class Students extends Controller
     }
 
 
-    public function canteen($canteen_name = "")
+    public function canteen($canteen_id = "")
     {
         $canteen = new Canteen_db();
         $item = new Items();
 
-        $result = $canteen->first(["canteen_name" => $canteen_name]);
+        $result = $canteen->first(["id" => 9]);
         $items = $item->findAll(['canteen_id' => $result->id]);
         $data['items'] = $items;
         show($items);
+
 
         $this->view('students/menu', $data);
     }
@@ -127,7 +128,7 @@ class Students extends Controller
             $item_id = $_POST['item_id'];
             $arr = ['item_id' => $item_id,'student_id' => $student_id];
             $cart->insert($arr);
-            show($arr);
+            redirect('students/canteen/9');
         } else {
 
             $this->view('students/cart');

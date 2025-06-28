@@ -104,7 +104,8 @@
         <?php foreach ($canteens as $canteen): ?>
    <div class="container">
     <div class="details">
-    <div class="top"> <h1><?=$canteen?></h1> </div>
+    <div class="top"> <h1><?=$canteen->canteen_name?></h1> </div>
+    
     <div class="middle">
         
             <div class="loc-details">
