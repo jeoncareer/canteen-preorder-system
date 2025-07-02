@@ -8,25 +8,7 @@ class Students extends Controller
         if (empty($_SESSION['STUDENT'])) {
             redirect('students/login');
         }
-        $college = new College();
 
-        $college_id = $_SESSION["STUDENT"]->college_id;
-
-
-        $sql = "SELECT id,canteen_name from canteen where college_id = $college_id";
-
-        $result = $college->query($sql);
-        $data["canteens"] = [];
-
-        foreach ($result as $res) {
-            $data["canteens"][] = $res;
-        }
-
-        // foreach ($data["canteens"] as $canteen) {
-        //     echo $canteen ."<br>";
-        // }
-
-        $this->view('students/index', $data);
 
 
     }
@@ -34,16 +16,42 @@ class Students extends Controller
 
     public function canteen($canteen_id = "")
     {
-        $canteen = new Canteen_db();
-        $item = new Items();
-
-        $result = $canteen->first(["id" => 9]);
-        $items = $item->findAll(['canteen_id' => $result->id]);
-        $data['items'] = $items;
-        show($items);
 
 
-        $this->view('students/menu', $data);
+        if (isset($canteen_id) && !empty($canteen_id)) {
+
+
+            $item = new Items();
+            $Cart = new Cart();
+            $items = $item->where(['canteen_id' => $canteen_id]);
+            $data['items'] = $items;
+            $this->view('students/menu', $data);
+        } else {
+            $college = new College();
+
+            $college_id = $_SESSION["STUDENT"]->college_id;
+
+
+            $sql = "SELECT id,canteen_name from canteen where college_id = $college_id";
+
+            $result = $college->query($sql);
+            $test = "select * from canteen where id = 11";
+            $test_result = $college->query($sql);
+
+
+
+            $data["canteens"] = [];
+
+            foreach ($result as $res) {
+                $data["canteens"][] = $res;
+            }
+
+            // foreach ($data["canteens"] as $canteen) {
+            //     echo $canteen ."<br>";
+            // }
+            //echo json_encode($data["canteens"]);
+            $this->view('students/index', $data);
+        }
     }
 
 
@@ -99,6 +107,10 @@ class Students extends Controller
             if ($student->login_validate($_POST)) {
                 $email = $_POST["email"];
                 $_SESSION["STUDENT"] = $student->first(['email' => $email]);
+                $Cart = new cart();
+                $count = $Cart->count(['student_id' => $_SESSION['STUDENT']->id]);
+                $_SESSION['STUDENT']->count =  $count[0]->count;
+
                 redirect('students');
             } else {
 
@@ -124,12 +136,28 @@ class Students extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] === "POST") {
             $cart = new Cart();
-            $student_id = $_SESSION['STUDENT']->id;
             $item_id = $_POST['item_id'];
-            $arr = ['item_id' => $item_id,'student_id' => $student_id];
-            $cart->insert($arr);
-            redirect('students/canteen/9');
+            $result = $cart->where(['item_id' => $item_id]);
+            $canteen_id = $_POST['canteen_id'];
+            if (empty($result)) {
+
+
+                $student_id = $_SESSION['STUDENT']->id;
+                $arr = ['item_id' => $item_id,'student_id' => $student_id];
+
+                $cart->insert($arr);
+            } else {
+                $result = $cart->first(['item_id' => $item_id]);
+                $count = $result->count + 1;
+                $id = $result->id;
+
+                $cart->update($id, ["count" => $count]);
+
+            }
+
+            redirect('students/canteen/'.$canteen_id);
         } else {
+
 
             $this->view('students/cart');
         }

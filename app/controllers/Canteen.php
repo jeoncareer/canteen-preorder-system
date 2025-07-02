@@ -94,13 +94,16 @@ class Canteen extends Controller
 
         //taking category names from category and default_category database
         $category = new Categories();
-        $dcategory = new Dcategories();
+
 
         $categories = $category->where(['canteen_id' => $canteen_id]);
 
+        $data['categories'] = [];
+        if (!empty($categories)) {
 
-        foreach ($categories as $category) {
-            $data['categories'][] = $category;
+            foreach ($categories as $category) {
+                $data['categories'][] = $category;
+            }
         }
 
 
@@ -130,7 +133,7 @@ class Canteen extends Controller
                         $fileDestination = 'assets/images/'.$fileNameNew;
                         move_uploaded_file($fileTmpName, $fileDestination);
 
-                        $name = $fileExt[0];
+                        $name = $_POST['item_name'];
                         $price = $_POST['price'];
 
                         $image_location = $fileNameNew;

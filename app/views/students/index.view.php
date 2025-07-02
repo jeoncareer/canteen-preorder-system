@@ -129,7 +129,7 @@
 
     <div class="buttons">
       
-       <a href="<?=ROOT?>students/canteen/<?=urlencode($canteen)?>"><button>VIEW</button></a> 
+       <a href="<?=ROOT?>students/canteen/<?=$canteen->id?>"><button>VIEW</button></a> 
     </div>
    </div>
 

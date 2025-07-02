@@ -122,6 +122,7 @@ trait Model
         $data[$id_column] = $id;
         $query = trim($query, ",");
         $query .= " where " . $id_column . "= :" . $id_column . ";";
+        show($query);
         $this->query($query, $data);
 
 
@@ -145,5 +146,25 @@ trait Model
                   AND COLUMN_NAME = '".$column_name."'";
         $result = $this->query($query);
         return $result;
+    }
+
+
+    public function count($data, $data_not = [])
+    {
+        $keys = array_keys($data);
+        $keys_not = array_keys($data_not);
+        $query = "select COUNT(*) as count from $this->table where ";
+        foreach ($keys as $key) {
+            $query .= $key . " = :" . $key . " AND ";
+        }
+
+        foreach ($keys_not as $key) {
+            $query .= $key . " != :" . $key . " AND ";
+        }
+        $query = trim($query, " AND ");
+
+
+        $data = array_merge($data, $data_not);
+        return $this->query($query, $data);
     }
 }

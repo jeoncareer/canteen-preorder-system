@@ -8,6 +8,7 @@ class Cart
 
     protected $allowedColumns = [
         'item_id',
-        'student_id'
+        'student_id',
+        'count'
     ];
 }

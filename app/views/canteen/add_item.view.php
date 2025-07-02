@@ -54,9 +54,11 @@
                           <label for="">Category</label>
                           <select name="category_id" id="" >
                               <option value="" disabled selected>Select a category</option>
+                              <?php if (isset($categories)):?>
                               <?php foreach ($categories as $category):?>
                                 <option value="<?=$category->id?>"><?=ucfirst($category->name)?></option>
                                 <?php endforeach; ?>
+                                <?php endif; ?>
                           </select>
                             <?php if (!empty($errors['category'])):?>
                   <span class="error">&bull; <?=$errors['category']?></span>

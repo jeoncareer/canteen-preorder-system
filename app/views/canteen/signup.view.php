@@ -17,7 +17,7 @@
         </div>
         
         <div class="middle">
-            <input type="email" name="email" placeholder="Email">
+            <input type="email" name="email" placeholder="Email" >
             <input type="text" name="canteen_name" placeholder="Canteen name">
             <input type="text" name="college_name" list="colleges" placeholder="College Name">
             <datalist id="colleges">

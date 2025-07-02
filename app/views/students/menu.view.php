@@ -56,6 +56,7 @@
   require __DIR__ .'/../header.view.php';?>
 
 <div class="container">
+  <?php if (!empty($items)):?>
   <?php foreach ($items as $item):?>
   <form action="<?=ROOT?>students/cart" method="post">
 
@@ -67,12 +68,16 @@
         <div class="name"><?=$item->name?></div>
         <div class="price">$<?=$item->price?></div>
         <input type="hidden" name="item_id" value="<?=$item->id?>">
+        <input type="hidden" name="canteen_id" value="<?=$item->canteen_id?>">
         <button>Add to cart</button>
       </div>
     </div>
   </form>
   <?php endforeach; ?>
+  <?php endif;?>
 </div>
+
+
  
 </body>
 </html>

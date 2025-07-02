@@ -18,7 +18,12 @@
             <a href="<?=ROOT?>students/signup">Signup</a>
             <?php endif;?>
             <?php if ($page === 'menu'):?>
-            <a href="<?=ROOT?>students/cart">Cart</a>
+            
+            <div style="position: relative; display:inline-block;"><a href="<?=ROOT?>students/cart">Cart</a> 
+            <!-- <?php if (!empty($_SESSION['STUDENT']->count)):?>
+            <div class="counter"><?=$_SESSION['STUDENT']->count?></div>
+            <?php endif; ?> -->
+        </div>
             <?php endif;?>
         </div>
     </nav>
