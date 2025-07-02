@@ -97,7 +97,7 @@ trait Model
         }
         $keys = array_keys($data);
         $query = "insert into $this->table (" . implode(",", $keys) . ") values (:" . implode(",:", $keys) . ")";
-        //show($query);
+        //shxow($query);
         $this->query($query, $data);
     }
 

@@ -134,8 +134,8 @@ class Students extends Controller
 
     public function cart()
     {
+        $cart = new Cart();
         if ($_SERVER['REQUEST_METHOD'] === "POST") {
-            $cart = new Cart();
             $item_id = $_POST['item_id'];
             $result = $cart->where(['item_id' => $item_id]);
             $canteen_id = $_POST['canteen_id'];
@@ -157,11 +157,21 @@ class Students extends Controller
 
             redirect('students/canteen/'.$canteen_id);
         } else {
+            $student_id = $_SESSION['STUDENT']->id;
+            $query = "select items.canteen_id,items.name,items.price,cart.count from cart join items ON cart.item_id = items.id where cart.student_id = ".$student_id;
+            $result = $cart->query($query);
+            show($result);
+            $data['results'] = $result;
 
-
-            $this->view('students/cart');
+            $this->view('students/cart', $data);
         }
 
+    }
+
+
+    public function place_order()
+    {
+        show($_GET);
     }
 
 }

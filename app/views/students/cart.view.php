@@ -89,32 +89,46 @@
   <div class="cart-container">
     <h2>Your Cart</h2>
 
-    <div class="cart-item">
-      <div class="item-name">Veg Sandwich</div>
-      <div class="item-qty">
-        <button>-</button>
-        <span>2</span>
-        <button>+</button>
-      </div>
-      <div class="item-price">₹80</div>
-    </div>
+    <form action="<?=ROOT?>students/place_order">
+<?php $total = 0;?>
+    <?php if (!empty($results)): ?>
 
-    <div class="cart-item">
-      <div class="item-name">Cold Coffee</div>
-      <div class="item-qty">
-        <button>-</button>
-        <span>1</span>
-        <button>+</button>
-      </div>
-      <div class="item-price">₹60</div>
-    </div>
-
-    <div class="total">
-      Total: ₹140
-    </div>
-
-    <button class="place-order">Place Order</button>
+        <?php foreach ($results as $result):?>
+          <div class="cart-item">
+            <div class="item-name"><?=$result->name?></div>
+            <div class="item-qty">
+              <button>-</button>
+              <span id="<?=$result->name?>-item" ><?=$result->count?></span>
+              <div onclick="increment('<?=$result->name?>')">+</div>
+            </div>
+            <div class="item-price">₹<?=$result->price?></div>
+            <?php $total += $result->price;?>
+          </div>
+          
+          <input type="hidden" name="item[<?=$result->canteen_id?>]['name'][]" value="<?=$result->name?>">
+          <input type="hidden" name="item[<?=$result->canteen_id?>]['count'][]" value="<?=$result->count?>">
+          
+          
+          <?php endforeach;?>
+          <?php endif;?>
+          
+          
+          <div class="total">
+            Total: ₹<?=$total?>
+          </div>
+          
+          <button class="place-order">Place Order</button>
+        </form>
   </div>
 
+  <script>
+    function increment(ItemName)
+    {
+      let currentCount = document.querySelector('#'+ItemName + '-item').innerHTML;
+      currentCount++;
+      document.querySelector('#'+ItemName + '-item').textContent = currentCount;
+      
+    }
+  </script>
 </body>
 </html>
