@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jun 23, 2025 at 12:52 PM
+-- Generation Time: Jul 04, 2025 at 12:00 PM
 -- Server version: 8.0.42-0ubuntu0.24.04.1
 -- PHP Version: 8.3.6
 
@@ -24,47 +24,24 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `college`
---
-
-CREATE TABLE `college` (
-  `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  `college_name` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `college`
---
-
-INSERT INTO `college` (`id`, `college_name`) VALUES
-(2, 'Mangalam engineering college'),
-(1, 'Mangalam MC Varghese college arts and science'),
-(5, 'MES college '),
-(4, 'Rajagiri college kakanad'),
-(6, 'Thalayolaparamb College');
-
--- --------------------------------------------------------
---
 -- Table structure for table `canteen`
 --
+
 CREATE TABLE `canteen` (
-  `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  `college_id` INT NOT NULL,
-  `canteen_name` VARCHAR(20) DEFAULT NULL,
-  `email` VARCHAR(50) NOT NULL UNIQUE,
-  `password` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  FOREIGN KEY (`college_id`) REFERENCES `college`(`id`)
-    ON DELETE CASCADE
+  `id` int NOT NULL,
+  `college_id` int NOT NULL,
+  `canteen_name` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `email` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-
 
 --
 -- Dumping data for table `canteen`
 --
 
 INSERT INTO `canteen` (`id`, `college_id`, `canteen_name`, `email`, `password`) VALUES
-(9, 1, 'arts canteen', 'manglam@gmail.com', '$2y$10$5zftmEyCE2ce.KKiV7/0cO5SfjgyZ4rd6WIRq3mi6pncXLM0NIa7W');
+(9, 1, 'arts canteen', 'manglam@gmail.com', '$2y$10$5zftmEyCE2ce.KKiV7/0cO5SfjgyZ4rd6WIRq3mi6pncXLM0NIa7W'),
+(10, 1, 'manglam2', 'manglam1@gmail.com', '$2y$10$hAxs4EDolREc/KR4pmcieOQ7RTbZxiVZm9wLgB7lrHY9I9U9oprMW');
 
 -- --------------------------------------------------------
 
@@ -76,8 +53,17 @@ CREATE TABLE `cart` (
   `id` int NOT NULL,
   `item_id` int NOT NULL,
   `student_id` int NOT NULL,
+  `count` int NOT NULL DEFAULT '1',
   `date` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cart`
+--
+
+INSERT INTO `cart` (`id`, `item_id`, `student_id`, `count`, `date`) VALUES
+(21, 75, 7, 3, '2025-06-30 20:36:13'),
+(22, 73, 7, 2, '2025-06-30 20:36:56');
 
 -- --------------------------------------------------------
 
@@ -88,7 +74,7 @@ CREATE TABLE `cart` (
 CREATE TABLE `categories` (
   `id` int NOT NULL,
   `canteen_id` int DEFAULT NULL,
-  `name` varchar(100) DEFAULT NULL
+  `name` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -97,10 +83,32 @@ CREATE TABLE `categories` (
 
 INSERT INTO `categories` (`id`, `canteen_id`, `name`) VALUES
 (3, 9, 'biriyani'),
-(4, 9, 'meals');
+(4, 9, 'meals'),
+(5, 10, 'biriayni2');
 
 -- --------------------------------------------------------
 
+--
+-- Table structure for table `college`
+--
+
+CREATE TABLE `college` (
+  `id` int NOT NULL,
+  `college_name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `college`
+--
+
+INSERT INTO `college` (`id`, `college_name`) VALUES
+(1, 'Mangalam MC Varghese college arts and science'),
+(2, 'Mangalam engineering college'),
+(4, 'Rajagiri college kakanad'),
+(5, 'MES college '),
+(6, 'Thalayolaparamb College');
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `default_categories`
@@ -108,7 +116,7 @@ INSERT INTO `categories` (`id`, `canteen_id`, `name`) VALUES
 
 CREATE TABLE `default_categories` (
   `id` int NOT NULL,
-  `name` varchar(100) DEFAULT NULL
+  `name` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -128,12 +136,12 @@ INSERT INTO `default_categories` (`id`, `name`) VALUES
 
 CREATE TABLE `items` (
   `id` int NOT NULL,
-  `name` varchar(50) DEFAULT NULL,
+  `name` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `price` decimal(5,0) NOT NULL,
   `canteen_id` int DEFAULT NULL,
-  `image_location` varchar(255) DEFAULT NULL,
+  `image_location` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `status` enum('out of stock','available','not ready') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'available',
-  `description` text NOT NULL,
+  `description` text COLLATE utf8mb4_general_ci NOT NULL,
   `category_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -143,7 +151,9 @@ CREATE TABLE `items` (
 
 INSERT INTO `items` (`id`, `name`, `price`, `canteen_id`, `image_location`, `status`, `description`, `category_id`) VALUES
 (73, 'chola_bhature', 3, 9, '68556b5eb478d2.40984173chola_bhature.jpg', 'available', 'afasdf', NULL),
-(75, 'Biriyani', 150, 9, '68564a9fcce048.04549054Biriyani.jpg', 'available', 'indian dish', 4);
+(75, 'Biriyani', 150, 9, '68564a9fcce048.04549054Biriyani.jpg', 'available', 'indian dish', 4),
+(76, 'Screenshot from 2025-06-11 12-15-06', 14, 10, '686234cf878fb4.57750658Screenshot from 2025-06-11 12-15-06.png', 'available', 'adfa', 5),
+(77, 'test1', 7, 10, '68635ff2974932.81621110Screenshot from 2025-06-26 13-42-55.png', 'available', 'adfa', 5);
 
 -- --------------------------------------------------------
 
@@ -156,7 +166,7 @@ CREATE TABLE `orders` (
   `canteen_id` int NOT NULL,
   `student_id` int NOT NULL,
   `time` datetime DEFAULT CURRENT_TIMESTAMP,
-  `status` enum('processing','declined','accepted','ready') NOT NULL DEFAULT 'processing'
+  `status` enum('processing','declined','accepted','ready') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'processing'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -181,7 +191,7 @@ CREATE TABLE `order_items` (
 CREATE TABLE `students` (
   `id` int NOT NULL,
   `college_id` int NOT NULL,
-  `email` varchar(50) NOT NULL,
+  `email` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -199,7 +209,13 @@ INSERT INTO `students` (`id`, `college_id`, `email`, `password`) VALUES
 -- Indexes for dumped tables
 --
 
-
+--
+-- Indexes for table `canteen`
+--
+ALTER TABLE `canteen`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `college_id` (`college_id`);
 
 --
 -- Indexes for table `cart`
@@ -220,7 +236,7 @@ ALTER TABLE `categories`
 -- Indexes for table `college`
 --
 ALTER TABLE `college`
-  ADD UNIQUE KEY `college_name` (`college_name`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `default_categories`
@@ -268,19 +284,19 @@ ALTER TABLE `students`
 -- AUTO_INCREMENT for table `canteen`
 --
 ALTER TABLE `canteen`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `college`
@@ -298,7 +314,7 @@ ALTER TABLE `default_categories`
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -326,7 +342,7 @@ ALTER TABLE `students`
 -- Constraints for table `canteen`
 --
 ALTER TABLE `canteen`
-  ADD CONSTRAINT `canteen_ibfk_1` FOREIGN KEY (`college_id`) REFERENCES `college` (`id`);
+  ADD CONSTRAINT `canteen_ibfk_1` FOREIGN KEY (`college_id`) REFERENCES `college` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `cart`

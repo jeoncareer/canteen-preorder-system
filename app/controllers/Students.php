@@ -2,6 +2,7 @@
 
 class Students extends Controller
 {
+    use Database;
     public function index()
     {
 
@@ -9,50 +10,43 @@ class Students extends Controller
             redirect('students/login');
         }
 
+        $college_id = $_SESSION['STUDENT']->college_id;
 
+        $sql = "select canteen.id as canteen_id,items.id as item_id, 
+        items.name as item_name,categories.name as category_name,
+        items.price as price from items join canteen on items.canteen_id = canteen.id join 
+        categories on items.category_id = categories.id join college
+         on canteen.college_id = college.id where college.id = $college_id";
+        $items = $this->query($sql);
 
-    }
+        foreach ($items as $item) {
+            $category = $item->category_name;
 
-
-    public function canteen($canteen_id = "")
-    {
-
-
-        if (isset($canteen_id) && !empty($canteen_id)) {
-
-
-            $item = new Items();
-            $Cart = new Cart();
-            $items = $item->where(['canteen_id' => $canteen_id]);
-            $data['items'] = $items;
-            $this->view('students/menu', $data);
-        } else {
-            $college = new College();
-
-            $college_id = $_SESSION["STUDENT"]->college_id;
-
-
-            $sql = "SELECT id,canteen_name from canteen where college_id = $college_id";
-
-            $result = $college->query($sql);
-            $test = "select * from canteen where id = 11";
-            $test_result = $college->query($sql);
-
-
-
-            $data["canteens"] = [];
-
-            foreach ($result as $res) {
-                $data["canteens"][] = $res;
+            if (!isset($grouped[$category])) {
+                $grouped[$category] = [];
             }
 
-            // foreach ($data["canteens"] as $canteen) {
-            //     echo $canteen ."<br>";
-            // }
-            //echo json_encode($data["canteens"]);
-            $this->view('students/index', $data);
+            $grouped[$category][] = $item;
         }
+
+        // show($grouped);
+        // foreach ($grouped as $key => $value) {
+        //     echo "<h1>".$key."</h1> <br>";
+        //     foreach ($value as $v) {
+        //         show($v);
+
+        //     }
+        // }
+
+        $data['grouped'] = $grouped;
+
+        $this->view('students/index', $data);
+
+
+
     }
+
+
 
 
 
@@ -69,8 +63,8 @@ class Students extends Controller
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
-            if ($student->validate($_POST)) {
 
+            if ($student->validate($_POST)) {
 
                 $result = $college->first(["college_name" => $_POST["college_name"]]);
                 $password = $_POST['password'];
@@ -82,6 +76,7 @@ class Students extends Controller
 
             } else {
                 $data['errors'] = $student->errors;
+                show($student->errors);
                 $this->view('students/signup', $data);
             }
         } else {
@@ -132,46 +127,19 @@ class Students extends Controller
     }
 
 
-    public function cart()
+    public function my_orders()
     {
-        $cart = new Cart();
-        if ($_SERVER['REQUEST_METHOD'] === "POST") {
-            $item_id = $_POST['item_id'];
-            $result = $cart->where(['item_id' => $item_id]);
-            $canteen_id = $_POST['canteen_id'];
-            if (empty($result)) {
-
-
-                $student_id = $_SESSION['STUDENT']->id;
-                $arr = ['item_id' => $item_id,'student_id' => $student_id];
-
-                $cart->insert($arr);
-            } else {
-                $result = $cart->first(['item_id' => $item_id]);
-                $count = $result->count + 1;
-                $id = $result->id;
-
-                $cart->update($id, ["count" => $count]);
-
-            }
-
-            redirect('students/canteen/'.$canteen_id);
-        } else {
-            $student_id = $_SESSION['STUDENT']->id;
-            $query = "select items.canteen_id,items.name,items.price,cart.count from cart join items ON cart.item_id = items.id where cart.student_id = ".$student_id;
-            $result = $cart->query($query);
-            show($result);
-            $data['results'] = $result;
-
-            $this->view('students/cart', $data);
-        }
-
+        $this->view('students/my_orders');
     }
 
 
-    public function place_order()
-    {
-        show($_GET);
-    }
+
+
+
+
+
+
+
+
 
 }

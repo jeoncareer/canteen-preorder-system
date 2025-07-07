@@ -24,7 +24,7 @@
         
         <div class="middle">
             <input type="email" name="email" placeholder="Email">
-            <input type="text" name="college" list="colleges" placeholder="College Name">
+            <input type="text" name="college_name" list="colleges" placeholder="College Name">
             <datalist id="colleges">
               <?php foreach ($colleges as $college): ?>
               <option value="<?=$college?>"></option>

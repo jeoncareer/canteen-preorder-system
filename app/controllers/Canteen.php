@@ -43,12 +43,20 @@ class Canteen extends Controller
                 $arr = ["college_id" => $result->id,];
                 $arr = array_merge($_POST, $arr);
 
-                print_r($arr);
-                $canteen->insert($arr);
-                redirect('canteen/login');
+                //print_r($arr);
+                $canteen_id = $canteen->insert($arr);
+                $dcategories = new Dcategories();
+                $categories = new Categories();
+                $result = $dcategories->findAll();
+                show($result);
+                foreach ($result as $res) {
+                    $categories->insert(['canteen_id' => $canteen_id,'name' => $res->name]);
+                }
+                //redirect('canteen/login');
             } else {
                 $data["errors"] = $canteen->errors;
                 show($canteen->errors);
+
                 $this->view('canteen/signup', $data);
             }
 
