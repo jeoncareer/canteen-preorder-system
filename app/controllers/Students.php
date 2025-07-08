@@ -132,6 +132,11 @@ class Students extends Controller
         $this->view('students/my_orders');
     }
 
+    public function history()
+    {
+        $this->view('students/order_history');
+    }
+
 
 
 

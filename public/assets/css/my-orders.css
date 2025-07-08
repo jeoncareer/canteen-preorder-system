@@ -1,0 +1,53 @@
+ .orders-section {
+            background-color: white;
+        }
+
+   
+
+
+        .order-time {
+            color: #666;
+            font-size: 14px;             
+        }
+
+
+        .status-ready {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-preparing {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+
+
+
+
+
+
+        .order-sidebar-title {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .order-sidebar-title::before {
+            content: "🛒";
+            font-size: 18px;
+        }
+
+        .empty-cart {
+            text-align: center;
+            color: #666;
+            margin-top: 50px;
+        }
+
+        .empty-cart-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }

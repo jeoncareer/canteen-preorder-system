@@ -4,470 +4,214 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Campus Canteen - Preorder System</title>
-    <link rel="stylesheet" href="<?=ROOT?>assets/css/sidebar.css">
+
+    <link rel="stylesheet" href="<?=ROOT?>assets/css/index.css">
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            
-            min-height: 100vh;
-            color: #333;
-            overflow-x: hidden;
-        }
-
-        .app-container {
-           
-            margin: 0 auto;
+         .cart-panel {
+            width: 400px;
             background: white;
-            min-height: 100vh;
-            box-shadow: 0 0 30px rgba(0,0,0,0.2);
-        }
-
-       
-
-        .balance-card {
-            background: rgba(255,255,255,0.2);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            min-width: 150px;
-        }
-
-        .balance-amount {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-     
-
-        .main-content {
-            display: flex;
-            min-height: calc(100vh - 120px);
-        }
-
-        
-
-        .page-title {
-            font-size: 28px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .menu-grid {
-            display: grid;
-            grid-template-columns: 1fr 350px;
-            gap: 40px;
-        }
-
-        .menu-categories {
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
-        }
-
-        .category-section {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-        }
-
-        .category-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 3px solid #ecf0f1;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .menu-items-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 20px;
-        }
-
-        .menu-item {
-            background: #fff;
-            border-radius: 15px;
-            padding: 20px;
-            border: 2px solid #f1f3f4;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .menu-item:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
-            border-color: #ff6b6b;
-        }
-
-        .menu-item.selected {
-            border-color: #ff6b6b;
-            background: linear-gradient(135deg, #fff5f5, #ffffff);
-            box-shadow: 0 8px 25px rgba(255,107,107,0.2);
-        }
-
-        .item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
-
-        .item-name {
-            font-weight: 700;
-            font-size: 18px;
-            color: #2c3e50;
-        }
-
-        .item-price {
-            font-weight: bold;
-            color: #27ae60;
-            font-size: 18px;
-        }
-
-        .item-description {
-            color: #7f8c8d;
-            font-size: 14px;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
-        .item-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .availability {
-            padding: 6px 16px;
-            border-radius: 25px;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .available {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .limited {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .unavailable {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .qty-btn {
-            width: 40px;
-            height: 40px;
-            border: 2px solid #ff6b6b;
-            background: white;
-            color: #ff6b6b;
-            border-radius: 50%;
-            font-weight: bold;
-            font-size: 18px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .qty-btn:hover:not(:disabled) {
-            background: #ff6b6b;
-            color: white;
-            transform: scale(1.1);
-        }
-
-        .qty-btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
-        .quantity {
-            font-weight: bold;
-            font-size: 18px;
-            min-width: 40px;
-            text-align: center;
-            padding: 8px 12px;
-            background: #f8f9fa;
-            border-radius: 8px;
-        }
-
-        .cart-panel {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 40px;
-            height: fit-content;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
 
         .cart-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #f1f3f4;
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            padding: 20px;
+            text-align: center;
         }
 
         .cart-title {
-            font-size: 22px;
-            font-weight: bold;
-            color: #2c3e50;
+            font-size: 18px;
+            font-weight: 600;
         }
 
         .cart-items {
-            margin-bottom: 25px;
+            padding: 20px;
             max-height: 400px;
             overflow-y: auto;
         }
 
         .cart-item {
             display: flex;
-            justify-content: space-between;
             align-items: center;
             padding: 15px 0;
-            border-bottom: 1px solid #f1f3f4;
+            border-bottom: 1px solid #eee;
         }
 
         .cart-item:last-child {
             border-bottom: none;
         }
 
-        .cart-item-info {
-            flex: 1;
+        .item-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #ff9a9e, #fecfef);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 15px;
+            flex-shrink: 0;
         }
 
-        .cart-item-name {
+        .item-details {
+            flex: 1;
+            margin-right: 15px;
+        }
+
+        .item-name {
             font-weight: 600;
-            color: #2c3e50;
+            font-size: 16px;
+            color: #333;
             margin-bottom: 4px;
         }
 
-        .cart-item-price {
-            color: #7f8c8d;
+        .item-price {
             font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
         }
 
-        .cart-item-controls {
+        .quantity-controls {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+        }
+
+        .quantity-btn {
+            width: 28px;
+            height: 28px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            transition: all 0.2s;
+        }
+
+        .quantity-btn:hover {
+            background: #f5f5f5;
+            border-color: #ff6b6b;
+            color: #ff6b6b;
+        }
+
+        .quantity {
+            font-weight: 600;
+            font-size: 16px;
+            color: #333;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .item-total {
+            font-weight: 600;
+            font-size: 16px;
+            color: #333;
+            min-width: 60px;
+            text-align: right;
         }
 
         .cart-summary {
-            border-top: 2px solid #f1f3f4;
-            padding-top: 20px;
+            padding: 20px;
+            border-top: 1px solid #eee;
+            background: #f9f9f9;
         }
 
         .summary-row {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-bottom: 12px;
-            font-size: 16px;
+            font-size: 14px;
+            color: #666;
         }
 
         .summary-total {
-            font-weight: bold;
-            font-size: 20px;
-            color: #2c3e50;
-            border-top: 1px solid #dee2e6;
-            padding-top: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            padding-top: 12px;
+            border-top: 1px solid #ddd;
+            margin-top: 8px;
         }
 
         .checkout-btn {
             width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            padding: 15px;
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
             color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 18px;
+            border-radius: 8px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 20px;
+            transition: all 0.3s;
+            margin-top: 15px;
         }
 
-        .checkout-btn:hover:not(:disabled) {
+        .checkout-btn:hover {
+            background: linear-gradient(135deg, #ff5252, #ff7979);
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255,107,107,0.4);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
         }
 
-        .checkout-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        .remove-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+            transition: all 0.2s;
+        }
+
+        .remove-btn:hover {
+            background: #ff3742;
+            transform: scale(1.1);
         }
 
         .empty-cart {
             text-align: center;
             padding: 40px 20px;
-            color: #7f8c8d;
+            color: #999;
         }
 
         .empty-cart-icon {
-            font-size: 64px;
-            margin-bottom: 20px;
-            opacity: 0.5;
-        }
-
-        .orders-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 25px;
-        }
-
-        .order-card {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-
-        .order-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-        }
-
-        .order-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #f1f3f4;
-        }
-
-        .order-id {
-            font-weight: bold;
-            font-size: 18px;
-            color: #2c3e50;
-        }
-
-        .order-status {
-            padding: 8px 16px;
-            border-radius: 25px;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .status-pending {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .status-preparing {
-            background: #cce5ff;
-            color: #004085;
-        }
-
-        .status-ready {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .order-items {
-            margin-bottom: 20px;
-        }
-
-        .order-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            color: #5a6c7d;
-        }
-
-        .order-meta {
-            color: #7f8c8d;
-            font-size: 14px;
+            font-size: 48px;
             margin-bottom: 15px;
         }
 
-        .order-total {
-            font-weight: bold;
-            color: #27ae60;
-            font-size: 20px;
-            text-align: right;
+        /* Scrollbar styling */
+        .cart-items::-webkit-scrollbar {
+            width: 6px;
         }
 
-        .search-bar {
-            width: 100%;
-            max-width: 500px;
-            padding: 15px 20px;
-            border: 2px solid #e9ecef;
-            border-radius: 25px;
-            font-size: 16px;
-            margin-bottom: 30px;
-            transition: all 0.3s ease;
+        .cart-items::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
         }
 
-        .search-bar:focus {
-            outline: none;
-            border-color: #ff6b6b;
-            box-shadow: 0 0 0 4px rgba(255,107,107,0.1);
+        .cart-items::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 3px;
         }
 
-        @media (max-width: 1200px) {
-            .menu-grid {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-            
-            .cart-panel {
-                position: relative;
-                top: 0;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                width: 100%;
-            }
-            
-            .content-area {
-                padding: 20px;
-            }
-            
-            .menu-items-grid {
-                grid-template-columns: 1fr;
-            }
+        .cart-items::-webkit-scrollbar-thumb:hover {
+            background: #999;
         }
     </style>
 </head>
@@ -539,7 +283,7 @@
                         </div>
 
                         <!-- Cart Panel -->
-                        <div class="cart-panel">
+                        <!-- <div class="cart-panel">
                             <div class="cart-header">
                                 <span class="cart-title">🛒 Your Order</span>
                             </div>
@@ -550,7 +294,7 @@
                                     <p style="font-size: 14px; margin-top: 8px;">Add items from the menu to get started</p>
                                 </div>
                             </div>
-                            <div class="cart-summary" id="cart-summary" style="display: none;">
+                            <div class="cart-summary" id="cart-summary" >
                                 <div class="summary-row">
                                     <span>Subtotal:</span>
                                     <span id="subtotal">₹0</span>
@@ -567,28 +311,103 @@
                                     Place Order
                                 </button>
                             </div>
-                        </div>
+                        </div> -->
+
+                        <div class="cart-panel">
+        <div class="cart-header">
+            <span class="cart-title">🛒 Your Order</span>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- Cart Item 1 -->
+            <div class="cart-item">
+                <div class="item-image">🍛</div>
+                <div class="item-details">
+                    <div class="item-name">Idli</div>
+                    <div class="item-price">₹10 each</div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="decreaseQuantity(this)">−</button>
+                        <span class="quantity">2</span>
+                        <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+                    </div>
+                </div>
+                <div class="item-total">₹20</div>
+                <button class="remove-btn" onclick="removeItem(this)">×</button>
+            </div>
+
+            <!-- Cart Item 2 -->
+            <div class="cart-item">
+                <div class="item-image">🍚</div>
+                <div class="item-details">
+                    <div class="item-name">Dosa</div>
+                    <div class="item-price">₹10 each</div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="decreaseQuantity(this)">−</button>
+                        <span class="quantity">1</span>
+                        <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+                    </div>
+                </div>
+                <div class="item-total">₹10</div>
+                <button class="remove-btn" onclick="removeItem(this)">×</button>
+            </div>
+
+            <!-- Cart Item 3 -->
+            <div class="cart-item">
+                <div class="item-image">🍛</div>
+                <div class="item-details">
+                    <div class="item-name">Biriyani</div>
+                    <div class="item-price">₹150 each</div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="decreaseQuantity(this)">−</button>
+                        <span class="quantity">1</span>
+                        <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+                    </div>
+                </div>
+                <div class="item-total">₹150</div>
+                <button class="remove-btn" onclick="removeItem(this)">×</button>
+            </div>
+
+            <!-- Cart Item 4 -->
+            <div class="cart-item">
+                <div class="item-image">🍛</div>
+                <div class="item-details">
+                    <div class="item-name">Appam</div>
+                    <div class="item-price">₹10 each</div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="decreaseQuantity(this)">−</button>
+                        <span class="quantity">3</span>
+                        <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+                    </div>
+                </div>
+                <div class="item-total">₹30</div>
+                <button class="remove-btn" onclick="removeItem(this)">×</button>
+            </div>
+        </div>
+
+        <div class="cart-summary" id="cart-summary">
+            <div class="summary-row">
+                <span>Subtotal:</span>
+                <span id="subtotal">₹210</span>
+            </div>
+            <div class="summary-row">
+                <span>Tax (5%):</span>
+                <span id="tax">₹10.50</span>
+            </div>
+            <div class="summary-row summary-total">
+                <span>Total:</span>
+                <span id="total">₹220.50</span>
+            </div>
+            <button class="checkout-btn" id="checkout-btn" onclick="checkout()">
+                Place Order
+            </button>
+        </div>
+    </div>
+
+
                     </div>
                 </div>
 
-                <!-- Orders Page -->
-                <div id="orders-page" class="page" style="display: none;">
-                    <div class="page-title">
-                        <span>📋</span>
-                        <span>My Orders</span>
-                    </div>
-                    
-                    <div class="orders-grid">
-                        <div class="order-card">
-                            <div class="order-header">
-                                <div class="order-id">#ORD-001234</div>
-                                <div class="order-status status-ready">Ready</div>
-                            </div>
-                            <div class="order-items">
-                                <div class="order-item">
-                                    <span>Chicken Biryani × 1</span>
-                                    <span>₹85</span>
-                                </div>
+          
+              
                                 
 
                                     </body>

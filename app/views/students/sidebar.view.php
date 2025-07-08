@@ -13,14 +13,9 @@
                             <span>My Orders</span>
                         </a>
                     </li>
+                 
                     <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="showPage('wallet')">
-                            <span class="nav-icon">💳</span>
-                            <span>Wallet</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="showPage('history')">
+                        <a href="<?=ROOT?>students/history" class="nav-link" onclick="showPage('history')">
                             <span class="nav-icon">📊</span>
                             <span>Order History</span>
                         </a>
