@@ -5,6 +5,7 @@ class Students extends Controller
     use Database;
     public function index()
     {
+        $cart = new Cart;
 
         if (empty($_SESSION['STUDENT'])) {
             redirect('students/login');
@@ -29,6 +30,8 @@ class Students extends Controller
             $grouped[$category][] = $item;
         }
 
+
+
         // show($grouped);
         // foreach ($grouped as $key => $value) {
         //     echo "<h1>".$key."</h1> <br>";
@@ -37,13 +40,25 @@ class Students extends Controller
 
         //     }
         // }
+        $student_id = $_SESSION['STUDENT']->id;
+
+        $carts = $cart->join(
+            'cart',
+            ['items' => 'cart.item_id = items.id'],
+            ['cart.student_id' => $student_id],
+            'cart.*, items.name,items.price',
+            'asc',
+            'date'
+
+
+        );
+
+        show($carts);
+        $data['carts'] = $carts;
 
         $data['grouped'] = $grouped;
 
         $this->view('students/index', $data);
-
-
-
     }
 
 
@@ -73,7 +88,6 @@ class Students extends Controller
                 $arr = array_merge($_POST, ['college_id' => $result->id]);
                 $student->insert($arr);
                 redirect('students/login');
-
             } else {
                 $data['errors'] = $student->errors;
                 show($student->errors);
@@ -83,8 +97,6 @@ class Students extends Controller
 
 
             $this->view('students/signup', $data);
-
-
         }
     }
 
@@ -126,6 +138,29 @@ class Students extends Controller
         redirect('home');
     }
 
+    public function addToCart()
+    {
+        $cart = new Cart;
+        $data = json_decode(file_get_contents("php://input"), true);
+
+
+        if (isset($data['item_id'])) {
+            $item_id = (int)$data['item_id'];
+            $student_id = $_SESSION['STUDENT']->id;
+            $result = $cart->where(['item_id' => $item_id, 'student_id' => $student_id]);
+            if (empty($result)) {
+
+                $cart->insert(['item_id' => $item_id, 'student_id' => $student_id]);
+            } else {
+                echo json_encode(['success' => false, "message" => "Missing Data"]);
+            }
+
+            echo json_encode(['success' => true]);
+        } else {
+            echo json_encode(["success" => false, "message" => "Missing Data"]);
+        }
+    }
+
 
     public function my_orders()
     {
@@ -136,15 +171,4 @@ class Students extends Controller
     {
         $this->view('students/order_history');
     }
-
-
-
-
-
-
-
-
-
-
-
 }

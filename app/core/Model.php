@@ -99,7 +99,6 @@ trait Model
         $query = "insert into $this->table (" . implode(",", $keys) . ") values (:" . implode(",:", $keys) . ")";
         //shxow($query);
         return $this->query($query, $data, true);
-
     }
 
     public function update($id, $data, $id_column = 'id')
@@ -143,8 +142,8 @@ trait Model
 
         $query = "SELECT COLUMN_TYPE 
                   FROM INFORMATION_SCHEMA.COLUMNS
-                  WHERE TABLE_NAME = '".$table_name."'
-                  AND COLUMN_NAME = '".$column_name."'";
+                  WHERE TABLE_NAME = '" . $table_name . "'
+                  AND COLUMN_NAME = '" . $column_name . "'";
         $result = $this->query($query);
         return $result;
     }
@@ -167,5 +166,50 @@ trait Model
 
         $data = array_merge($data, $data_not);
         return $this->query($query, $data);
+    }
+
+
+    public function join($mainTable, $joins = [], $where = [], $selectColumns = '*', $order_type = '', $order_by = '')
+    {
+        $query = "SELECT {$selectColumns} FROM {$mainTable} ";
+
+        // Build JOINs
+        foreach ($joins as $table => $onCondition) {
+            $query .= "JOIN {$table} ON {$onCondition} ";
+        }
+
+        // Build WHERE clause
+        if (!empty($where)) {
+            $query .= "WHERE ";
+            foreach ($where as $key => $value) {
+                $placeholder = str_replace('.', '_', $key);  // cart.student_id → cart_student_id
+                $query .= "$key = :$placeholder AND ";
+                $where[$placeholder] = $value;               // new key-value pair
+                unset($where[$key]);                         // remove old key
+            }
+            $query = rtrim($query, ' AND ');
+        }
+
+        if (!empty($order_by)) {
+            $this->order_column = $order_by;
+        }
+
+        if (!empty($order_type)) {
+            $this->order_type = $order_type;
+        }
+
+        // Optional ordering
+        $query .= " ORDER BY {$this->order_column} {$this->order_type} LIMIT {$this->limit} OFFSET {$this->offset}";
+        show($query);
+        return $this->query($query, $where);
+
+        // example
+
+        // $results = $cart->join(
+        //     ['items', 'students'],
+        //     ['cart.item_id = items.id', 'cart.student_id = students.id'],
+        //     ['cart.student_id' => 11], // where condition
+        //     'cart.*, items.item_name, students.name'
+        // );
     }
 }
