@@ -50,6 +50,7 @@
                                     <div class="menu-items-grid">
                                         <?php foreach ($values as $value): ?>
 
+
                                             <div class="menu-item" data-ite="biryani" data-price="85" data-name="Chicken Biryani">
                                                 <div class="item-header">
                                                     <div class="item-name"><?= ucwords($value->item_name) ?></div>
@@ -58,10 +59,15 @@
                                                 <div class="item-description">Fragrant basmati rice with tender chicken, aromatic spices, and boiled egg. Served with raita and pickle.</div>
                                                 <div class="item-footer">
                                                     <div class="availability available">Available</div>
-
-                                                    <button data-price="<?= $value->price ?>" data-name="<?= ucwords($value->item_name) ?>" data-item-id="<?= $value->item_id ?>" class="addCart-btn" id="addCart-btn">
-                                                        add to Cart
-                                                    </button>
+                                                    <?php if (!$value->in_cart): ?>
+                                                        <button data-price="<?= $value->price ?>" data-name="<?= ucwords($value->item_name) ?>" data-item-id="<?= $value->item_id ?>" class="addCart-btn">
+                                                            add to Cart
+                                                        </button>
+                                                    <?php else: ?>
+                                                        <button data-price="<?= $value->price ?>" data-name="<?= ucwords($value->item_name) ?>" data-item-id="<?= $value->item_id ?>" class="addCart-btn-success">
+                                                            Added To Cart
+                                                        </button>
+                                                    <?php endif; ?>
                                                 </div>
                                             </div>
                                         <?php endforeach; ?>
@@ -79,53 +85,56 @@
                         </div>
 
 
+                        <form action="<?= ROOT ?>students/order">
 
-                        <div class="cart-panel">
-                            <div class="cart-header">
-                                <span class="cart-title">🛒 Your Order</span>
-                            </div>
-                            <div class="cart-items cart-item-template" id="cart-items">
-                                <?php foreach ($carts as $cart): ?>
-                                    <div class="cart-item">
 
-                                        <div class="item-details">
-                                            <div class="item-name"><?= ucfirst($cart->name) ?></div>
-                                            <div class="item-price">₹<?= $cart->price ?> each</div>
-                                            <div class="quantity-controls">
-                                                <button class="quantity-btn" onclick="decreaseQuantity(this)">−</button>
-                                                <span class="quantity"><?= $cart->count ?></span>
-                                                <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+                            <div class="cart-panel">
+                                <div class="cart-header">
+                                    <span class="cart-title">🛒 Your Order</span>
+                                </div>
+                                <div class="cart-items cart-item-template" id="cart-items">
+                                    <?php foreach ($carts as $cart): ?>
+                                        <div class="cart-item">
+
+                                            <div class="item-details">
+                                                <div class="item-name"><?= ucfirst($cart->name) ?></div>
+                                                <div class="item-price">₹<?= $cart->price ?> each</div> <?php $total += ($cart->price * $cart->count) ?>
+                                                <div class="quantity-controls">
+                                                    <button class="quantity-btn" onclick="decreaseQuantity(this)">−</button>
+                                                    <span class="quantity"><?= $cart->count ?></span>
+                                                    <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+                                                </div>
                                             </div>
+                                            <div class="item-total">₹<?= $cart->price * $cart->count ?></div>
+                                            <button class="remove-btn" onclick="removeItem(this)">×</button>
                                         </div>
-                                        <div class="item-total">₹20</div>
-                                        <button class="remove-btn" onclick="removeItem(this)">×</button>
+                                        <input type="hidden" name="orders[<?= $cart->canteen_id ?>]['item_name'][]" value="<?= $cart->name ?>">
+
+                                    <?php endforeach; ?>
+
+
+
+
+                                    <div class="cart-summary" id="cart-summary">
+                                        <div class="summary-row">
+                                            <span>Subtotal:</span>
+                                            <span id="subtotal">₹210</span>
+                                        </div>
+                                        <div class="summary-row">
+                                            <span>Tax (5%):</span>
+                                            <span id="tax">₹10.50</span>
+                                        </div>
+                                        <div class="summary-row summary-total">
+                                            <span>Total:</span>
+                                            <span id="total">₹<?= $total ?></span>
+                                        </div>
+                                        <button class="checkout-btn" id="checkout-btn" onclick="checkout()">
+                                            Place Order
+                                        </button>
                                     </div>
-
-                                <?php endforeach; ?>
-
-
-
-
-                                <div class="cart-summary" id="cart-summary">
-                                    <div class="summary-row">
-                                        <span>Subtotal:</span>
-                                        <span id="subtotal">₹210</span>
-                                    </div>
-                                    <div class="summary-row">
-                                        <span>Tax (5%):</span>
-                                        <span id="tax">₹10.50</span>
-                                    </div>
-                                    <div class="summary-row summary-total">
-                                        <span>Total:</span>
-                                        <span id="total">₹220.50</span>
-                                    </div>
-                                    <button class="checkout-btn" id="checkout-btn" onclick="checkout()">
-                                        Place Order
-                                    </button>
                                 </div>
                             </div>
-                        </div>
-
+                        </form>
                     </div>
 
 
@@ -185,6 +194,13 @@
                         const newCartItem = tempDiv.firstChild;
 
                         cartItems.insertBefore(newCartItem, cartSummary);
+
+                        button.disabled = true;
+
+                        // Change appearance and text
+                        button.classList.remove('addCart-btn');
+                        button.classList.add('addCart-btn-success');
+                        button.textContent = 'Added To Cart';
 
                     } else {
                         console.log("failed to add to cart.");

@@ -123,7 +123,8 @@ body {
 
 /* Buttons */
 .checkout-btn,
-.addCart-btn {
+.addCart-btn,
+.addCart-btn-success {
   width: 100%;
   padding: 15px;
   background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
@@ -135,6 +136,17 @@ body {
   cursor: pointer;
   transition: all 0.3s;
   margin-top: 15px;
+}
+
+
+.addCart-btn-success{
+  background: linear-gradient(135deg, #30db77, #24c93f);
+  cursor:default;
+}
+
+.addCart-btn-success:hover{
+   background: linear-gradient(135deg, #8cf0b6, #abf1b7);
+ 
 }
 
 .checkout-btn:hover,
@@ -149,7 +161,8 @@ body {
   cursor: not-allowed;
 }
 
-.addCart-btn {
+.addCart-btn,
+.addCart-btn-success {
   width: auto;
   padding: 10px 16px;
 

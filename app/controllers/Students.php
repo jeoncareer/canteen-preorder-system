@@ -46,17 +46,35 @@ class Students extends Controller
             'cart',
             ['items' => 'cart.item_id = items.id'],
             ['cart.student_id' => $student_id],
-            'cart.*, items.name,items.price',
+            'cart.*, items.name,items.price,items.canteen_id',
             'asc',
             'date'
 
 
         );
 
-        show($carts);
+
         $data['carts'] = $carts;
 
         $data['grouped'] = $grouped;
+        $data['total'] = 0;
+
+        foreach ($grouped as $keys => $values) {
+            foreach ($values as $value) {
+                $item_id = $value->item_id;
+
+                $result = $cart->where(['item_id' => $item_id, 'student_id' => $student_id]);
+
+                if (empty($result)) {
+                    $value->in_cart = false;
+                } else {
+                    $value->in_cart = true;
+                }
+            }
+        }
+        show($grouped);
+
+
 
         $this->view('students/index', $data);
     }
@@ -170,5 +188,10 @@ class Students extends Controller
     public function history()
     {
         $this->view('students/order_history');
+    }
+
+    public function order()
+    {
+        show($_GET);
     }
 }
