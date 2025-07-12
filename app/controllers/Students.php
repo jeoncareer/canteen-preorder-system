@@ -72,7 +72,7 @@ class Students extends Controller
                 }
             }
         }
-        show($grouped);
+        //show($grouped);
 
 
 
@@ -190,8 +190,76 @@ class Students extends Controller
         $this->view('students/order_history');
     }
 
+
+    public function update_quantity()
+    {
+        header('Content-Type: application/json'); // ✅ Set content type FIRST
+        http_response_code(200); // Optional
+        $cart = new Cart;
+        $data = json_decode(file_get_contents("php://input"), true);
+
+
+        $sign = $data['sign'];
+        $item_id = $data['item_id'];
+        if (!isset($data['sign']) || !isset($data['item_id'])) {
+            echo json_encode(["success" => false, "message" => "Missing Data"]);
+            return;
+        }
+
+        $student_id = $_SESSION['STUDENT']->id;
+        $result = $cart->where(['item_id' => $item_id, 'student_id' => $student_id]);
+        $count = $result[0]->count;
+
+        if ($sign === '+') {
+            $count++;
+        } else {
+            $count--;
+        }
+
+        if ($count >= 0) {
+
+            $cart->update(
+                ['student_id' => $student_id, "item_id" => $item_id],
+                ['count' => $count]
+
+            );
+
+            echo json_encode(['success' => true, 'count' => $count]);
+        } else {
+            echo json_encode(['success' => false, 'Message' => "count is less than 0"]);
+        }
+    }
     public function order()
     {
-        show($_GET);
+        $cart = new Cart;
+        $item = new Items;
+        $orders = new orders;
+        $order_items = new Order_items;
+
+        $result = $cart->where(['student_id' => STUDENT_ID]);
+        //show($result);
+        $grouped = [];
+        foreach ($result as $res) {
+            $item_id = $res->item_id;
+            $item_details = $item->where(['id' => $item_id]);
+            $item_detail = $item_details[0];
+            $grouped[$item_detail->canteen_id][] = ['item_id' => $item_id, 'count' => $res->count];
+        }
+
+        foreach ($grouped as $keys => $values) {
+            $order_id = $orders->insert(['canteen_id' => $keys, 'student_id' => STUDENT_ID]);
+            foreach ($values as $value) {
+                // echo "item id:" . $value['item_id'] . "<br>";
+                // echo "count:" . $value['count'] . "<br>";
+
+                $id = $order_items->insert(['order_id' => $order_id, 'item_id' => $value['item_id'], 'quantity' => $value['count']]);
+                if (!empty($id)) {
+                    $sql = 'DELETE FROM cart WHERE student_id = ' . STUDENT_ID;
+                    $cart->query($sql);
+                    redirect('students');
+                }
+            }
+        }
+        show($grouped);
     }
 }

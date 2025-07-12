@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 04, 2025 at 12:00 PM
+-- Generation Time: Jul 12, 2025 at 02:13 PM
 -- Server version: 8.0.42-0ubuntu0.24.04.1
 -- PHP Version: 8.3.6
 
@@ -40,8 +40,8 @@ CREATE TABLE `canteen` (
 --
 
 INSERT INTO `canteen` (`id`, `college_id`, `canteen_name`, `email`, `password`) VALUES
-(9, 1, 'arts canteen', 'manglam@gmail.com', '$2y$10$5zftmEyCE2ce.KKiV7/0cO5SfjgyZ4rd6WIRq3mi6pncXLM0NIa7W'),
-(10, 1, 'manglam2', 'manglam1@gmail.com', '$2y$10$hAxs4EDolREc/KR4pmcieOQ7RTbZxiVZm9wLgB7lrHY9I9U9oprMW');
+(14, 1, 'canteen1', 'manglam@gmail.com', '$2y$10$j2ZtstvcDPF41fUSWoLFmuVbbTyll35qDLdXQFDZpXSmrbGkiIMJO'),
+(15, 1, 'manglam2', 'manglam1@gmail.com', '$2y$10$U5cdjUxdhRgQ.6vAbmIrDOx8MT9QaCXRXJkzhDIfKkw6Jlv4OTstq');
 
 -- --------------------------------------------------------
 
@@ -62,8 +62,8 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`id`, `item_id`, `student_id`, `count`, `date`) VALUES
-(21, 75, 7, 3, '2025-06-30 20:36:13'),
-(22, 73, 7, 2, '2025-06-30 20:36:56');
+(71, 78, 11, 1, '2025-07-12 19:41:56'),
+(72, 79, 11, 1, '2025-07-12 19:41:57');
 
 -- --------------------------------------------------------
 
@@ -82,9 +82,18 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `canteen_id`, `name`) VALUES
-(3, 9, 'biriyani'),
-(4, 9, 'meals'),
-(5, 10, 'biriayni2');
+(8, 14, 'bakery'),
+(6, 14, 'beverages'),
+(11, 14, 'breakfast'),
+(9, 14, 'meals'),
+(10, 14, 'snacks'),
+(7, 14, 'sweets'),
+(14, 15, 'bakery'),
+(12, 15, 'beverages'),
+(17, 15, 'breakfast'),
+(15, 15, 'meals'),
+(16, 15, 'snacks'),
+(13, 15, 'sweets');
 
 -- --------------------------------------------------------
 
@@ -124,9 +133,12 @@ CREATE TABLE `default_categories` (
 --
 
 INSERT INTO `default_categories` (`id`, `name`) VALUES
-(9, 'Meals'),
-(10, 'Breakfast'),
-(11, 'launch');
+(15, 'breakfast'),
+(16, 'snacks'),
+(17, 'meals'),
+(18, 'bakery'),
+(19, 'sweets'),
+(20, 'beverages');
 
 -- --------------------------------------------------------
 
@@ -150,10 +162,16 @@ CREATE TABLE `items` (
 --
 
 INSERT INTO `items` (`id`, `name`, `price`, `canteen_id`, `image_location`, `status`, `description`, `category_id`) VALUES
-(73, 'chola_bhature', 3, 9, '68556b5eb478d2.40984173chola_bhature.jpg', 'available', 'afasdf', NULL),
-(75, 'Biriyani', 150, 9, '68564a9fcce048.04549054Biriyani.jpg', 'available', 'indian dish', 4),
-(76, 'Screenshot from 2025-06-11 12-15-06', 14, 10, '686234cf878fb4.57750658Screenshot from 2025-06-11 12-15-06.png', 'available', 'adfa', 5),
-(77, 'test1', 7, 10, '68635ff2974932.81621110Screenshot from 2025-06-26 13-42-55.png', 'available', 'adfa', 5);
+(78, 'idli', 10, 14, '68691c83edbe19.70636923cola.jpg', 'available', 'idli', 11),
+(79, 'dosa', 10, 14, '68691c9b234155.47746090dosa.jpg', 'available', 'dosa', 11),
+(80, 'appam', 10, 14, '68691ca9ebb8c0.58010536dosa.jpg', 'available', 'appam', 11),
+(81, 'biriyani', 150, 14, '68691cd0c8afa6.93457876Biriyani.jpg', 'available', 'biriyani', 11),
+(82, 'meals', 100, 14, '68691ce4c74ca1.27503342chola_bhature.jpg', 'available', 'meals', 9),
+(83, 'chapathi', 10, 14, '68691d05615f40.64411435Biriyani.jpg', 'available', 'chapathi', 9),
+(84, 'samosa', 10, 14, '68691d17ca1966.76961021idili.jpg', 'available', 'samosa', 10),
+(85, 'rolls', 20, 14, '68691d334597a1.06063803kabir-cheema-8T9AVksyt7s-unsplash.jpg', 'available', 'rolls', 10),
+(86, 'puffs', 15, 14, '68691d48398ec1.62123386Biriyani.jpg', 'available', 'puffs', 10),
+(87, 'cream bun', 10, 15, '6870b1a239a412.73338665cola.jpg', 'available', 'cream bun', 16);
 
 -- --------------------------------------------------------
 
@@ -200,10 +218,7 @@ CREATE TABLE `students` (
 --
 
 INSERT INTO `students` (`id`, `college_id`, `email`, `password`) VALUES
-(7, 1, 'jeon@gmail.com', '$2y$10$dtdmKLMe9tTvTbAaxYUxb.QL8Wk1YRBTu0R6p1RFwfFtSmFuFa.XO'),
-(8, 2, 'jeon2@gmail.com', '$2y$10$J7mtHkrbt664gP1Ch2Wvk.GfsbqrtQoLGRk9qQ9CXYCYlDsY6kUFa'),
-(9, 1, 'jeon3@gmail.com', '$2y$10$w/n2YK4bWwNWlsRRXoKOpuaI6.jrAZgdbKCzVGIuQAKdMcR18obSS'),
-(10, 1, 'jeon4@gmail.com', '$2y$10$DSev.cLkJU4Op9IBfhlTUOO5RgKSfY9hiNNdNkeu2df1VdQFGXORC');
+(11, 1, 'jeon@gmail.com', '$2y$10$O5g54F5iQDMFK4aPUEXS5uaKDFoSXz.WETOpC2vFTMFBsHV4VTyXe');
 
 --
 -- Indexes for dumped tables
@@ -284,19 +299,19 @@ ALTER TABLE `students`
 -- AUTO_INCREMENT for table `canteen`
 --
 ALTER TABLE `canteen`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `college`
@@ -308,31 +323,31 @@ ALTER TABLE `college`
 -- AUTO_INCREMENT for table `default_categories`
 --
 ALTER TABLE `default_categories`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables

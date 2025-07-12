@@ -14,12 +14,13 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
     define('ROOT', 'https://www.yourwebsite.com');
 }
 
+if (isset($_SESSION['STUDENT'])) {
+    define('STUDENT_ID', $_SESSION['STUDENT']->id);
+}
+
 
 define('APP_NAME', "My Website");
 //true mean show erros
 //false means do not show any errors
 define('DEBUG', true);
-function m()
-{
-
-}
+function m() {}

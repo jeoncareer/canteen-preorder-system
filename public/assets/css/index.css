@@ -215,6 +215,11 @@ body {
   text-align: center;
 }
 
+.item-total{
+  display:flex;
+  flex-direction: row;
+}
+
 /* Remove Button */
 .remove-btn {
   background: #ff4757;

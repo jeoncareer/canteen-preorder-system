@@ -101,9 +101,9 @@ trait Model
         return $this->query($query, $data, true);
     }
 
-    public function update($id, $data, $id_column = 'id')
+    public function update($whereConditions = [], $data = [])
     {
-        //remove unwanted data
+        // Remove unwanted data
         if (!empty($this->allowedColumns)) {
             foreach ($data as $key => $value) {
                 if (!in_array($key, $this->allowedColumns)) {
@@ -112,22 +112,32 @@ trait Model
             }
         }
 
-        $query = "update $this->table set ";
-        $keys = array_keys($data);
+        // Build SET part
+        $query = "UPDATE {$this->table} SET ";
+        $setParts = [];
+        foreach ($data as $key => $value) {
+            $setParts[] = "$key = :$key";
+        }
+        $query .= implode(", ", $setParts);
 
-        foreach ($keys as $key) {
-            $query .= $key . "= :" . $key . ",";
+        // Build WHERE clause
+        if (!empty($whereConditions)) {
+            $whereParts = [];
+            foreach ($whereConditions as $key => $value) {
+                $whereParts[] = "$key = :where_$key";
+                $data["where_$key"] = $value; // Use separate param name to avoid conflict
+            }
+            $query .= " WHERE " . implode(" AND ", $whereParts);
         }
 
-        $data[$id_column] = $id;
-        $query = trim($query, ",");
-        $query .= " where " . $id_column . "= :" . $id_column . ";";
-        show($query);
+        //show($query); // For debugging
         $this->query($query, $data);
 
-
-        return false;
+        return true;
     }
+
+
+
 
     public function delete($id, $id_column = 'id')
     {
@@ -200,7 +210,7 @@ trait Model
 
         // Optional ordering
         $query .= " ORDER BY {$this->order_column} {$this->order_type} LIMIT {$this->limit} OFFSET {$this->offset}";
-        show($query);
+        //show($query);
         return $this->query($query, $where);
 
         // example

@@ -8,8 +8,8 @@ function show($stuff)
     echo "</pre>";
 }
 
-function redirect($path){
-    
-    header("Location:".ROOT.$path);
-}
+function redirect($path)
+{
 
+    header("Location:" . ROOT . $path);
+}
