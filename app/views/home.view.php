@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -21,7 +22,7 @@
       background: white;
       padding: 3rem;
       border-radius: 16px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
       margin-bottom: 50px;
     }
 
@@ -34,7 +35,7 @@
       display: inline-block;
       margin: 1rem;
       padding: 1rem 2rem;
-      background: #4f46e5;
+      background: #ff6b6b;
       color: white;
       text-decoration: none;
       font-size: 1.2rem;
@@ -43,7 +44,7 @@
     }
 
     .role-button:hover {
-      background: #3730a3;
+      background: rgb(248, 149, 149);
     }
 
     @media (max-width: 600px) {
@@ -55,6 +56,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="container">
     <h1>Welcome! Who are you?</h1>
@@ -62,4 +64,5 @@
     <a href="/canteen-preorder-system/public/CanteenStaff/signup" class="role-button">I am a Canteen Staff</a>
   </div>
 </body>
+
 </html>

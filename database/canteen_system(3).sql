@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 12, 2025 at 02:13 PM
+-- Generation Time: Jul 15, 2025 at 06:07 PM
 -- Server version: 8.0.42-0ubuntu0.24.04.1
 -- PHP Version: 8.3.6
 
@@ -56,14 +56,6 @@ CREATE TABLE `cart` (
   `count` int NOT NULL DEFAULT '1',
   `date` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `cart`
---
-
-INSERT INTO `cart` (`id`, `item_id`, `student_id`, `count`, `date`) VALUES
-(71, 78, 11, 1, '2025-07-12 19:41:56'),
-(72, 79, 11, 1, '2025-07-12 19:41:57');
 
 -- --------------------------------------------------------
 
@@ -184,8 +176,17 @@ CREATE TABLE `orders` (
   `canteen_id` int NOT NULL,
   `student_id` int NOT NULL,
   `time` datetime DEFAULT CURRENT_TIMESTAMP,
-  `status` enum('processing','declined','accepted','ready') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'processing'
+  `status` enum('processing','declined','accepted','ready') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'processing',
+  `total` decimal(10,2) NOT NULL DEFAULT '0.00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `canteen_id`, `student_id`, `time`, `status`, `total`) VALUES
+(47, 15, 11, '2025-07-15 23:16:15', 'processing', 10.00),
+(48, 14, 11, '2025-07-15 23:16:15', 'processing', 170.00);
 
 -- --------------------------------------------------------
 
@@ -199,6 +200,16 @@ CREATE TABLE `order_items` (
   `item_id` int NOT NULL,
   `quantity` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `order_items`
+--
+
+INSERT INTO `order_items` (`id`, `order_id`, `item_id`, `quantity`) VALUES
+(99, 47, 87, 1),
+(100, 48, 79, 1),
+(101, 48, 81, 1),
+(102, 48, 78, 1);
 
 -- --------------------------------------------------------
 
@@ -305,7 +316,7 @@ ALTER TABLE `canteen`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=239;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -335,13 +346,13 @@ ALTER TABLE `items`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
 
 --
 -- AUTO_INCREMENT for table `students`

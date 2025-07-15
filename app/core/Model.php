@@ -179,9 +179,9 @@ trait Model
     }
 
 
-    public function join($mainTable, $joins = [], $where = [], $selectColumns = '*', $order_type = '', $order_by = '')
+    public function join($joins = [], $where = [], $selectColumns = '*', $order_type = '', $order_by = '')
     {
-        $query = "SELECT {$selectColumns} FROM {$mainTable} ";
+        $query = "SELECT {$selectColumns} FROM {$this->table} ";
 
         // Build JOINs
         foreach ($joins as $table => $onCondition) {

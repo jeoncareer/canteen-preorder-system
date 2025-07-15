@@ -10,7 +10,7 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
     define('DBNAME', 'canteen_sysem');
     define('DBHOST', 'localhost');
     define('DBUSER', 'root');
-    define('DBPASS', '');
+    define('DBPASS', 'yourpassword');
     define('ROOT', 'https://www.yourwebsite.com');
 }
 

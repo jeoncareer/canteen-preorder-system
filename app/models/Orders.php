@@ -14,6 +14,7 @@ class Orders
         'canteen_id',
         'student_id',
         'time',
-        'status'
+        'status',
+        'total'
     ];
 }

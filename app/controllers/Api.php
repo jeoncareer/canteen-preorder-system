@@ -1,0 +1,121 @@
+<?php
+class Api extends Controller
+{
+    use Database;
+
+
+
+    public function update_quantity()
+    {
+        header('Content-Type: application/json'); // ✅ Set content type FIRST
+        http_response_code(200); // Optional
+        $cart = new Cart;
+        $data = json_decode(file_get_contents("php://input"), true);
+
+
+        $sign = $data['sign'];
+        $item_id = $data['item_id'];
+        if (!isset($data['sign']) || !isset($data['item_id'])) {
+            echo json_encode(["success" => false, "message" => "Missing Data"]);
+            return;
+        }
+
+        $student_id = $_SESSION['STUDENT']->id;
+        $result = $cart->where(['item_id' => $item_id, 'student_id' => $student_id]);
+        $count = $result[0]->count;
+
+        if ($sign === '+') {
+            $count++;
+        } else {
+            $count--;
+        }
+
+        if ($count >= 0) {
+
+            $cart->update(
+                ['student_id' => $student_id, "item_id" => $item_id],
+                ['count' => $count]
+
+            );
+
+            echo json_encode(['success' => true, 'count' => $count]);
+        } else {
+            echo json_encode(['success' => false, 'Message' => "count is less than 0"]);
+        }
+    }
+
+    public function removeFromCart()
+    {
+        $cart = new Cart;
+        $data = json_decode(file_get_contents("php://input"), true);
+        $cart_id = $data['cart_id'];
+        $sql = "DELETE from cart where id = " . $cart_id;
+        $cart->query($sql);
+        echo json_encode(['success' => true, "message" => "item as been reemoved from cart"]);
+    }
+
+    public function addToCart()
+    {
+        $cart = new Cart;
+        $data = json_decode(file_get_contents("php://input"), true);
+
+
+        if (isset($data['item_id'])) {
+            $item_id = (int)$data['item_id'];
+            $student_id = $_SESSION['STUDENT']->id;
+            $result = $cart->where(['item_id' => $item_id, 'student_id' => $student_id]);
+            if (empty($result)) {
+
+                $cartId = $cart->insert(['item_id' => $item_id, 'student_id' => $student_id]);
+            } else {
+                echo json_encode(['success' => false, "message" => "already exists"]);
+            }
+
+            echo json_encode(['success' => true, 'cartId' => $cartId]);
+        } else {
+            echo json_encode(["success" => false, "message" => "Missing Data"]);
+        }
+    }
+
+    public function updateAddButton()
+    {
+        $carts = new Cart;
+        $data = json_decode(file_get_contents("php://input"), true);
+
+        $item_id = $data['item_id'];
+        if (isset($item_id) && !empty($item_id)) {
+            $result = $carts->where(['item_Id' => $item_id, 'student_id' => STUDENT_ID]);
+            if (!empty($result)) {
+                echo json_encode(['success' => true]);
+            } else {
+                echo json_encode(['success' => false, "Message" => "item not in cart"]);
+            }
+        } else {
+            echo json_encode(['success' => false, 'Message' => "missing value"]);
+        }
+    }
+
+    public function TotalItemsPrice()
+    {
+        $cart = new Cart;
+
+        $carts = $cart->join(
+            ['items' => 'cart.item_id = items.id'],
+            ['cart.student_id' => STUDENT_ID],
+            'cart.*,items.price'
+        );
+
+        if (!empty($carts)) {
+            $total = 0;
+            foreach ($carts as $value) {
+                $count = (int)$value->count;
+                $price = (int)$value->price;
+                $total += $count * $price;
+            }
+
+            echo json_encode(['success' => true, 'total' => $total]);
+        } else {
+            echo json_encode(['success' => false, 'Message' => 'nothing in cart']);
+        }
+    }
+}

@@ -19,7 +19,10 @@
   <?php require 'header.view.php'?>
 
     <div class="container">
-       <?php require 'sidebar.view.php'?>
+         <?php
+            $page = 'order_history';
+            require 'sidebar.view.php';
+             ?>
 
         <div class="main-content">
             <div class="page-header">

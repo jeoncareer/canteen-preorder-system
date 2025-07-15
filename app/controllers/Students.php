@@ -43,7 +43,7 @@ class Students extends Controller
         $student_id = $_SESSION['STUDENT']->id;
 
         $carts = $cart->join(
-            'cart',
+
             ['items' => 'cart.item_id = items.id'],
             ['cart.student_id' => $student_id],
             'cart.*, items.name,items.price,items.canteen_id',
@@ -156,33 +156,43 @@ class Students extends Controller
         redirect('home');
     }
 
-    public function addToCart()
-    {
-        $cart = new Cart;
-        $data = json_decode(file_get_contents("php://input"), true);
 
 
-        if (isset($data['item_id'])) {
-            $item_id = (int)$data['item_id'];
-            $student_id = $_SESSION['STUDENT']->id;
-            $result = $cart->where(['item_id' => $item_id, 'student_id' => $student_id]);
-            if (empty($result)) {
 
-                $cart->insert(['item_id' => $item_id, 'student_id' => $student_id]);
-            } else {
-                echo json_encode(['success' => false, "message" => "Missing Data"]);
-            }
-
-            echo json_encode(['success' => true]);
-        } else {
-            echo json_encode(["success" => false, "message" => "Missing Data"]);
-        }
-    }
 
 
     public function my_orders()
     {
-        $this->view('students/my_orders');
+        $orders = new Orders;
+
+        $results = $orders->join(
+            [
+                'order_items' => 'orders.id = order_items.order_id',
+                'items' => 'order_items.item_id = items.id'
+            ],
+            ['orders.student_id' => STUDENT_ID],
+            'orders.*, items.name,items.price, items.id as item_id, order_items.quantity'
+        );
+
+        $order = $orders->where(['student_id' => STUDENT_ID]);
+        foreach ($order as $or) {
+            $data['order'][$or->id] = ['total' => $or->total, 'status' => $or->status];
+        }
+
+
+        $list_of_orders = [];
+
+
+        foreach ($results as $result) {
+            $list_of_orders[$result->id][] = $result;
+        }
+
+
+
+        $data['orders'] = $list_of_orders;
+
+
+        $this->view('students/my_orders', $data);
     }
 
     public function history()
@@ -191,44 +201,7 @@ class Students extends Controller
     }
 
 
-    public function update_quantity()
-    {
-        header('Content-Type: application/json'); // ✅ Set content type FIRST
-        http_response_code(200); // Optional
-        $cart = new Cart;
-        $data = json_decode(file_get_contents("php://input"), true);
 
-
-        $sign = $data['sign'];
-        $item_id = $data['item_id'];
-        if (!isset($data['sign']) || !isset($data['item_id'])) {
-            echo json_encode(["success" => false, "message" => "Missing Data"]);
-            return;
-        }
-
-        $student_id = $_SESSION['STUDENT']->id;
-        $result = $cart->where(['item_id' => $item_id, 'student_id' => $student_id]);
-        $count = $result[0]->count;
-
-        if ($sign === '+') {
-            $count++;
-        } else {
-            $count--;
-        }
-
-        if ($count >= 0) {
-
-            $cart->update(
-                ['student_id' => $student_id, "item_id" => $item_id],
-                ['count' => $count]
-
-            );
-
-            echo json_encode(['success' => true, 'count' => $count]);
-        } else {
-            echo json_encode(['success' => false, 'Message' => "count is less than 0"]);
-        }
-    }
     public function order()
     {
         $cart = new Cart;
@@ -236,18 +209,29 @@ class Students extends Controller
         $orders = new orders;
         $order_items = new Order_items;
 
-        $result = $cart->where(['student_id' => STUDENT_ID]);
+        // $result = $cart->where(['student_id' => STUDENT_ID]);
         //show($result);
+        $result = $cart->join(
+            ['items' => 'cart.item_id = items.id'],
+            ['cart.student_id' => STUDENT_ID],
+            'cart.*,items.price'
+        );
         $grouped = [];
+        $total = [];
+
         foreach ($result as $res) {
             $item_id = $res->item_id;
             $item_details = $item->where(['id' => $item_id]);
             $item_detail = $item_details[0];
-            $grouped[$item_detail->canteen_id][] = ['item_id' => $item_id, 'count' => $res->count];
+            $grouped[$item_detail->canteen_id][] = ['item_id' => $item_id, 'count' => $res->count, 'price' => $res->price];
+            if (!isset($total[$item_detail->canteen_id])) {
+                $total[$item_detail->canteen_id] = 0;
+            }
+            $total[$item_detail->canteen_id] += $res->count * $res->price;
         }
 
         foreach ($grouped as $keys => $values) {
-            $order_id = $orders->insert(['canteen_id' => $keys, 'student_id' => STUDENT_ID]);
+            $order_id = $orders->insert(['canteen_id' => $keys, 'student_id' => STUDENT_ID, 'total' => $total[$keys]]);
             foreach ($values as $value) {
                 // echo "item id:" . $value['item_id'] . "<br>";
                 // echo "count:" . $value['count'] . "<br>";
@@ -260,6 +244,5 @@ class Students extends Controller
                 }
             }
         }
-        show($grouped);
     }
 }
