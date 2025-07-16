@@ -1,38 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     
-    <title>login</title>
-    <link rel="stylesheet" href="<?=ROOT?>/assets/css/login.css">
-
-   
+    <title>Campus Canteen - Login</title>
+    <link rel="stylesheet" href="<?= ROOT ?>assets/css/auth.css">
 </head>
+
 <body>
-
-<h1>Campus Canteen</h1>
-
-<form action="<?=ROOT?>canteen/login" method="post">
-
-    <div class="container">
-        <div class="top">
-            <div class="text1">Welcome Back</div>
-            <div class="text2">Login To Your Account</div>
-            
+    <div class="logo">Campus Canteen</div>
+    <form action="<?= ROOT ?>canteen/login" method="post">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h1 class="auth-title">Welcome!</h1>
+                <p class="auth-subtitle">Login to your account</p>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-input" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-input" placeholder="Enter your password" required>
+            </div>
+            <button type="submit" class="submit-btn">Login</button>
+            <div class="divider">
+                <span>or</span>
+            </div>
+            <div class="auth-switch">
+                Don't have an account? <a href="<?= ROOT ?>canteen/signin">Register Here</a>
+            </div>
         </div>
-        
-        <div class="middle">
-            <input type="email" name="email" placeholder="Email">
-            <input type="text" name="password" placeholder="Password">
-            <button type="submit">Login</button>
-        </div>
-        
-        <div class="bottom">
-            <hr>
-            <div class="text3">Don't have an account? <a href="<?=ROOT?>canteen/signin">Sign Up Here</a> </span> </div>
-        </div>
-    </div>
-</form>
+    </form>
 </body>
+
 </html>

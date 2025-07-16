@@ -9,49 +9,112 @@
     body {
       margin: 0;
       padding: 0;
+      min-height: 100vh;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f0f4f8;
+      background: #f7fafd;
       display: flex;
-      justify-content: center;
       align-items: center;
-      height: 100vh;
-      text-align: center;
+      justify-content: center;
     }
 
     .container {
-      background: white;
-      padding: 3rem;
-      border-radius: 16px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-      margin-bottom: 50px;
+      background: #fff;
+      padding: 3rem 2.5rem 2.5rem 2.5rem;
+      border-radius: 22px;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.13), 0 1.5px 0 #ff6b6b;
+      text-align: center;
+      min-width: 320px;
+      max-width: 95vw;
+      border-top: 6px solid #ff6b6b;
+      transition: box-shadow 0.2s;
+    }
+
+    .container:hover {
+      box-shadow: 0 16px 64px rgba(0, 0, 0, 0.18), 0 1.5px 0 #ff6b6b;
+    }
+
+    .logo {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #ff6b6b;
+      margin-bottom: 1.5rem;
+      letter-spacing: 1px;
     }
 
     h1 {
       margin-bottom: 2rem;
-      color: #333;
+      color: #222;
+      font-size: 1.7rem;
+      font-weight: 600;
+    }
+
+    .role-buttons {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
     }
 
     .role-button {
-      display: inline-block;
-      margin: 1rem;
-      padding: 1rem 2rem;
-      background: #ff6b6b;
-      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #f7fafd;
+      color: #ff6b6b;
       text-decoration: none;
-      font-size: 1.2rem;
-      border-radius: 8px;
-      transition: background 0.3s ease;
+      font-size: 1.15rem;
+      font-weight: 500;
+      border-radius: 12px;
+      padding: 2rem 2.5rem;
+      box-shadow: 0 2px 12px rgba(255, 107, 107, 0.08);
+      transition: transform 0.15s, box-shadow 0.15s, background 0.15s, color 0.15s;
+      border: 2px solid #ff6b6b;
+      outline: none;
+      min-width: 180px;
+      cursor: pointer;
     }
 
-    .role-button:hover {
-      background: rgb(248, 149, 149);
+    .role-button:hover,
+    .role-button:focus {
+      transform: translateY(-4px) scale(1.04);
+      box-shadow: 0 8px 32px rgba(255, 107, 107, 0.16);
+      background: #ff6b6b;
+      color: #fff;
+    }
+
+    .role-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.7rem;
+      color: #ff6b6b;
+      transition: color 0.15s;
+    }
+
+    .role-button:hover .role-icon,
+    .role-button:focus .role-icon {
+      color: #fff;
+    }
+
+    .footer {
+      margin-top: 2rem;
+      color: #888;
+      font-size: 0.98rem;
     }
 
     @media (max-width: 600px) {
+      .container {
+        padding: 1.5rem 0.5rem;
+      }
+
+      .role-buttons {
+        flex-direction: column;
+        gap: 1.2rem;
+      }
+
       .role-button {
-        display: block;
-        margin: 1rem auto;
-        width: 80%;
+        width: 100%;
+        min-width: unset;
+        padding: 1.2rem 0.5rem;
       }
     }
   </style>
@@ -59,9 +122,21 @@
 
 <body>
   <div class="container">
+    <div class="logo">🍽️ Campus Canteen</div>
     <h1>Welcome! Who are you?</h1>
-    <a href="/canteen-preorder-system/public/Students/signup" class="role-button">I am a Student</a>
-    <a href="/canteen-preorder-system/public/CanteenStaff/signup" class="role-button">I am a Canteen Staff</a>
+    <div class="role-buttons">
+      <a href="/canteen-preorder-system/public/Students/signup" class="role-button">
+        <span class="role-icon">🎓</span>
+        I am a Student
+      </a>
+      <a href="/canteen-preorder-system/public/Canteen/signup" class="role-button">
+        <span class="role-icon">👨‍🍳</span>
+        I am a Canteen Staff
+      </a>
+    </div>
+    <div class="footer">
+      &copy; 2025 Canteen Preorder System
+    </div>
   </div>
 </body>
 

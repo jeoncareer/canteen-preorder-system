@@ -50,7 +50,7 @@ class Canteen extends Controller
                 $result = $dcategories->findAll();
                 show($result);
                 foreach ($result as $res) {
-                    $categories->insert(['canteen_id' => $canteen_id,'name' => $res->name]);
+                    $categories->insert(['canteen_id' => $canteen_id, 'name' => $res->name]);
                 }
                 //redirect('canteen/login');
             } else {
@@ -59,11 +59,9 @@ class Canteen extends Controller
 
                 $this->view('canteen/signup', $data);
             }
-
         } else {
             $this->view('canteen/signup', $data);
         }
-
     }
 
     public function login()
@@ -76,9 +74,9 @@ class Canteen extends Controller
                 $result = $canteen->first(["email" => $_POST["email"]]);
 
                 $_SESSION['CANTEEN'] = $result;
-                print_r($_SESSION['CANTEEN']);
 
-                $this->view('canteen/home');
+
+                redirect('canteen/home');
             } else {
                 print_r($canteen->errors);
             }
@@ -134,11 +132,11 @@ class Canteen extends Controller
                 $fileExt = explode('.', $fileName);
 
                 $fileActualExt = strtolower(end($fileExt));
-                $allowed = array('jpg','jpeg','png');
+                $allowed = array('jpg', 'jpeg', 'png');
                 if (in_array($fileActualExt, $allowed)) {
                     if ($fileError === 0) {
-                        $fileNameNew = uniqid('', true).$fileExt[0].'.'.$fileActualExt;
-                        $fileDestination = 'assets/images/'.$fileNameNew;
+                        $fileNameNew = uniqid('', true) . $fileExt[0] . '.' . $fileActualExt;
+                        $fileDestination = 'assets/images/' . $fileNameNew;
                         move_uploaded_file($fileTmpName, $fileDestination);
 
                         $name = $_POST['item_name'];
@@ -158,30 +156,19 @@ class Canteen extends Controller
                         ];
                         show($arr);
                         $item->insert($arr);
-
-
                     } else {
                         echo "There was an error uploading your file!";
                     }
                 } else {
                     echo "You cannot upload files of this type!";
                 }
-
-
-
-
-
             } else {
 
                 $data['errors'] = $item->errors;
-
             }
         }
 
         $this->view('canteen/add_item', $data);
-
-
-
     }
 
     public function category()
@@ -191,10 +178,9 @@ class Canteen extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = strtolower($_POST['category_name']);
 
-            $arr = ['name' => $name,'canteen_id' => $_SESSION['CANTEEN']->id];
+            $arr = ['name' => $name, 'canteen_id' => $_SESSION['CANTEEN']->id];
             $category->insert($arr);
             echo "inserted successfully";
-
         }
     }
 }
