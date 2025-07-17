@@ -22,9 +22,9 @@ class Student
             $this->errors['email'] = " Not a valid email";
         }
 
-         if (!empty($result = $this->first(['email' => $data['email']]))){
+        if (!empty($result = $this->first(['email' => $data['email']]))) {
             $this->errors["user_exists"] = "email already exists";
-         }
+        }
         if (empty($data['college_name'])) {
             $this->errors['college_name'] = "Please give College name";
         } elseif (empty($college->first(["college_name" => $data["college_name"]]))) {
@@ -44,7 +44,6 @@ class Student
             return true;
         }
         return false;
-
     }
 
     public function login_validate($data)
@@ -80,6 +79,5 @@ class Student
             return true;
         }
         return false;
-
     }
 }

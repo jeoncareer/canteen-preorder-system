@@ -8,87 +8,10 @@
   <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/header.css">
   <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/sidebar.css">
   <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/student-general.css">
+  <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/canteen-common.css">
 
   <style>
-    :root {
-      --primary-color: #2c3e50;
-      --secondary-color: #3498db;
-      --success-color: #27ae60;
-      --warning-color: #f39c12;
-      --danger-color: #e74c3c;
-      --light-bg: #f8fafc;
-      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      --border-radius: 12px;
-      --transition: all 0.3s ease;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      background: #f8fafc;
-      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      min-height: 100vh;
-    }
-
-    .main-content {
-      flex: 1;
-      padding: 2rem;
-      background: var(--light-bg);
-      min-height: calc(100vh - 80px);
-    }
-
-    .welcome-section {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: var(--border-radius);
-      padding: 2rem;
-      color: white;
-      margin-bottom: 2rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .welcome-section::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-      animation: float 6s ease-in-out infinite;
-    }
-
-    @keyframes float {
-
-      0%,
-      100% {
-        transform: translateY(0px) rotate(0deg);
-      }
-
-      50% {
-        transform: translateY(-20px) rotate(180deg);
-      }
-    }
-
-    .welcome-content {
-      position: relative;
-      z-index: 2;
-    }
-
-    .welcome-section h1 {
-      margin: 0 0 0.5rem 0;
-      font-size: 2.5rem;
-      font-weight: 700;
-    }
-
-    .welcome-section p {
-      margin: 0;
-      font-size: 1.1rem;
-      opacity: 0.9;
-    }
+    /* Dashboard-specific styles only */
 
     .dashboard-stats {
       display: grid;
@@ -207,45 +130,7 @@
       gap: 2rem;
     }
 
-    .orders-section {
-      background: white;
-      border-radius: var(--border-radius);
-      box-shadow: var(--card-shadow);
-      padding: 2rem;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
 
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1rem;
-      border-bottom: 2px solid #f1f5f9;
-    }
-
-    .section-title {
-      margin: 0;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--primary-color);
-    }
-
-    .view-all-btn {
-      background: var(--secondary-color);
-      color: white;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.9rem;
-      transition: var(--transition);
-    }
-
-    .view-all-btn:hover {
-      background: #2980b9;
-      transform: translateY(-2px);
-    }
 
     .orders-table {
       width: 100%;
@@ -287,34 +172,7 @@
       font-size: 0.9rem;
     }
 
-    .status-badge {
-      padding: 0.4rem 0.8rem;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
 
-    .status-badge.pending {
-      background: #fef3c7;
-      color: #92400e;
-    }
-
-    .status-badge.accepted {
-      background: #d1fae5;
-      color: #065f46;
-    }
-
-    .status-badge.completed {
-      background: #ddd6fe;
-      color: #5b21b6;
-    }
-
-    .status-badge.rejected {
-      background: #fee2e2;
-      color: #991b1b;
-    }
 
     .status-select {
       padding: 0.4rem 0.8rem;
@@ -594,62 +452,10 @@
                 </td>
                 <td><span class="order-time">10:15 AM</span></td>
               </tr>
-              <tr>
-                <td><span class="order-id">#1022</span></td>
-                <td><span class="student-name">Jane Smith</span></td>
-                <td><span class="order-items">Chicken Roll x1, Pepsi x1</span></td>
-                <td>
-                  <select data-id='1022' class="status-select accepted">
-                    <option value="pending">Pending</option>
-                    <option value="accepted" selected>Accepted</option>
-                    <option value="completed">Completed</option>
-                    <option value="rejected">Rejected</option>
-                  </select>
-                </td>
-                <td><span class="order-time">10:10 AM</span></td>
-              </tr>
-              <tr>
-                <td><span class="order-id">#1021</span></td>
-                <td><span class="student-name">Rahul Kumar</span></td>
-                <td><span class="order-items">Masala Dosa x2</span></td>
-                <td>
-                  <select data-id='1021' class="status-select completed">
-                    <option value="pending">Pending</option>
-                    <option value="accepted">Accepted</option>
-                    <option value="completed" selected>Completed</option>
-                    <option value="rejected">Rejected</option>
-                  </select>
-                </td>
-                <td><span class="order-time">09:55 AM</span></td>
-              </tr>
-              <tr>
-                <td><span class="order-id">#1020</span></td>
-                <td><span class="student-name">Priya Singh</span></td>
-                <td><span class="order-items">Idli x1, Sambar x1</span></td>
-                <td>
-                  <select data-id='1020' class="status-select rejected">
-                    <option value="pending">Pending</option>
-                    <option value="accepted">Accepted</option>
-                    <option value="completed">Completed</option>
-                    <option value="rejected" selected>Rejected</option>
-                  </select>
-                </td>
-                <td><span class="order-time">09:40 AM</span></td>
-              </tr>
-              <tr>
-                <td><span class="order-id">#1019</span></td>
-                <td><span class="student-name">Alex Johnson</span></td>
-                <td><span class="order-items">Burger x1, Fries x1</span></td>
-                <td>
-                  <select data-id='1019' class="status-select pending">
-                    <option value="pending" selected>Pending</option>
-                    <option value="accepted">Accepted</option>
-                    <option value="completed">Completed</option>
-                    <option value="rejected">Rejected</option>
-                  </select>
-                </td>
-                <td><span class="order-time">09:30 AM</span></td>
-              </tr>
+
+
+
+
             </tbody>
           </table>
         </div>

@@ -183,4 +183,11 @@ class Canteen extends Controller
             echo "inserted successfully";
         }
     }
+
+
+    public function menu_management()
+    {
+
+        $this->view('canteen/menu_management');
+    }
 }

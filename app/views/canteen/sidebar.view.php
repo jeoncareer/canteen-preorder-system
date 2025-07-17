@@ -10,9 +10,9 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="<?= ROOT ?>students/my_orders" class="nav-link <?php if ($page === 'my_orders') {
-                                                                        echo 'active';
-                                                                    } ?>">
+            <a href="<?= ROOT ?>canteen/menu_management" class="nav-link <?php if ($page === 'my_orders') {
+                                                                                echo 'active';
+                                                                            } ?>">
                 <span class="nav-icon">📋</span>
                 <span>Menu Management</span>
             </a>
