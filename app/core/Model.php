@@ -191,12 +191,22 @@ trait Model
         // Build WHERE clause
         if (!empty($where)) {
             $query .= "WHERE ";
-            foreach ($where as $key => $value) {
-                $placeholder = str_replace('.', '_', $key);  // cart.student_id → cart_student_id
-                $query .= "$key = :$placeholder AND ";
-                $where[$placeholder] = $value;               // new key-value pair
-                unset($where[$key]);                         // remove old key
+            foreach ($where as $condition => $value) {
+                // Check if condition includes a space (i.e., has an operator)
+                if (preg_match('/(.+)\s(>=|<=|<>|!=|=|>|<|LIKE)$/i', $condition, $matches)) {
+                    $column = $matches[1];
+                    $operator = $matches[2];
+                } else {
+                    $column = $condition;
+                    $operator = '=';
+                }
+
+                $placeholder = str_replace(['.', ' '], '_', $column);
+                $query .= "$column $operator :$placeholder AND ";
+                $where[$placeholder] = $value;
+                unset($where[$condition]);
             }
+
             $query = rtrim($query, ' AND ');
         }
 
@@ -209,6 +219,7 @@ trait Model
         }
 
         // Optional ordering
+        $this->limit = 10;
         $query .= " ORDER BY {$this->order_column} {$this->order_type} LIMIT {$this->limit} OFFSET {$this->offset}";
         //show($query);
         return $this->query($query, $where);

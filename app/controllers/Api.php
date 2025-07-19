@@ -118,4 +118,54 @@ class Api extends Controller
             echo json_encode(['success' => false, 'Message' => 'nothing in cart']);
         }
     }
+
+    public function changeStatus()
+    {
+
+        $orders = new Orders;
+        $data = json_decode(file_get_contents("php://input"), true);
+        $order_id = $data['order_id'];
+        $new_status = $data['new_status'];
+
+        if (empty($order_id) || empty($new_status)) {
+            echo json_encode(['success' => false, 'message' => 'missing data']);
+        }
+
+        $orders->update(
+            ['id' => $order_id],
+            ['status' => $new_status]
+        );
+
+        echo json_encode(['success' => true, 'status_new' => $new_status, 'order_id' => $order_id]);
+    }
+
+
+    public function updateOrders()
+    {
+        $order = new Orders;
+        $data = json_decode(file_get_contents("php://input"), true);
+        $order_id = $data['order_id'];
+
+        $sql = "select * from orders where id > " . $order_id;
+        $results = $order->query($sql);
+        if (empty($results)) {
+            echo json_encode(['success' => false, 'message' => 'no new orders']);
+        } else {
+
+            $rawOrders = $order->join(
+                [
+                    'order_items' => 'orders.id = order_items.order_id',
+                    'items' => 'order_items.item_id = items.id'
+                ],
+                ['orders.canteen_id' => CANTEEN_ID, 'orders.id >' => $order_id],
+                'orders.*, items.name,items.price, items.id as item_id, order_items.quantity'
+            );
+            $orders = [];
+            foreach ($rawOrders as $order) {
+                $orders[$order->id][] = $order;
+            }
+
+            echo json_encode(['success' => true, 'orders' => $orders]);
+        }
+    }
 }

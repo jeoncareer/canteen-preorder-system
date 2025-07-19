@@ -1,3 +1,4 @@
+
 <?php
 
 if ($_SERVER['SERVER_NAME'] == 'localhost') {
@@ -17,6 +18,11 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
 if (isset($_SESSION['STUDENT'])) {
     define('STUDENT_ID', $_SESSION['STUDENT']->id);
 }
+
+if (isset($_SESSION['CANTEEN'])) {
+    define('CANTEEN_ID', $_SESSION['CANTEEN']->id);
+}
+
 
 
 define('APP_NAME', "My Website");

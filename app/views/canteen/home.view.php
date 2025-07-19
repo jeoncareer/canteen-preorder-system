@@ -9,7 +9,9 @@
   <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/sidebar.css">
   <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/student-general.css">
   <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/canteen-common.css">
-
+  <script>
+    const ROOT = "<?= ROOT ?>";
+  </script>
   <style>
     /* Dashboard-specific styles only */
 
@@ -422,7 +424,7 @@
         <div class="orders-section">
           <div class="section-header">
             <h2 class="section-title">Recent Orders</h2>
-            <a href="#" class="view-all-btn">
+            <a href="#" class="view-all-btn" onclick="updateOrders()">
               ↗ View All
             </a>
           </div>
@@ -438,20 +440,35 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td><span class="order-id">#1023</span></td>
-                <td><span class="student-name">John Doe</span></td>
-                <td><span class="order-items">Veg Sandwich x1, Coffee x2</span></td>
-                <td>
-                  <select data-id='1023' class="status-select pending">
-                    <option value="pending" selected>Pending</option>
-                    <option value="accepted">Accepted</option>
-                    <option value="completed">Completed</option>
-                    <option value="rejected">Rejected</option>
-                  </select>
-                </td>
-                <td><span class="order-time">10:15 AM</span></td>
-              </tr>
+
+              <?php foreach ($orders as $order_id => $order): ?>
+                <tr>
+                  <td><span data-order-id="<?= $order_id ?>" class="order-id">#<?= $order_id ?></span></td>
+                  <td><span class="student-name"><?= $order[0]->student_id ?></span></td>
+                  <td><span class="order-items">
+                      <?php foreach ($order as $or): ?>
+                        <?= ucfirst($or->name) ?> x<?= $or->quantity ?>,
+                      <?php endforeach; ?>
+                    </span></td>
+                  <td>
+                    <select data-id='<?= $order[0]->id ?>' class="status-select <?= $order[0]->status ?>">
+                      <option value="pending" <?php if ($order[0]->status == 'pending') {
+                                                echo 'selected';
+                                              } ?>>Pending</option>
+                      <option value="accepted" <?php if ($order[0]->status == 'accepted') {
+                                                  echo 'selected';
+                                                } ?>>Accepted</option>
+                      <option value="completed" <?php if ($order[0]->status == 'completed') {
+                                                  echo 'selected';
+                                                } ?>>Completed</option>
+                      <option value="rejected" <?php if ($order[0]->status == 'rejected') {
+                                                  echo 'selected';
+                                                } ?>>Rejected</option>
+                    </select>
+                  </td>
+                  <td><span class="order-time"><?= $order[0]->time ?></span></td>
+                </tr>
+              <?php endforeach; ?>
 
 
 
@@ -536,102 +553,8 @@
     </div>
   </div>
 
-  <script>
+  <script src="<?= ROOT ?>assets/js/canteen-dashboard.js">
     // Status change functionality
-    const statusSelects = document.querySelectorAll('.status-select');
-
-    statusSelects.forEach(function(select) {
-      select.addEventListener('change', function() {
-        const orderId = this.dataset.id;
-        const newStatus = this.value;
-
-        // Remove all status classes
-        this.classList.remove('pending', 'accepted', 'completed', 'rejected');
-
-        // Add the new status class
-        this.classList.add(newStatus);
-
-        // Log the change (you can replace this with an AJAX call to update the database)
-        console.log(`Order ${orderId} status changed to: ${newStatus}`);
-
-        // Optional: Show a success message
-        showStatusChangeMessage(orderId, newStatus);
-
-        // Here you would typically make an AJAX call to update the database
-        // updateOrderStatus(orderId, newStatus);
-      });
-    });
-
-    // Function to show status change message
-    function showStatusChangeMessage(orderId, status) {
-      // Create a temporary notification
-      const notification = document.createElement('div');
-      notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: #27ae60;
-        color: white;
-        padding: 1rem 1.5rem;
-        border-radius: 8px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        z-index: 10000;
-        font-weight: 600;
-        animation: slideIn 0.3s ease;
-      `;
-
-      notification.textContent = `Order ${orderId} status updated to ${status.toUpperCase()}`;
-      document.body.appendChild(notification);
-
-      // Remove notification after 3 seconds
-      setTimeout(() => {
-        notification.style.animation = 'slideOut 0.3s ease';
-        setTimeout(() => {
-          document.body.removeChild(notification);
-        }, 300);
-      }, 3000);
-    }
-
-    // Add CSS animations for notifications
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes slideIn {
-        from { transform: translateX(100%); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-      }
-      @keyframes slideOut {
-        from { transform: translateX(0); opacity: 1; }
-        to { transform: translateX(100%); opacity: 0; }
-      }
-    `;
-    document.head.appendChild(style);
-
-    // Example function for AJAX call (uncomment and modify as needed)
-    /*
-    function updateOrderStatus(orderId, status) {
-      fetch('/api/orders/update-status', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          order_id: orderId,
-          status: status
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          showStatusChangeMessage(orderId, status);
-        } else {
-          console.error('Failed to update order status');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-    }
-    */
   </script>
 </body>
 

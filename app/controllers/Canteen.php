@@ -4,15 +4,27 @@ class Canteen extends Controller
 {
     public function index()
     {
-        $canteen = new Canteen_db();
-        // $result = $canteen->get_enum("items", "status");
-        // // print_r($result[0]->COLUMN_TYPE);
-        // $result = $result[0]->COLUMN_TYPE;
-        // $result  = substr($result, 5, -1);
-        // $result = str_getcsv($result, ',', "'");
-        // show($result);
+        $order = new Orders;
+        $orders = $order->join(
+            [
+                'order_items' => 'orders.id = order_items.order_id',
+                'items' => 'order_items.item_id = items.id'
+            ],
+            ['orders.canteen_id' => CANTEEN_ID],
+            'orders.*, items.name,items.price, items.id as item_id, order_items.quantity'
+        );
 
-        $this->view('canteen/home');
+
+        $data['orders'] = [];
+        foreach ($orders as $order) {
+            $data['orders'][$order->id][] = $order;
+        }
+
+
+
+        //show($data['orders']);
+
+        $this->view('canteen/home', $data);
     }
 
     public function signin()
@@ -187,6 +199,10 @@ class Canteen extends Controller
 
     public function menu_management()
     {
+
+        $order = new orders;
+
+
 
         $this->view('canteen/menu_management');
     }

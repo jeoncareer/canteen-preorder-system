@@ -23,7 +23,7 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 30px rgba(103, 126, 234, 0.15);
         }
-
+      
         .add-icon {
             width: 60px;
             height: 60px;
@@ -219,6 +219,7 @@
             margin-bottom: 0.5rem;
             font-size: 0.9rem;
         }
+      
 
         .form-input {
             padding: 0.8rem 1rem;
