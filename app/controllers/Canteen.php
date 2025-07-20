@@ -102,86 +102,7 @@ class Canteen extends Controller
         $this->view('canteen/orders');
     }
 
-    public function add_item()
-    {
-        $item = new Items();
 
-        $canteen = new Canteen_db();
-        $canteen_id = $_SESSION['CANTEEN']->id;
-
-
-        //taking category names from category and default_category database
-        $category = new Categories();
-
-
-        $categories = $category->where(['canteen_id' => $canteen_id]);
-
-        $data['categories'] = [];
-        if (!empty($categories)) {
-
-            foreach ($categories as $category) {
-                $data['categories'][] = $category;
-            }
-        }
-
-
-
-
-
-
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-            if ($item->validate(array_merge($_POST, $_FILES['item_image']))) {
-
-
-                $fileName = $_FILES['item_image']['name'];
-                $fileTmpName = $_FILES['item_image']['tmp_name'];
-                $fileSize = $_FILES['item_image']['size'];
-                $fileError = $_FILES['item_image']['error'];
-                $fileType = $_FILES['item_image']['type'];
-                show($_POST);
-                $fileExt = explode('.', $fileName);
-
-                $fileActualExt = strtolower(end($fileExt));
-                $allowed = array('jpg', 'jpeg', 'png');
-                if (in_array($fileActualExt, $allowed)) {
-                    if ($fileError === 0) {
-                        $fileNameNew = uniqid('', true) . $fileExt[0] . '.' . $fileActualExt;
-                        $fileDestination = 'assets/images/' . $fileNameNew;
-                        move_uploaded_file($fileTmpName, $fileDestination);
-
-                        $name = $_POST['item_name'];
-                        $price = $_POST['price'];
-
-                        $image_location = $fileNameNew;
-                        $description = $_POST['description'];
-
-                        $arr = [
-                            'name' => $name,
-                            'price' => $price,
-                            'canteen_id' => $canteen_id,
-                            'image_location' => $image_location,
-                            'category_id' => $_POST['category_id'],
-                            'description' => $description
-
-                        ];
-                        show($arr);
-                        $item->insert($arr);
-                    } else {
-                        echo "There was an error uploading your file!";
-                    }
-                } else {
-                    echo "You cannot upload files of this type!";
-                }
-            } else {
-
-                $data['errors'] = $item->errors;
-            }
-        }
-
-        $this->view('canteen/add_item', $data);
-    }
 
     public function category()
     {
@@ -202,8 +123,21 @@ class Canteen extends Controller
 
         $order = new orders;
 
+        $categories = new Categories;
+        $items = new Items;
+
+        $result = $categories->where(['canteen_id' => CANTEEN_ID]);
+        $data['categories'] = [];
+        foreach ($result as $res) {
+            $data['categories'][] = ['name' => $res->name, 'id' => $res->id];
+        }
 
 
-        $this->view('canteen/menu_management');
+        if ($_SERVER['REQUEST_METHOD'] === "POST") {
+
+            $items->insert(['name' => $_POST['item_name'], 'price' => $_POST['price'], 'canteen_id' => CANTEEN_ID, 'category_id' => $_POST['category'], 'description' => $_POST['description']]);
+            redirect('canteen/menu_management');
+        }
+        $this->view('canteen/menu_management', $data);
     }
 }

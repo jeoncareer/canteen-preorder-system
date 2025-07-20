@@ -44,7 +44,7 @@ body {
   justify-content: center;
   gap: 12px;
   padding: 20px 0;
-  background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+  background: linear-gradient(135deg, #667eea, #764ba2);
   color: white;
   border-bottom: 2px solid #f1f3f4;
 }
@@ -151,9 +151,9 @@ body {
 
 .checkout-btn:hover,
 .addCart-btn:hover {
-  background: linear-gradient(135deg, #ff5252, #ff7979);
+  background: linear-gradient(135deg, #5a67d8, #667eea);
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
 }
 
 .checkout-btn:disabled {
@@ -182,9 +182,9 @@ body {
 .qty-btn {
   width: 40px;
   height: 40px;
-  border: 2px solid #ff6b6b;
+  border: 2px solid #667eea;
   background: white;
-  color: #ff6b6b;
+  color: #667eea;
   border-radius: 50%;
   font-weight: bold;
   font-size: 18px;
@@ -197,7 +197,7 @@ body {
 
 .quantity-btn:hover:not(:disabled),
 .qty-btn:hover:not(:disabled) {
-  background: #ff6b6b;
+  background: #667eea;
   color: white;
   transform: scale(1.1);
 }
@@ -222,7 +222,7 @@ body {
 
 /* Remove Button */
 .remove-btn {
-  background: #ff4757;
+  background: #e74c3c;
   color: white;
   border: none;
   width: 20px;
@@ -238,7 +238,7 @@ body {
 }
 
 .remove-btn:hover {
-  background: #ff3742;
+  background: #c0392b;
   transform: scale(1.1);
 }
 
@@ -325,13 +325,13 @@ body {
 .menu-item:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
-  border-color: #ff6b6b;
+  border-color: #667eea;
 }
 
 .menu-item.selected {
-  border-color: #ff6b6b;
-  background: linear-gradient(135deg, #fff5f5, #ffffff);
-  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.2);
+  border-color: #667eea;
+  background: linear-gradient(135deg, #f0f4ff, #ffffff);
+  box-shadow: 0 8px 25px rgba(103, 126, 234, 0.2);
 }
 
 .item-description {
@@ -358,8 +358,8 @@ body {
 }
 
 .limited {
-  background: #fff3cd;
-  color: #856404;
+  background: #e0e7ff;
+  color: #3730a3;
 }
 
 .unavailable {
@@ -412,8 +412,8 @@ body {
 }
 
 .status-pending {
-  background: #fff3cd;
-  color: #856404;
+  background: #e0e7ff;
+  color: #3730a3;
 }
 
 .status-preparing {
@@ -474,8 +474,8 @@ body {
 
 .search-bar:focus {
   outline: none;
-  border-color: #ff6b6b;
-  box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.1);
+  border-color: #667eea;
+  box-shadow: 0 0 0 4px rgba(103, 126, 234, 0.1);
 }
 
 

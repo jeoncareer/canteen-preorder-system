@@ -10,6 +10,43 @@
     </script>
     <link rel="stylesheet" href="<?= ROOT ?>assets/css/index.css">
 
+    <style>
+        /* Override any remaining red/orange colors with bluish theme */
+        .checkout-btn,
+        .addCart-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        }
+
+        .checkout-btn:hover,
+        .addCart-btn:hover {
+            background: linear-gradient(135deg, #5a67d8, #667eea) !important;
+        }
+
+        .cart-header {
+            background: linear-gradient(135deg, #667eea, #764ba2) !important;
+        }
+
+        .quantity-btn:hover:not(:disabled),
+        .qty-btn:hover:not(:disabled) {
+            background: #667eea !important;
+        }
+
+        .menu-item:hover {
+            border-color: #667eea !important;
+        }
+
+        .menu-item.selected {
+            border-color: #667eea !important;
+            background: linear-gradient(135deg, #f0f4ff, #ffffff) !important;
+            box-shadow: 0 8px 25px rgba(103, 126, 234, 0.2) !important;
+        }
+
+        .search-bar:focus {
+            border-color: #667eea !important;
+            box-shadow: 0 0 0 4px rgba(103, 126, 234, 0.1) !important;
+        }
+    </style>
+
     <script src="index.js" defer></script>
 
 

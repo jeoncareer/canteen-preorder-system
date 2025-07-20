@@ -12,6 +12,164 @@
     <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/menu-management.css">
     <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/add-item.css">
     <style>
+        /* Quick Actions Grid */
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .add-item-section,
+        .add-category-section {
+            margin-bottom: 0;
+        }
+
+        .add-new-item-btn,
+        .add-new-category-btn {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            background: white;
+            border: 2px dashed #667eea;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: var(--card-shadow);
+            width: 100%;
+        }
+
+        .add-new-category-btn {
+            border-color: #27ae60;
+        }
+
+        .add-new-item-btn:hover {
+            background: rgba(103, 126, 234, 0.05);
+            border-color: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(103, 126, 234, 0.15);
+        }
+
+        .add-new-category-btn:hover {
+            background: rgba(39, 174, 96, 0.05);
+            border-color: #229954;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(39, 174, 96, 0.15);
+        }
+
+        .add-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .add-new-category-btn .add-icon {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+        }
+
+        .add-content h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .add-content p {
+            margin: 0;
+            color: #64748b;
+            font-size: 1rem;
+        }
+
+        /* Simple Category Form */
+        .category-form-card {
+            background: white;
+            border: 2px solid #27ae60;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+        }
+
+        .category-form-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(39, 174, 96, 0.15);
+        }
+
+        .category-form-card h3 {
+            margin: 0 0 1.5rem 0;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .simple-category-form {
+            width: 100%;
+        }
+
+        .category-input-group {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .category-input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: #f8fafc;
+        }
+
+        .category-input:focus {
+            outline: none;
+            border-color: #27ae60;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+        }
+
+        .category-submit-btn {
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .category-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        /* Responsive for quick actions */
+        @media (max-width: 768px) {
+            .quick-actions-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .category-input-group {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .category-submit-btn {
+                width: 100%;
+            }
+        }
+
         /* Modal Form Spacing Improvements */
         .add-item-modal {
             max-width: 600px;
@@ -154,6 +312,65 @@
             color: var(--danger-color);
         }
 
+        /* Categories Section */
+        .categories-section {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .category-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 1.5rem;
+            transition: var(--transition);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .category-card:hover {
+            border-color: #27ae60;
+            background: rgba(39, 174, 96, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .category-info h4 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .category-count {
+            margin: 0;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .category-actions {
+            display: flex;
+            gap: 0.3rem;
+        }
+
+        .category-edit,
+        .category-delete {
+            padding: 0.3rem 0.6rem;
+            font-size: 0.75rem;
+            border-radius: 6px;
+            min-width: auto;
+        }
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .add-item-modal {
@@ -176,6 +393,21 @@
             }
 
             .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-card {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .category-actions {
                 width: 100%;
                 justify-content: center;
             }
@@ -202,15 +434,29 @@
                 </div>
             </div>
 
-            <!-- Add New Item Section -->
-            <div data-modal-target="#modal" class="add-item-section">
-                <a href="#" class="add-new-item-btn">
-                    <span class="add-icon">➕</span>
-                    <div class="add-content">
-                        <h3>Add New Menu Item</h3>
-                        <p>Create a new dish for your menu</p>
-                    </div>
-                </a>
+            <!-- Quick Actions Section -->
+            <div class="quick-actions-grid">
+                <!-- Add New Item Section -->
+                <div data-modal-target="#modal" class="add-item-section">
+                    <a href="#" class="add-new-item-btn">
+                        <span class="add-icon">➕</span>
+                        <div class="add-content">
+                            <h3>Add New Menu Item</h3>
+                            <p>Create a new dish for your menu</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Add New Category Section -->
+                <div data-modal-target="#category-modal" class="add-category-section">
+                    <a href="#" class="add-new-category-btn">
+                        <span class="add-icon">🏷️</span>
+                        <div class="add-content">
+                            <h3>Add New Category</h3>
+                            <p>Create a new food category</p>
+                        </div>
+                    </a>
+                </div>
             </div>
 
             <div class="add-item-modal" id="modal">
@@ -219,21 +465,21 @@
                     <button data-close-button="close-button" class="close-button">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form class="add-item-form" method="POST" action="/canteen/add-item">
+                    <form class="add-item-form" method="POST" action="<?= ROOT ?>canteen/menu_management">
                         <div class="form-row">
                             <div class="form-group">
                                 <label class="form-label" for="item-name">Item Name *</label>
-                                <input type="text" id="item-name" name="item_name" class="form-input" placeholder="e.g., Chicken Biryani" required>
+                                <input type="text" id="item-name" name="item_name" value="chicken biriyani" class="form-input" placeholder="e.g., Chicken Biryani" required>
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="item-price">Price (₹) *</label>
-                                <input type="number" id="item-price" name="price" class="form-input" placeholder="0.00" min="0" step="0.01" required>
+                                <input type="number" id="item-price" name="price" value="10" class="form-input" placeholder="0.00" min="0" step="0.01" required>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label" for="item-description">Description</label>
-                            <textarea id="item-description" name="description" class="form-textarea" placeholder="Describe your delicious dish..." rows="3"></textarea>
+                            <textarea id="item-description" name="description" class="form-textarea" placeholder="Describe your delicious dish..." rows="3">a indian food</textarea>
                         </div>
 
                         <div class="form-row">
@@ -241,10 +487,10 @@
                                 <label class="form-label" for="item-category">Category *</label>
                                 <select id="item-category" name="category" class="form-select" required>
                                     <option value="">Select Category</option>
-                                    <option value="main-course">Main Course</option>
-                                    <option value="beverages">Beverages</option>
-                                    <option value="snacks">Snacks</option>
-                                    <option value="desserts">Desserts</option>
+                                    <?php foreach ($categories as $cat): ?>
+                                        <option value="<?= $cat['id'] ?>"><?= ucfirst($cat['name']) ?></option>
+                                    <?php endforeach; ?>
+
                                 </select>
                             </div>
                             <div class="form-group">
@@ -272,6 +518,32 @@
                     </form>
                 </div>
             </div>
+
+
+            <!-- Add Category Modal -->
+            <div class="add-item-modal" id="category-modal">
+                <div class="modal-header">
+                    <div class="modal-title">🏷️ Add New Category</div>
+                    <button data-close-button="close-button" class="close-button">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form class="add-item-form" method="POST" action="<?= ROOT ?>canteen/add-category">
+                        <div class="form-group">
+                            <label class="form-label" for="category-name">Category Name *</label>
+                            <input type="text" id="category-name" name="category_name" class="form-input" placeholder="e.g., Appetizers, Soups, etc." required>
+                        </div>
+
+                        <div class="modal-actions">
+                            <button type="button" class="btn btn-secondary" data-close-button="close-button">Cancel</button>
+                            <button type="submit" class="btn btn-primary">
+                                <span class="btn-icon">🏷️</span>
+                                Add Category
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             <div id="overlay"></div>
 
             <!-- Search and Filter Section -->
@@ -298,6 +570,71 @@
                             <option value="available">Available</option>
                             <option value="unavailable">Unavailable</option>
                         </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Current Categories Section -->
+            <div class="categories-section">
+                <div class="section-header">
+                    <h2 class="section-title">🏷️ Current Categories</h2>
+                </div>
+
+                <div class="categories-grid">
+                    <!-- Sample Categories - Replace with PHP loop -->
+                    <div class="category-card">
+                        <div class="category-info">
+                            <h4 class="category-name">Main Course</h4>
+                            <p class="category-count">12 items</p>
+                        </div>
+                        <div class="category-actions">
+                            <button class="action-btn edit-btn category-edit">✏️ Edit</button>
+                            <button class="action-btn delete-btn category-delete">🗑️ Delete</button>
+                        </div>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-info">
+                            <h4 class="category-name">Beverages</h4>
+                            <p class="category-count">8 items</p>
+                        </div>
+                        <div class="category-actions">
+                            <button class="action-btn edit-btn category-edit">✏️ Edit</button>
+                            <button class="action-btn delete-btn category-delete">🗑️ Delete</button>
+                        </div>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-info">
+                            <h4 class="category-name">Snacks</h4>
+                            <p class="category-count">15 items</p>
+                        </div>
+                        <div class="category-actions">
+                            <button class="action-btn edit-btn category-edit">✏️ Edit</button>
+                            <button class="action-btn delete-btn category-delete">🗑️ Delete</button>
+                        </div>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-info">
+                            <h4 class="category-name">Desserts</h4>
+                            <p class="category-count">6 items</p>
+                        </div>
+                        <div class="category-actions">
+                            <button class="action-btn edit-btn category-edit">✏️ Edit</button>
+                            <button class="action-btn delete-btn category-delete">🗑️ Delete</button>
+                        </div>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-info">
+                            <h4 class="category-name">Appetizers</h4>
+                            <p class="category-count">4 items</p>
+                        </div>
+                        <div class="category-actions">
+                            <button class="action-btn edit-btn category-edit">✏️ Edit</button>
+                            <button class="action-btn delete-btn category-delete">🗑️ Delete</button>
+                        </div>
                     </div>
                 </div>
             </div>
