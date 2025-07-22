@@ -98,6 +98,9 @@
       background: var(--danger-color);
     }
 
+
+
+
     .stat-value {
       font-size: 2.5rem;
       font-weight: 700;
@@ -212,6 +215,11 @@
     .status-select.rejected {
       background: #fee2e2;
       color: #991b1b;
+    }
+
+    .status-select.ready {
+      background: rgb(79, 226, 21);
+      color: rgb(5, 116, 5);
     }
 
     .status-select option {
@@ -461,6 +469,9 @@
                       <option value="completed" <?php if ($order[0]->status == 'completed') {
                                                   echo 'selected';
                                                 } ?>>Completed</option>
+                      <option value="ready" <?php if ($order[0]->status == 'ready') {
+                                              echo 'selected';
+                                            } ?>>Ready</option>
                       <option value="rejected" <?php if ($order[0]->status == 'rejected') {
                                                   echo 'selected';
                                                 } ?>>Rejected</option>

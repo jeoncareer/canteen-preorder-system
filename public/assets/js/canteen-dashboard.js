@@ -7,7 +7,7 @@
         const newStatus = select.value;
 
         // Remove all status classes
-        select.classList.remove('pending', 'accepted', 'completed', 'rejected');
+        select.classList.remove('pending', 'accepted', 'completed', 'rejected', 'ready');
 
         // Add the new status class
         select.classList.add(newStatus);

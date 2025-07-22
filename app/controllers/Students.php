@@ -197,7 +197,42 @@ class Students extends Controller
 
     public function history()
     {
-        $this->view('students/order_history');
+        $orders = new Orders;
+
+        $completed_results = $orders->join(
+            [
+                'order_items' => 'orders.id = order_items.order_id',
+                'items' => 'order_items.item_id = items.id'
+            ],
+            ['orders.student_id' => STUDENT_ID, 'orders.status' => 'completed'],
+            'orders.*, items.name,items.price, items.id as item_id, order_items.quantity'
+        );
+
+        $rejected_results = $orders->join(
+            [
+                'order_items' => 'orders.id = order_items.order_id',
+                'items' => 'order_items.item_id = items.id'
+            ],
+            ['orders.student_id' => STUDENT_ID, 'orders.status' => 'rejected'],
+            'orders.*, items.name,items.price, items.id as item_id, order_items.quantity'
+        );
+
+        $results = array_merge($completed_results, $rejected_results);
+
+        $list_of_orders = [];
+
+
+        foreach ($results as $result) {
+            $list_of_orders[$result->id][] = $result;
+        }
+
+
+
+        $data['orders'] = $list_of_orders;
+
+        //show($data['orders']);
+
+        $this->view('students/order_history', $data);
     }
 
 

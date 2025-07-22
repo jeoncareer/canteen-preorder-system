@@ -25,10 +25,10 @@
     <?php require 'header.view.php' ?>
 
     <div class="container">
-          <?php
-            $page = 'my_order';
-            require 'sidebar.view.php';
-             ?>
+        <?php
+        $page = 'my_order';
+        require 'sidebar.view.php';
+        ?>
 
         <div class="main-content">
             <div class="page-header">
@@ -71,8 +71,8 @@
                             </div>
                             <div class="order-total">Total: ₹<?= $order[$order_id]['total'] ?></div>
                             <div class="order-actions">
-                                <?php if($order[$order_id]['status'] === 'ready'): ?>
-                                <button class="btn btn-primary">✓ Pick Up</button>
+                                <?php if ($order[$order_id]['status'] === 'ready'): ?>
+                                    <button class="btn btn-primary">✓ Pick Up</button>
                                 <?php endif; ?>
                                 <button class="btn btn-secondary">View Details</button>
                             </div>

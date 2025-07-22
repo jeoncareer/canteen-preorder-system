@@ -19,22 +19,15 @@
         </li>
 
         <li class="nav-item">
-            <a href="<?= ROOT ?>students/history" class="nav-link <?php if ($page === 'order_history') {
-                                                                        echo 'active';
-                                                                    } ?>">
+            <a href="<?= ROOT ?>canteen/orders" class="nav-link <?php if ($page === 'order_history') {
+                                                                    echo 'active';
+                                                                } ?>">
                 <span class="nav-icon">📊</span>
                 <span>Orders</span>
             </a>
         </li>
 
-        <li class="nav-item">
-            <a href="<?= ROOT ?>students/history" class="nav-link <?php if ($page === 'order_history') {
-                                                                        echo 'active';
-                                                                    } ?>">
-                <span class="nav-icon">📊</span>
-                <span>Categories</span>
-            </a>
-        </li>
+
 
         <li class="nav-item">
             <a href="<?= ROOT ?>students/history" class="nav-link <?php if ($page === 'order_history') {
