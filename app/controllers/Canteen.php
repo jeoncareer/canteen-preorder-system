@@ -122,9 +122,11 @@ class Canteen extends Controller
     {
 
         $order = new orders;
-
         $categories = new Categories;
         $items = new Items;
+        $result = $items->where(['canteen_id' => CANTEEN_ID]);
+        show($result);
+
 
         $result = $categories->where(['canteen_id' => CANTEEN_ID]);
         $data['categories'] = [];

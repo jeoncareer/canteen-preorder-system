@@ -12,19 +12,11 @@
 
     <style>
         /* Override any remaining red/orange colors with bluish theme */
-        .checkout-btn,
-        .addCart-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-        }
 
-        .checkout-btn:hover,
-        .addCart-btn:hover {
-            background: linear-gradient(135deg, #5a67d8, #667eea) !important;
-        }
 
-        .cart-header {
-            background: linear-gradient(135deg, #667eea, #764ba2) !important;
-        }
+
+
+
 
         .quantity-btn:hover:not(:disabled),
         .qty-btn:hover:not(:disabled) {

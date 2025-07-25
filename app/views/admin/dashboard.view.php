@@ -44,19 +44,19 @@
         }
 
         .admin-stat-card.canteens::before {
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            background: #4f46e5;
         }
 
         .admin-stat-card.students::before {
-            background: linear-gradient(90deg, var(--success-color), #58d68d);
+            background: var(--success-color);
         }
 
         .admin-stat-card.orders::before {
-            background: linear-gradient(90deg, var(--warning-color), #f7dc6f);
+            background: var(--warning-color);
         }
 
         .admin-stat-card.revenue::before {
-            background: linear-gradient(90deg, var(--secondary-color), #5dade2);
+            background: var(--secondary-color);
         }
 
         .admin-stat-header {

@@ -201,12 +201,12 @@
         }
 
         .btn-primary {
-            background-color: #ff6b6b;      
+            background-color: #5B3CC4;      
             color: white;
         }
 
         .btn-primary:hover {
-            background-color: #ff5252;  
+            background: #3730a3;
         }
 
         .btn-secondary {
@@ -229,23 +229,3 @@
             border-left: 1px solid #e0e0e0;
         }
 
-
-        /* .balance-info {
-            background-color: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .balance-amount {
-            font-size: 24px;
-            font-weight: bold;
-            color: #28a745;
-        }
-
-        .balance-label {
-            font-size: 14px;
-            color: #666;
-            margin-top: 5px;
-        } */

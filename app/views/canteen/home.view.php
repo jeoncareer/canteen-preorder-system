@@ -49,19 +49,19 @@
     }
 
     .stat-card.earnings::before {
-      background: linear-gradient(90deg, var(--secondary-color), #5dade2);
+      background: var(--secondary-color);
     }
 
     .stat-card.orders::before {
-      background: linear-gradient(90deg, var(--success-color), #58d68d);
+      background: var(--success-color);
     }
 
     .stat-card.completed::before {
-      background: linear-gradient(90deg, var(--warning-color), #f7dc6f);
+      background: var(--warning-color);
     }
 
     .stat-card.rejected::before {
-      background: linear-gradient(90deg, var(--danger-color), #ec7063);
+      background: var(--danger-color);
     }
 
     .stat-header {

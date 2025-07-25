@@ -16,9 +16,9 @@
         }
 
         .filter-tab.active {
-            background-color: #ff6b6b;
+            background-color:  #5B3CC4;
             color: white;
-            border-color: #ff6b6b;
+            border-color:  #5B3CC4;
         }
 
         .filter-tab:hover {

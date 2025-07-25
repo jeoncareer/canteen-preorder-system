@@ -1,4 +1,3 @@
-
 * {
   margin: 0;
   padding: 0;
@@ -35,7 +34,6 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
 }
 
 .cart-header {
@@ -44,7 +42,7 @@ body {
   justify-content: center;
   gap: 12px;
   padding: 20px 0;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: #4f46e5;
   color: white;
   border-bottom: 2px solid #f1f3f4;
 }
@@ -127,7 +125,7 @@ body {
 .addCart-btn-success {
   width: 100%;
   padding: 15px;
-   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #4f46e5;
   color: white;
   border: none;
   border-radius: 8px;
@@ -138,22 +136,20 @@ body {
   margin-top: 15px;
 }
 
-
-.addCart-btn-success{
-  background: linear-gradient(135deg, #30db77, #24c93f);
-  cursor:default;
+.addCart-btn-success {
+  background: #10b981;
+  cursor: default;
 }
 
-.addCart-btn-success:hover{
-   background: linear-gradient(135deg, #8cf0b6, #abf1b7);
- 
+.addCart-btn-success:hover {
+  background: #059669;
 }
 
 .checkout-btn:hover,
 .addCart-btn:hover {
-  background: linear-gradient(135deg, #5a67d8, #667eea);
+  background: #3730a3;
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
 }
 
 .checkout-btn:disabled {
@@ -166,8 +162,8 @@ body {
   width: auto;
   padding: 10px 16px;
 
-  margin-top:0;
-  height:40px;
+  margin-top: 0;
+  height: 40px;
 }
 
 /* Quantity Controls */
@@ -215,14 +211,14 @@ body {
   text-align: center;
 }
 
-.item-total{
-  display:flex;
+.item-total {
+  display: flex;
   flex-direction: row;
 }
 
 /* Remove Button */
 .remove-btn {
-  background:#667eea;
+  background: #e74c3c;
   color: white;
   border: none;
   width: 20px;
@@ -349,7 +345,7 @@ body {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  height:30px;
+  height: 30px;
 }
 
 .available {
@@ -477,7 +473,6 @@ body {
   border-color: #667eea;
   box-shadow: 0 0 0 4px rgba(103, 126, 234, 0.1);
 }
-
 
 /* -------------------- Responsive -------------------- */
 @media (max-width: 1200px) {

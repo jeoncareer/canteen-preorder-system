@@ -484,7 +484,7 @@
 
         .chart-placeholder {
             height: 300px;
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            background: #f1f5f9;
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -1304,82 +1304,81 @@
             });
         });
 
-        <
-        script >
-            // Basic functionality for the orders page
-            document.addEventListener('DOMContentLoaded', function() {
-                // Select all functionality
-                const selectAllHeader = document.getElementById('selectAllHeader');
-                const selectAll = document.getElementById('selectAll');
-                const orderCheckboxes = document.querySelectorAll('.order-checkbox[data-order-id]');
-                const selectedCount = document.getElementById('selectedCount');
 
-                function updateSelectedCount() {
-                    const checked = document.querySelectorAll('.order-checkbox[data-order-id]:checked').length;
-                    selectedCount.textContent = `${checked} selected`;
-                }
+        // Basic functionality for the orders page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Select all functionality
+            const selectAllHeader = document.getElementById('selectAllHeader');
+            const selectAll = document.getElementById('selectAll');
+            const orderCheckboxes = document.querySelectorAll('.order-checkbox[data-order-id]');
+            const selectedCount = document.getElementById('selectedCount');
 
-                selectAllHeader.addEventListener('change', function() {
-                    orderCheckboxes.forEach(checkbox => {
-                        checkbox.checked = this.checked;
-                    });
-                    selectAll.checked = this.checked;
-                    updateSelectedCount();
-                });
+            function updateSelectedCount() {
+                const checked = document.querySelectorAll('.order-checkbox[data-order-id]:checked').length;
+                selectedCount.textContent = `${checked} selected`;
+            }
 
-                selectAll.addEventListener('change', function() {
-                    orderCheckboxes.forEach(checkbox => {
-                        checkbox.checked = this.checked;
-                    });
-                    selectAllHeader.checked = this.checked;
-                    updateSelectedCount();
-                });
-
+            selectAllHeader.addEventListener('change', function() {
                 orderCheckboxes.forEach(checkbox => {
-                    checkbox.addEventListener('change', updateSelectedCount);
+                    checkbox.checked = this.checked;
                 });
+                selectAll.checked = this.checked;
+                updateSelectedCount();
+            });
 
-                // Status change functionality
-                const statusSelects = document.querySelectorAll('.status-select');
-                statusSelects.forEach(select => {
-                    select.addEventListener('change', function() {
-                        const orderId = this.dataset.id;
-                        const newStatus = this.value;
-
-                        // Remove all status classes
-                        this.classList.remove('pending', 'accepted', 'ready', 'completed', 'rejected');
-
-                        // Add the new status class
-                        this.classList.add(newStatus);
-
-                        console.log(`Order ${orderId} status changed to: ${newStatus}`);
-
-                        // Here you would make an AJAX call to update the database
-                        // updateOrderStatus(orderId, newStatus);
-                    });
+            selectAll.addEventListener('change', function() {
+                orderCheckboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
                 });
+                selectAllHeader.checked = this.checked;
+                updateSelectedCount();
+            });
 
-                // Bulk actions
-                document.querySelector('.bulk-accept').addEventListener('click', function() {
-                    const selected = document.querySelectorAll('.order-checkbox[data-order-id]:checked');
-                    console.log(`Accepting ${selected.length} orders`);
-                    // Implement bulk accept logic
-                });
+            orderCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateSelectedCount);
+            });
 
-                document.querySelector('.bulk-complete').addEventListener('click', function() {
-                    const selected = document.querySelectorAll('.order-checkbox[data-order-id]:checked');
-                    console.log(`Marking ${selected.length} orders as ready`);
-                    // Implement bulk ready logic
-                });
+            // Status change functionality
+            const statusSelects = document.querySelectorAll('.status-select');
+            statusSelects.forEach(select => {
+                select.addEventListener('change', function() {
+                    const orderId = this.dataset.id;
+                    const newStatus = this.value;
 
-                document.querySelector('.bulk-reject').addEventListener('click', function() {
-                    const selected = document.querySelectorAll('.order-checkbox[data-order-id]:checked');
-                    if (confirm(`Are you sure you want to reject ${selected.length} orders?`)) {
-                        console.log(`Rejecting ${selected.length} orders`);
-                        // Implement bulk reject logic
-                    }
+                    // Remove all status classes
+                    this.classList.remove('pending', 'accepted', 'ready', 'completed', 'rejected');
+
+                    // Add the new status class
+                    this.classList.add(newStatus);
+
+                    console.log(`Order ${orderId} status changed to: ${newStatus}`);
+
+                    // Here you would make an AJAX call to update the database
+                    // updateOrderStatus(orderId, newStatus);
                 });
             });
+
+            // Bulk actions
+            document.querySelector('.bulk-accept').addEventListener('click', function() {
+                const selected = document.querySelectorAll('.order-checkbox[data-order-id]:checked');
+                console.log(`Accepting ${selected.length} orders`);
+                // Implement bulk accept logic
+            });
+
+            document.querySelector('.bulk-complete').addEventListener('click', function() {
+                const selected = document.querySelectorAll('.order-checkbox[data-order-id]:checked');
+                console.log(`Marking ${selected.length} orders as ready`);
+                // Implement bulk ready logic
+            });
+
+            document.querySelector('.bulk-reject').addEventListener('click', function() {
+                const selected = document.querySelectorAll('.order-checkbox[data-order-id]:checked');
+                if (confirm(`Are you sure you want to reject ${selected.length} orders?`)) {
+                    console.log(`Rejecting ${selected.length} orders`);
+                    // Implement bulk reject logic
+                }
+            });
+        });
     </script>
 </body>
 
