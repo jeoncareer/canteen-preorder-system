@@ -28,7 +28,7 @@
         </li>
 
 
-
+        <!-- 
         <li class="nav-item">
             <a href="#" class="nav-link <?php if ($page === 'order_history') {
                                             echo 'active';
@@ -36,7 +36,7 @@
                 <span class="nav-icon">📊</span>
                 <span>Order History</span>
             </a>
-        </li>
+        </li> -->
 
         <li class="nav-item">
             <a href="#" class="nav-link <?php if ($page === 'order_history') {

@@ -182,86 +182,54 @@
                 </div>
 
                 <div class="categories-grid">
-                    <!-- Sample Categories - Replace with PHP loop -->
-                    <div class="category-card">
-                        <div class="category-info">
-                            <h4 class="category-name">Main Course</h4>
-                            <p class="category-count">12 items</p>
-                        </div>
-                        <div class="category-actions">
-                            <button class="action-btn edit-btn category-edit">✏️ Edit</button>
-                            <button class="action-btn delete-btn category-delete">🗑️ Delete</button>
-                        </div>
-                    </div>
 
-                    <div class="category-card">
-                        <div class="category-info">
-                            <h4 class="category-name">Beverages</h4>
-                            <p class="category-count">8 items</p>
+                    <?php foreach ($categories as $category): ?>
+                        <!-- Sample Categories - Replace with PHP loop -->
+                        <div class="category-card">
+                            <div class="category-info">
+                                <h4 class="category-name"><?= ucfirst($category['name']) ?></h4>
+                                <p class="category-count">12 items</p>
+                            </div>
+                            <div class="category-actions">
+                                <button class="action-btn edit-btn category-edit">Edit</button>
+                                <button class="action-btn delete-btn category-delete"> Delete</button>
+                            </div>
                         </div>
-                        <div class="category-actions">
-                            <button class="action-btn edit-btn category-edit">✏️ Edit</button>
-                            <button class="action-btn delete-btn category-delete">🗑️ Delete</button>
-                        </div>
-                    </div>
 
-                    <div class="category-card">
-                        <div class="category-info">
-                            <h4 class="category-name">Snacks</h4>
-                            <p class="category-count">15 items</p>
-                        </div>
-                        <div class="category-actions">
-                            <button class="action-btn edit-btn category-edit">✏️ Edit</button>
-                            <button class="action-btn delete-btn category-delete">🗑️ Delete</button>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
 
-                    <div class="category-card">
-                        <div class="category-info">
-                            <h4 class="category-name">Desserts</h4>
-                            <p class="category-count">6 items</p>
-                        </div>
-                        <div class="category-actions">
-                            <button class="action-btn edit-btn category-edit">✏️ Edit</button>
-                            <button class="action-btn delete-btn category-delete">🗑️ Delete</button>
-                        </div>
-                    </div>
 
-                    <div class="category-card">
-                        <div class="category-info">
-                            <h4 class="category-name">Appetizers</h4>
-                            <p class="category-count">4 items</p>
-                        </div>
-                        <div class="category-actions">
-                            <button class="action-btn edit-btn category-edit">✏️ Edit</button>
-                            <button class="action-btn delete-btn category-delete">🗑️ Delete</button>
-                        </div>
-                    </div>
+
                 </div>
             </div>
 
             <!-- Menu Items Grid -->
             <div class="menu-grid" id="menuGrid">
-                <!-- Sample Menu Items -->
-                <div class="menu-card" data-category="main-course" data-status="available">
-                    <!-- <div class="menu-card-image">
+                <?php foreach ($items as $item): ?>
+                    <!-- Sample Menu Items -->
+                    <div class="menu-card" data-category="main-course" data-status="available">
+                        <!-- <div class="menu-card-image">
                         🍛
                         <span class="status-badge status-available">Available</span>
                     </div> -->
-                    <div class="menu-card-content">
-                        <h3 class="menu-item-name">Chicken Biryani</h3>
-                        <p class="menu-item-description">Aromatic basmati rice cooked with tender chicken pieces and traditional spices</p>
-                        <div class="menu-item-details">
-                            <span class="menu-item-price">₹180</span>
-                            <span class="menu-item-category">Main Course</span>
-                        </div>
-                        <div class="menu-item-actions">
-                            <button class="action-btn edit-btn">✏️ Edit</button>
-                            <button class="action-btn toggle-btn available">🔄 Disable</button>
-                            <button class="action-btn delete-btn">🗑️ Delete</button>
+                        <div class="menu-card-content">
+                            <h3 class="menu-item-name"><?= ucfirst($item->name) ?></h3>
+                            <p class="menu-item-description"><?= $item->description ?></p>
+                            <div class="menu-item-details">
+                                <span class="menu-item-price">₹<?= $item->price ?></span>
+                                <span class="menu-item-category">Main Course</span>
+                            </div>
+                            <div class="menu-item-actions">
+                                <button class="action-btn edit-btn"> Edit</button>
+                                <button class="action-btn toggle-btn available">Disable</button>
+                                <button class="action-btn delete-btn">Delete</button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                <?php endforeach; ?>
+
+
+
 
 
 

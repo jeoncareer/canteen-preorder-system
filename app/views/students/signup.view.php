@@ -20,7 +20,7 @@
             <p class="auth-subtitle">Create a new Account</p>
         </div>
 
-        <form>
+        <form method="post" action="<?= ROOT ?>students/signup">
             <div class="form-group">
                 <label class="form-label">Email</label>
                 <input name="email" type="email" class="form-input" placeholder="Enter your email" required>

@@ -9,6 +9,7 @@ class Orders
 
     protected $table = "orders";
 
+
     protected $allowedColumns = [
         'id',
         'canteen_id',

@@ -11,7 +11,11 @@ class Canteen extends Controller
                 'items' => 'order_items.item_id = items.id'
             ],
             ['orders.canteen_id' => CANTEEN_ID],
-            'orders.*, items.name,items.price, items.id as item_id, order_items.quantity'
+            'orders.*, items.name,items.price, items.id as item_id, order_items.quantity',
+            '',
+            '',
+            '20'
+
         );
 
 
@@ -97,10 +101,6 @@ class Canteen extends Controller
         }
     }
 
-    public function orders()
-    {
-        $this->view('canteen/orders');
-    }
 
 
 
@@ -124,8 +124,9 @@ class Canteen extends Controller
         $order = new orders;
         $categories = new Categories;
         $items = new Items;
-        $result = $items->where(['canteen_id' => CANTEEN_ID]);
-        show($result);
+        $canteen_items = $items->where(['canteen_id' => CANTEEN_ID]);
+        $data['items'] = $canteen_items;
+
 
 
         $result = $categories->where(['canteen_id' => CANTEEN_ID]);
@@ -135,11 +136,40 @@ class Canteen extends Controller
         }
 
 
+
+
         if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
             $items->insert(['name' => $_POST['item_name'], 'price' => $_POST['price'], 'canteen_id' => CANTEEN_ID, 'category_id' => $_POST['category'], 'description' => $_POST['description']]);
             redirect('canteen/menu_management');
         }
         $this->view('canteen/menu_management', $data);
+    }
+    public function orders()
+    {
+        $order = new Orders;
+
+        $orders = $order->join(
+            [
+                'order_items' => 'orders.id = order_items.order_id',
+                'items' => 'order_items.item_id = items.id',
+                'students' => 'orders.student_id = students.id'
+            ],
+            ['orders.canteen_id' => CANTEEN_ID],
+            'orders.*, items.name,items.price,students.email,items.id as item_id, order_items.quantity',
+            '',
+            '',
+            10
+        );
+
+
+        $data['orders'] = [];
+        foreach ($orders as $order) {
+            $data['orders'][$order->id][] = $order;
+        }
+
+        //show($data['orders']);
+
+        $this->view('canteen/orders', $data);
     }
 }

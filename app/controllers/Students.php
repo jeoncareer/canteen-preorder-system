@@ -171,13 +171,16 @@ class Students extends Controller
                 'items' => 'order_items.item_id = items.id'
             ],
             ['orders.student_id' => STUDENT_ID],
-            'orders.*, items.name,items.price, items.id as item_id, order_items.quantity'
+            'orders.*, items.name,items.price, items.id as item_id, order_items.quantity',
+
         );
 
         $order = $orders->where(['student_id' => STUDENT_ID]);
         foreach ($order as $or) {
             $data['order'][$or->id] = ['total' => $or->total, 'status' => $or->status];
         }
+
+        //show($data['order']);
 
 
         $list_of_orders = [];
@@ -186,6 +189,8 @@ class Students extends Controller
         foreach ($results as $result) {
             $list_of_orders[$result->id][] = $result;
         }
+
+        //show($list_of_orders);
 
 
 

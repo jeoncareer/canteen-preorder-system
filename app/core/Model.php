@@ -30,7 +30,7 @@ trait Model
     }
 
 
-    public function where($data, $data_not = [])
+    public function where($data, $data_not = [], $limit = '')
     {
         $keys = array_keys($data);
         $keys_not = array_keys($data_not);
@@ -43,7 +43,12 @@ trait Model
             $query .= $key . " != :" . $key . " AND ";
         }
         $query = trim($query, " AND ");
-        $query .= " order by $this->order_column $this->order_type limit $this->limit offset $this->offset ";
+
+        $query .= " order by $this->order_column $this->order_type ";
+
+        if (!empty($limit)) {
+            $query .= " limit $this->limit offset $this->offset ";
+        }
 
         $data = array_merge($data, $data_not);
         return $this->query($query, $data);
@@ -179,7 +184,7 @@ trait Model
     }
 
 
-    public function join($joins = [], $where = [], $selectColumns = '*', $order_type = '', $order_by = '')
+    public function join($joins = [], $where = [], $selectColumns = '*', $order_type = '', $order_by = '', $limit = '')
     {
         $query = "SELECT {$selectColumns} FROM {$this->table} ";
 
@@ -219,8 +224,13 @@ trait Model
         }
 
         // Optional ordering
-        $this->limit = 10;
-        $query .= " ORDER BY {$this->order_column} {$this->order_type} LIMIT {$this->limit} OFFSET {$this->offset}";
+
+        $query .= " ORDER BY {$this->order_column} {$this->order_type}";
+
+        if (!empty($limit)) {
+            $this->limit = $limit;
+            $query .= " LIMIT {$this->limit} OFFSET {$this->offset}";
+        }
         //show($query);
         return $this->query($query, $where);
 

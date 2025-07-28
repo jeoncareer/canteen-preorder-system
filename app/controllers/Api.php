@@ -168,4 +168,9 @@ class Api extends Controller
             echo json_encode(['success' => true, 'orders' => $orders]);
         }
     }
+
+    public function getOrdersByFilter()
+    {
+        echo json_encode(['all_get' => $_GET]);
+    }
 }
