@@ -203,7 +203,7 @@ class Api extends Controller
         // ​​
         // toDate: ""
 
-        $sql = "select orders.*,items.name,items.price,items.id as item_id,order_items.quantity from orders join order_items on orders.id = order_items.order_id join items on order_items.item_id = items.id WHERE orders.canteen_id = " . CANTEEN_ID . " AND ";
+        $sql = "select orders.*,items.name,items.price,items.id as item_id,order_items.quantity,students.email from orders join order_items on orders.id = order_items.order_id join items on order_items.item_id = items.id join students on orders.student_id = students.id WHERE orders.canteen_id = " . CANTEEN_ID . " AND ";
 
         if (!empty($filter['status'])) {
             $sql .= " orders.status = '" . $filter['status'] . "' ";
@@ -229,12 +229,22 @@ class Api extends Controller
             }
         }
 
-        $result = $order->query($sql);
+        $results = $order->query($sql);
+        if (empty($results)) {
+            echo json_encode(['success' => false, 'message' => 'no matching data']);
+            return;
+        }
+        $orders = [];
+        foreach ($results as $result) {
+            $orders[$result->id][] = $result;
+        }
 
 
 
 
 
-        echo json_encode(['success' => true, 'filters' => $filters, 'filter' => $filter, 'sql' => $result]);
+
+
+        echo json_encode(['success' => true, 'filters' => $filters, 'filter' => $filter, 'orders' => $orders]);
     }
 }

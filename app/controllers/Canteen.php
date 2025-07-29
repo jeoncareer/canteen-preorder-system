@@ -158,8 +158,7 @@ class Canteen extends Controller
             ['orders.canteen_id' => CANTEEN_ID],
             'orders.*, items.name,items.price,students.email,items.id as item_id, order_items.quantity',
             '',
-            '',
-            10
+            ''
         );
 
 
