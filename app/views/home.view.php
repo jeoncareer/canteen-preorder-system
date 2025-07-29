@@ -21,22 +21,22 @@
       background: #fff;
       padding: 3rem 2.5rem 2.5rem 2.5rem;
       border-radius: 22px;
-      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.13), 0 1.5px 0 #ff6b6b;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.13), 0 1.5px 0 #4f46e5;
       text-align: center;
       min-width: 320px;
       max-width: 95vw;
-      border-top: 6px solid #ff6b6b;
+      border-top: 6px solid #4f46e5;
       transition: box-shadow 0.2s;
     }
 
     .container:hover {
-      box-shadow: 0 16px 64px rgba(0, 0, 0, 0.18), 0 1.5px 0 #ff6b6b;
+      box-shadow: 0 16px 64px rgba(0, 0, 0, 0.18), 0 1.5px 0 #4f46e5;
     }
 
     .logo {
       font-size: 2.2rem;
       font-weight: bold;
-      color: #ff6b6b;
+      color: #4f46e5;
       margin-bottom: 1.5rem;
       letter-spacing: 1px;
     }
@@ -61,7 +61,7 @@
       flex-direction: column;
       align-items: center;
       background: #f7fafd;
-      color: #ff6b6b;
+      color: #4f46e5;
       text-decoration: none;
       font-size: 1.15rem;
       font-weight: 500;
@@ -69,7 +69,7 @@
       padding: 2rem 2.5rem;
       box-shadow: 0 2px 12px rgba(255, 107, 107, 0.08);
       transition: transform 0.15s, box-shadow 0.15s, background 0.15s, color 0.15s;
-      border: 2px solid #ff6b6b;
+      border: 2px solid #4f46e5;
       outline: none;
       min-width: 180px;
       cursor: pointer;
@@ -79,14 +79,14 @@
     .role-button:focus {
       transform: translateY(-4px) scale(1.04);
       box-shadow: 0 8px 32px rgba(255, 107, 107, 0.16);
-      background: #ff6b6b;
+      background: #4f46e5;
       color: #fff;
     }
 
     .role-icon {
       font-size: 2.5rem;
       margin-bottom: 0.7rem;
-      color: #ff6b6b;
+      color: #4f46e5;
       transition: color 0.15s;
     }
 

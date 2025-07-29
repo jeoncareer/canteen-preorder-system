@@ -84,11 +84,11 @@
                     <div class="filters-grid">
                         <div class="form-group">
                             <label class="form-label">Search Orders</label>
-                            <input type="text" class="form-input" placeholder="Search by order ID, student name, or email..." id="searchInput">
+                            <input data-type="search" type="text" class="form-input" placeholder="Search by order ID, student name, or email..." id="searchInput">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Status Filter</label>
-                            <select class="form-select" id="statusFilter">
+                            <select data-type="status" class="form-select" id="statusFilter">
                                 <option value="">All Status</option>
                                 <option value="pending">Pending</option>
                                 <option value="accepted">Accepted</option>
@@ -99,19 +99,19 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">From Date</label>
-                            <input type="date" class="form-input" id="fromDate">
+                            <input data-type="fromDate" type="date" class="form-input" id="fromDate">
                         </div>
                         <div class="form-group">
                             <label class="form-label">To Date</label>
-                            <input type="date" class="form-input" id="toDate">
+                            <input data-type="toDate" type="date" class="form-input" id="toDate">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Sort By</label>
-                            <select class="form-select" id="sortBy">
-                                <option value="newest">Newest First</option>
-                                <option value="oldest">Oldest First</option>
-                                <option value="amount">Amount (High to Low)</option>
-                                <option value="status">Status</option>
+                            <select data-type="sort" class="form-select" id="sortBy">
+                                <option value="desc">Newest First</option>
+                                <option value="asc">Oldest First</option>
+                                <option value="total">Amount (High to Low)</option>
+
                             </select>
                         </div>
                     </div>
@@ -301,6 +301,42 @@
                             });
                     }
                 })
+            })
+        })
+
+
+        const selects = document.querySelectorAll('.form-select,.form-input');
+        selects.forEach(select => {
+            select.addEventListener('change', function() {
+
+                let filter = [];
+                selects.forEach(select => {
+                    filter.push({
+                        type: select.dataset.type,
+                        value: select.value
+                    })
+                })
+
+                const url = ROOT + "api/getOrdersByFilter";
+
+                fetch(url, {
+                        method: "POST",
+                        headers: {
+                            "Content-type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            filter: filter
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log("after backend calling");
+                            console.log(data);
+                        }
+                    });
+
+
             })
         })
     </script>

@@ -171,6 +171,70 @@ class Api extends Controller
 
     public function getOrdersByFilter()
     {
-        echo json_encode(['all_get' => $_GET]);
+        $order = new Orders;
+        $data = json_decode(file_get_contents("php://input"), true);
+        $filters = $data['filter'];
+        $filter = [];
+
+        foreach ($filters as $index => $value) {
+            $filter[$value['type']] = $value['value'];
+        }
+
+        // $orders = $order->join(
+        //     [
+        //         'order_items' => 'orders.id = order_items.order_id',
+        //         'items' => 'order_items.item_id = items.id'
+        //     ],
+        //     ['orders.canteen_id' => CANTEEN_ID],
+        //     'orders.*, items.name,items.price, items.id as item_id, order_items.quantity',
+        //     '',
+        //     '',
+        //     '20'
+
+        // );
+
+        // fromDate: ""
+        // ​​
+        // search: ""
+        // ​​
+        // sort: "desc"
+        // ​​
+        // status: "accepted"
+        // ​​
+        // toDate: ""
+
+        $sql = "select orders.*,items.name,items.price,items.id as item_id,order_items.quantity from orders join order_items on orders.id = order_items.order_id join items on order_items.item_id = items.id WHERE orders.canteen_id = " . CANTEEN_ID . " AND ";
+
+        if (!empty($filter['status'])) {
+            $sql .= " orders.status = '" . $filter['status'] . "' ";
+        }
+
+        if (!empty($filter['fromDate'] && !empty($filter['toDate']))) {
+            $sql .= "  AND orders.time BETWEEN '{$filter['fromDate']}' AND '{$filter['toDate']}'";
+        } else if (!empty($filter['fromDate'] || !empty($filter['toDate']))) {
+            if (!empty($filter['fromDate'])) {
+                $sql .= " AND orders.time >= '{$filter['fromDate']}' ";
+            }
+
+            if (!empty($filter['toDate'])) {
+                $sql .= " AND orders.time <= '{$filter['toDate']}' ";
+            }
+        }
+
+        if (!empty($filter['sort'])) {
+            if ($filter['sort'] == 'desc' || $filter['sort'] == 'asc') {
+                $sql .= ' ORDER BY time ' . $filter['sort'];
+            } else {
+                $sql .= ' ORDER BY orders.total desc';
+            }
+        }
+
+        $result = $order->query($sql);
+
+
+
+
+
+        echo json_encode(['success' => true, 'filters' => $filters, 'filter' => $filter, 'sql' => $result]);
     }
 }
