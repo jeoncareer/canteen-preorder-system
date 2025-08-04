@@ -180,56 +180,56 @@ class Api extends Controller
             $filter[$value['type']] = $value['value'];
         }
 
-        // $orders = $order->join(
-        //     [
-        //         'order_items' => 'orders.id = order_items.order_id',
-        //         'items' => 'order_items.item_id = items.id'
-        //     ],
-        //     ['orders.canteen_id' => CANTEEN_ID],
-        //     'orders.*, items.name,items.price, items.id as item_id, order_items.quantity',
-        //     '',
-        //     '',
-        //     '20'
 
-        // );
 
-        // fromDate: ""
-        // ​​
-        // search: ""
-        // ​​
-        // sort: "desc"
-        // ​​
-        // status: "accepted"
-        // ​​
-        // toDate: ""
+        $where = [];
 
-        $sql = "select orders.*,items.name,items.price,items.id as item_id,order_items.quantity,students.email from orders join order_items on orders.id = order_items.order_id join items on order_items.item_id = items.id join students on orders.student_id = students.id WHERE orders.canteen_id = " . CANTEEN_ID . " AND ";
+        $where[] = "orders.canteen_id = " . CANTEEN_ID;
+
 
         if (!empty($filter['status'])) {
-            $sql .= " orders.status = '" . $filter['status'] . "' ";
+            $where[] = " orders.status = '" . $filter['status'] . "' ";
         }
+        $fromDate = new DateTime($filter['fromDate']);
+        $toDate = new DateTime($filter['toDate']);
+        $fromDate->modify('-1 day');
+        $toDate->modify('+1 Day');
+        $fromDate = $fromDate->format('Y-m-d H:i:s');
+        $toDate = $toDate->format('Y-m-d H:i:s');
 
-        if (!empty($filter['fromDate'] && !empty($filter['toDate']))) {
-            $sql .= "  AND orders.time BETWEEN '{$filter['fromDate']}' AND '{$filter['toDate']}'";
-        } else if (!empty($filter['fromDate'] || !empty($filter['toDate']))) {
+
+        if (!empty($filter['fromDate']) && !empty($filter['toDate'])) {
+
+            $where[] = "  orders.time BETWEEN '{$fromDate}' AND '{$toDate}'";
+        } else if (!empty($filter['fromDate']) || !empty($filter['toDate'])) {
             if (!empty($filter['fromDate'])) {
-                $sql .= " AND orders.time >= '{$filter['fromDate']}' ";
+                $where[] = " orders.time >= '{$fromDate}' ";
             }
 
             if (!empty($filter['toDate'])) {
-                $sql .= " AND orders.time <= '{$filter['toDate']}' ";
+                $where[] = " orders.time <= '{$toDate}' ";
             }
         }
 
+
+
+        $sql = "select orders.*,items.name,items.price,items.id as item_id,order_items.quantity,students.email from orders join order_items on orders.id = order_items.order_id join items on order_items.item_id = items.id join students on orders.student_id = students.id ";
+
+        if (!empty($where)) {
+            $sql .= "  WHERE " . implode(" AND ", $where);
+        }
         if (!empty($filter['sort'])) {
             if ($filter['sort'] == 'desc' || $filter['sort'] == 'asc') {
-                $sql .= ' ORDER BY time ' . $filter['sort'];
+                $sql .= ' ORDER BY orders.id ' . $filter['sort'];
             } else {
                 $sql .= ' ORDER BY orders.total desc';
             }
         }
 
+
+
         $results = $order->query($sql);
+        $rawResults = $results;
         if (empty($results)) {
             echo json_encode(['success' => false, 'message' => 'no matching data']);
             return;
@@ -239,12 +239,41 @@ class Api extends Controller
             $orders[$result->id][] = $result;
         }
 
+        krsort($orders);
+        echo json_encode(['success' => true, 'filters' => $filters, 'filter' => $filter, 'orders' => $orders, 'sql' => $sql, 'raw' => $rawResults, 'arrayKeys' => array_keys($orders)]);
+    }
+
+    public function getItems()
+    {
+        $data = json_decode(file_get_contents("php://input"), true);
+        $from = $data['from'];
+        $word = $data['word'];
+        $college_id = COLLEGE_ID;
+        $canteen_id = CANTEEN_ID;
+        $item = new Items;
+
+        if ($from === "s") {
+
+            $sql = "select DISTINCT items.* from items join canteen on items.canteen_id
+            where items.name like '%{$word}%' and canteen.college_id = {$college_id}
+            ";
+        } else {
+            $sql = "select DISTINCT items.* from items join canteen on items.canteen_id
+            where items.name like '%{$word}%' and canteen.college_id = {$college_id} AND
+            canteen.id = {$canteen_id}
+            ";
+        }
+        $items = $item->query($sql);
 
 
+        if (!empty($items)) {
+            echo json_encode(['success' => true, 'items' => $items]);
+        }
+    }
 
 
-
-
-        echo json_encode(['success' => true, 'filters' => $filters, 'filter' => $filter, 'orders' => $orders]);
+    public function getItemsFilter()
+    {
+        $data = json_decode(file_get_contents("php://input"), true);
     }
 }

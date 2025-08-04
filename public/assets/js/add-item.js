@@ -2,7 +2,7 @@
             const closeModalButton = document.querySelectorAll('[data-close-button]');
             const overlay = document.getElementById('overlay');
 
-            console.log("clicked open modal button");
+           
             openModalButton.forEach(button => {
                 button.addEventListener('click', function() {
                     
@@ -36,3 +36,5 @@
                 overlay.classList.remove('active');
 
             }
+
+          console.log("hy from add-item");

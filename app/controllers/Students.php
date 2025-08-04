@@ -5,6 +5,7 @@ class Students extends Controller
     use Database;
     public function index()
     {
+
         $cart = new Cart;
 
         if (empty($_SESSION['STUDENT'])) {
@@ -241,6 +242,42 @@ class Students extends Controller
     }
 
 
+
+    public function contact()
+    {
+        if (empty($_SESSION['STUDENT'])) {
+            redirect('students/login');
+        }
+
+        $data['page'] = 'contact';
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            // Here you would typically save the report to database
+            // For now, we'll just show a success message
+
+            $subject = $_POST['subject'] ?? '';
+            $priority = $_POST['priority'] ?? '';
+            $message = $_POST['message'] ?? '';
+            $contact_method = $_POST['contact_method'] ?? '';
+            $student_id = $_SESSION['STUDENT']->id;
+
+            // TODO: Save to database
+            // $report = new StudentReports();
+            // $report->insert([
+            //     'student_id' => $student_id,
+            //     'subject' => $subject,
+            //     'priority' => $priority,
+            //     'message' => $message,
+            //     'contact_method' => $contact_method,
+            //     'status' => 'pending',
+            //     'created_at' => date('Y-m-d H:i:s')
+            // ]);
+
+            $data['success'] = "Your report has been submitted successfully. We'll get back to you soon.";
+        }
+
+        $this->view('students/contact', $data);
+    }
 
     public function order()
     {

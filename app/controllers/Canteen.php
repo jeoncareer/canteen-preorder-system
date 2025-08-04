@@ -113,13 +113,14 @@ class Canteen extends Controller
 
             $arr = ['name' => $name, 'canteen_id' => $_SESSION['CANTEEN']->id];
             $category->insert($arr);
-            echo "inserted successfully";
+            redirect('canteen/menu_management');
         }
     }
 
 
     public function menu_management()
     {
+
 
         $order = new orders;
         $categories = new Categories;
@@ -157,9 +158,11 @@ class Canteen extends Controller
             ],
             ['orders.canteen_id' => CANTEEN_ID],
             'orders.*, items.name,items.price,students.email,items.id as item_id, order_items.quantity',
-            '',
-            ''
+            'desc',
+            'orders.id'
         );
+
+
 
 
         $data['orders'] = [];
@@ -167,7 +170,7 @@ class Canteen extends Controller
             $data['orders'][$order->id][] = $order;
         }
 
-        //show($data['orders']);
+        krsort(($data['orders']));
 
         $this->view('canteen/orders', $data);
     }

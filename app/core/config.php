@@ -23,6 +23,14 @@ if (isset($_SESSION['CANTEEN'])) {
     define('CANTEEN_ID', $_SESSION['CANTEEN']->id);
 }
 
+if (isset($_SESSION['CANTEEN']) || isset($_SESSION['STUDENT'])) {
+    if (isset($_SESSION['CANTEEN'])) {
+        define('COLLEGE_ID', $_SESSION['CANTEEN']->college_id);
+    } else {
+        define('COLLEGE_ID', $_SESSION['STUDENT']->college_id);
+    }
+}
+
 
 
 define('APP_NAME', "My Website");

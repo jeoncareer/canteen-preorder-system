@@ -46,6 +46,15 @@
         </li>
 
         <li class="nav-item">
+            <a href="<?= ROOT ?>admin/student_reports" class="nav-link <?php if ($page === 'student_reports') {
+                                                                            echo 'active';
+                                                                        } ?>">
+                <span class="nav-icon">📞</span>
+                <span>Student Reports</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
             <a href="<?= ROOT ?>admin/settings" class="nav-link <?php if ($page === 'settings') {
                                                                     echo 'active';
                                                                 } ?>">

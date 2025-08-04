@@ -5,6 +5,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Menu Management - Campus Canteen</title>
+    <script>
+        const ROOT = "<?= ROOT ?>";
+    </script>
     <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/header.css">
     <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/sidebar.css">
     <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/student-general.css">
@@ -122,13 +125,13 @@
 
 
             <!-- Add Category Modal -->
-            <div class="add-item-modal" id="category-modal">
+            <div class="add-item-modal " id="category-modal">
                 <div class="modal-header">
                     <div class="modal-title">🏷️ Add New Category</div>
                     <button data-close-button="close-button" class="close-button">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form class="add-item-form" method="POST" action="<?= ROOT ?>canteen/add-category">
+                    <form class="add-item-form" method="POST" action="<?= ROOT ?>canteen/category">
                         <div class="form-group">
                             <label class="form-label" for="category-name">Category Name *</label>
                             <input type="text" id="category-name" name="category_name" class="form-input" placeholder="e.g., Appetizers, Soups, etc." required>
@@ -148,11 +151,12 @@
             <div id="overlay"></div>
 
             <!-- Search and Filter Section -->
+            <!-- next task -->
             <div class="search-filter-section">
                 <div class="search-filter-grid">
                     <div class="form-group">
                         <label class="form-label">Search Menu Items</label>
-                        <input type="text" class="form-input" placeholder="Search by name or description..." id="searchInput">
+                        <input type="text" data-from="c" class="form-input" placeholder="Search by name or description..." id="searchInput">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Filter by Category</label>
@@ -247,6 +251,40 @@
         </div>
 
         <script src="/canteen-preorder-system/public/assets/js/add-item.js"></script>
+
+        <script>
+            const formInput = document.getElementById('searchInput');
+            console.log(formInput);
+
+            formInput.addEventListener('input', function() {
+                let from = this.dataset.from;
+                let word = this.value;
+                const url = ROOT + 'api/getItems';
+                if (word === '') {
+                    location.reload();
+                    return;
+                }
+
+                fetch(url, {
+                        method: "POST",
+                        headers: {
+                            "Content-type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            word: word,
+                            from: from
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log(data);
+                        }
+                    })
+
+
+            })
+        </script>
 
 
 </body>

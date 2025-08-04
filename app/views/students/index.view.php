@@ -39,7 +39,7 @@
         }
     </style>
 
-    <script src="index.js" defer></script>
+
 
 
 
@@ -72,7 +72,7 @@
                         <span>Today's Menu</span>
                     </div>
 
-                    <input type="text" class="search-bar" placeholder="Search for dishes..." id="searchInput" oninput="searchItems()">
+                    <input type="text" class="search-bar" data-from="s" placeholder="Search for dishes..." id="searchInput">
 
                     <div class="menu-grid">
                         <div class="menu-categories">
@@ -170,10 +170,14 @@
                         </form>
                     </div>
 
+                    <div id="testing"></div>
 
-                    <script defer src="<?= ROOT ?>assets/js/index.js"></script>
 
+                    <script src="<?= ROOT ?>assets/js/index.js"></script>
 
+                    <script src="<?= ROOT ?>assets/js/get-items.js">
+
+                    </script>
 </body>
 
 

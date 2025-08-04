@@ -9,6 +9,8 @@
   <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/sidebar.css">
   <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/student-general.css">
   <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/canteen-common.css">
+  <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/add-item.css">
+  <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/menu-management.css">
   <script>
     const ROOT = "<?= ROOT ?>";
   </script>
@@ -496,7 +498,7 @@
               <h2 class="section-title">Quick Actions</h2>
             </div>
 
-            <a href="#" class="action-btn">
+            <a href="#" class="action-btn" data-modal-target="#modal" class="add-item-section">
               ➕ Add New Item
             </a>
 
@@ -511,6 +513,67 @@
             <a href="#" class="action-btn">
               📊 View Reports
             </a>
+          </div>
+
+          <div id="overlay"></div>
+          <div class="add-item-modal" id="modal">
+            <div class="modal-header">
+              <div class="modal-title">🍽️ Add New Menu Item</div>
+              <button data-close-button="close-button" class="close-button">&times;</button>
+            </div>
+            <div class="modal-body">
+              <form class="add-item-form" method="POST" action="<?= ROOT ?>canteen/menu_management">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label" for="item-name">Item Name *</label>
+                    <input type="text" id="item-name" name="item_name" value="chicken biriyani" class="form-input" placeholder="e.g., Chicken Biryani" required>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="item-price">Price (₹) *</label>
+                    <input type="number" id="item-price" name="price" value="10" class="form-input" placeholder="0.00" min="0" step="0.01" required>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="item-description">Description</label>
+                  <textarea id="item-description" name="description" class="form-textarea" placeholder="Describe your delicious dish..." rows="3">a indian food</textarea>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label" for="item-category">Category *</label>
+                    <select id="item-category" name="category" class="form-select" required>
+                      <option value="">Select Category</option>
+                      <?php foreach ($categories as $cat): ?>
+                        <option value="<?= $cat['id'] ?>"><?= ucfirst($cat['name']) ?></option>
+                      <?php endforeach; ?>
+
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="item-status">Availability *</label>
+                    <select id="item-status" name="status" class="form-select" required>
+                      <option value="available">Available</option>
+                      <option value="unavailable">Unavailable</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="item-emoji">Food Emoji</label>
+                  <input type="text" id="item-emoji" name="emoji" class="form-input" placeholder="🍛" maxlength="2">
+                  <small class="form-help">Choose an emoji to represent your dish (optional)</small>
+                </div>
+
+                <div class="modal-actions">
+                  <button type="button" class="btn btn-secondary" data-close-button="close-button">Cancel</button>
+                  <button type="submit" class="btn btn-primary">
+                    <span class="btn-icon">➕</span>
+                    Add Menu Item
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
 
           <!-- Recent Activity -->
@@ -567,6 +630,8 @@
   <script src="<?= ROOT ?>assets/js/canteen-dashboard.js">
     // Status change functionality
   </script>
+
+  <script src="<?= ROOT ?>assets/js/add-item.js"></script>
 </body>
 
 </html>

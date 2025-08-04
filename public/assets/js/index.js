@@ -138,7 +138,7 @@ function removeItem(button) {
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data);
+            console.log('from',data);
             if (data.success) {
                 // Remove the item from the DOM
                 const parent = button.closest('.cart-item');
@@ -169,7 +169,7 @@ function updateAddButton() {
             })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
+                //console.log('from',data);
                 let con = item.querySelector('.item-footer');
                 const existBtn = con.querySelector("button");
                 if (existBtn) {

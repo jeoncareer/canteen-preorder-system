@@ -108,6 +108,7 @@
                         <div class="form-group">
                             <label class="form-label">Sort By</label>
                             <select data-type="sort" class="form-select" id="sortBy">
+                                <option value="">Select</option>
                                 <option value="desc">Newest First</option>
                                 <option value="asc">Oldest First</option>
                                 <option value="total">Amount (High to Low)</option>
@@ -154,7 +155,10 @@
 
 
                             <?php foreach ($orders as $order_id => $items): ?>
-
+                                <?php $dateStr = $items[0]->time;
+                                $date = new DateTime($dateStr);
+                                $time = $date->format('g:i A');
+                                ?>
                                 <tr>
                                     <td>
                                         <input type="checkbox" class="order-checkbox" data-order-id="<?= $order_id ?>">
@@ -180,7 +184,7 @@
                                     <td><span class="order-total">₹1<?= $items[0]->total ?></span></td>
                                     <td>
                                         <div class="order-time-info">
-                                            <span class="order-time">11:30 AM</span>
+                                            <span class="order-time"><?= $time ?></span>
                                             <span class="order-date">Today</span>
                                         </div>
                                     </td>
@@ -222,18 +226,18 @@
 
                     <!-- Pagination -->
                     <!-- <div class="pagination">
-                        <div class="pagination-info">
-                            Showing 1-6 of 47 orders
-                        </div>
-                        <div class="pagination-controls">
-                            <button class="pagination-btn" disabled>← Previous</button>
-                            <button class="pagination-btn active">1</button>
-                            <button class="pagination-btn">2</button>
-                            <button class="pagination-btn">3</button>
-                            <button class="pagination-btn">4</button>
-                            <button class="pagination-btn">Next →</button>
-                        </div>
-                    </div> -->
+                            <div class="pagination-info">
+                                Showing 1-6 of 47 orders
+                            </div>
+                            <div class="pagination-controls">
+                                <button class="pagination-btn" disabled>← Previous</button>
+                                <button class="pagination-btn active">1</button>
+                                <button class="pagination-btn">2</button>
+                                <button class="pagination-btn">3</button>
+                                <button class="pagination-btn">4</button>
+                                <button class="pagination-btn">Next →</button>
+                            </div>
+                        </div> -->
                 </div>
             </div>
         </div>
@@ -245,176 +249,7 @@
     <div id="testing"></div>
     <script src="<?= ROOT ?>assets/js/canteen-dashboard.js"></script>
 
-    <script>
-        let orders = <?= json_encode($orders) ?>;
-        // console.log(orders);
-        let checkboxs = document.querySelectorAll('.order-checkbox[data-order-id]');
-        checkboxs.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                let orderId = checkbox.dataset.orderId;
-                console.log("clicked checkbox with id " + orderId);
-            })
-        })
-
-
-        let allCheckbox = document.getElementById('selectAllHeader');
-
-        allCheckbox.addEventListener('change', function() {
-            checkboxs.forEach(checkbox => {
-                checkbox.checked = allCheckbox.checked;
-                let orderId = checkbox.dataset.orderId;
-                console.log(" checkbox: " + orderId);
-            })
-        })
-
-        let bulkBtns = document.querySelectorAll('.bulk-btn');
-
-        bulkBtns.forEach(bulkBtn => {
-            bulkBtn.addEventListener('click', function() {
-                let newStatus = bulkBtn.dataset.type;
-                checkboxs.forEach(checkbox => {
-                    if (checkbox.checked) {
-
-
-                        let orderId = checkbox.dataset.orderId;
-                        console.log("changing " + orderId);
-                        const url = ROOT + 'api/changeStatus';
-                        fetch(url, {
-                                method: "POST",
-                                headers: {
-                                    "Content-type": "application/json"
-                                },
-                                body: JSON.stringify({
-                                    order_id: orderId,
-                                    new_status: newStatus
-                                })
-                            })
-                            .then(res => res.json())
-                            .then(data => {
-                                if (data.success) {
-                                    let select = document.querySelector(`.status-select[data-id="${orderId}"]`);
-                                    console.log(select);
-                                    select.classList.remove('pending', 'accepted', 'completed', 'rejected', 'ready');
-                                    select.classList.add(newStatus);
-                                    select.value = newStatus;
-                                    console.log("Status updated successfully");
-
-                                }
-                            });
-                    }
-                })
-            })
-        })
-
-
-        const selects = document.querySelectorAll('.form-select,.form-input');
-        selects.forEach(select => {
-            select.addEventListener('change', function() {
-
-                let filter = [];
-                selects.forEach(select => {
-                    filter.push({
-                        type: select.dataset.type,
-                        value: select.value
-                    })
-                })
-
-                const url = ROOT + "api/getOrdersByFilter";
-
-                let table = document.querySelector('.orders-table');
-                let tBody = table.querySelector('tbody');
-                fetch(url, {
-                        method: "POST",
-                        headers: {
-                            "Content-type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            filter: filter
-                        })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.success) {
-                            console.log("after backend calling");
-                            console.log(data);
-                            let orders = data.orders;
-                            let testing = document.querySelector('#testing');
-                            testing.innerHTML = `<pre>${JSON.stringify(orders, null, 2)}</pre>`;
-                            tBody.innerHTML = '';
-                            Object.entries(orders).forEach(([orderId, items]) => {
-
-                                let tr = document.createElement('tr');
-                                let itemsCount = '';
-                                items.forEach(item => {
-                                    let name = item.name;
-                                    name = name.charAt(0).toUpperCase() + name.slice(1);
-                                    itemsCount += `
-                                       <div class="order-item">
-                                <span class="item-name">${name}</span>
-                                <span class="item-quantity">x${item.quantity}</span>
-                                </div>
-                                    `;
-                                });
-
-                                tr.innerHTML = `
-                                
-                                <td>
-                                <input type="checkbox" class="order-checkbox" data-order-id="${items[0].id}">
-                                </td>
-                                <td><span class="order-id">#${items[0].id}</span></td>
-                                <td>
-                                <div class="student-info">
-                                <span class="student-name">${items[0].email}</span>
-                                <span class="student-email">${items[0].email}</span>
-                                </div>
-                                </td>
-                                <td>
-                                <div class="order-items-list">
-                                
-                             ${itemsCount}
-                                
-                                
-                                </div>
-                                </td>
-                                <td><span class="order-total">₹${items[0].total}</span></td>
-                                <td>
-                                <div class="order-time-info">
-                                <span class="order-time">11:30 AM</span>
-                                <span class="order-date">Today</span>
-                                </div>
-                                </td>
-                                <td>
-                                <select data-id='${items[0].id}' class="status-select ${items[0].status}">
-                                <option value="pending" ${items[0].status === 'pending' ? 'selected' : ''}>Pending</option>
-                                <option value="accepted" ${items[0].status === 'accepted' ? 'selected' : ''}>Accepted</option>
-                                <option value="completed" ${items[0].status === 'completed' ? 'selected' : ''}>Completed</option>
-                                <option value="ready" ${items[0].status === 'ready' ? 'selected' : ''}>Ready</option>
-                                <option value="rejected" ${items[0].status === 'rejected' ? 'selected' : ''}>Rejected</option>
-                                </select>
-                                </td>
-                                <!-- <td>
-                                <div class="order-actions">
-                                <button class="order-action-btn view-details-btn">👁️ Details</button>
-                                </div>
-                                </td> -->
-                                
-                                `;
-
-                                tBody.prepend(tr);
-                            })
-
-                        } else {
-                            tBody.innerHTML = '';
-                        }
-                    });
-
-
-                //table.removeChild(tbody);
-
-
-
-            })
-        })
+    <script src="<?= ROOT ?>assets/js/orders.js">
     </script>
 </body>
 
