@@ -16,7 +16,7 @@
                 
                 button.addEventListener('click', () => {
                   
-                    const modal = button.closest('.add-item-modal');
+                    const modal = button.closest('.modal');
                     closeModal(modal);
                 })
             })

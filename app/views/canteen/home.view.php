@@ -516,7 +516,7 @@
           </div>
 
           <div id="overlay"></div>
-          <div class="add-item-modal" id="modal">
+          <div class="modal" id="modal">
             <div class="modal-header">
               <div class="modal-title">🍽️ Add New Menu Item</div>
               <button data-close-button="close-button" class="close-button">&times;</button>

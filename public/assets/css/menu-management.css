@@ -228,6 +228,8 @@
             font-size: 1rem;
             transition: var(--transition);
             background: #f8fafc;
+            margin-bottom: 20px;
+           
         }
 
         .form-input:focus {
@@ -434,7 +436,7 @@
         }
 
         /* Modal Form Spacing Improvements */
-        .add-item-modal {
+        .modal {
             max-width: 600px;
             width: 90%;
         }
@@ -636,7 +638,7 @@
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
-            .add-item-modal {
+            .modal {
                 width: 95%;
                 margin: 1rem;
             }

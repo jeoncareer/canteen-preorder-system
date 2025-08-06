@@ -63,7 +63,7 @@
                 </div>
             </div>
 
-            <div class="add-item-modal" id="modal">
+            <div class="modal" id="modal">
                 <div class="modal-header">
                     <div class="modal-title">🍽️ Add New Menu Item</div>
                     <button data-close-button="close-button" class="close-button">&times;</button>
@@ -125,7 +125,7 @@
 
 
             <!-- Add Category Modal -->
-            <div class="add-item-modal " id="category-modal">
+            <div class="modal " id="category-modal">
                 <div class="modal-header">
                     <div class="modal-title">🏷️ Add New Category</div>
                     <button data-close-button="close-button" class="close-button">&times;</button>
@@ -211,7 +211,7 @@
             <div class="menu-grid" id="menuGrid">
                 <?php foreach ($items as $item): ?>
                     <!-- Sample Menu Items -->
-                    <div class="menu-card" data-category="main-course" data-status="available">
+                    <div class="menu-card" data-id="<?= $item->id ?>" data-category="main-course" data-status="available">
                         <!-- <div class="menu-card-image">
                         🍛
                         <span class="status-badge status-available">Available</span>
@@ -224,20 +224,13 @@
                                 <span class="menu-item-category">Main Course</span>
                             </div>
                             <div class="menu-item-actions">
-                                <button class="action-btn edit-btn"> Edit</button>
-                                <button class="action-btn toggle-btn available">Disable</button>
-                                <button class="action-btn delete-btn">Delete</button>
+                                <button data-modal-target="#edit-modal" data-action="edit" class="action-btn edit-btn"> Edit</button>
+                                <button data-modal-target="#disable-modal" data-action="disable" class="action-btn toggle-btn available">Disable</button>
+                                <button data-modal-target="#delete-modal" data-action="delete" class="action-btn delete-btn">Delete</button>
                             </div>
                         </div>
                     </div>
                 <?php endforeach; ?>
-
-
-
-
-
-
-
 
 
             </div>
@@ -250,40 +243,204 @@
             </div>
         </div>
 
+
+
+
+
+
+        <div class="modal" id="disable-modal">
+            disable
+        </div>
+        <div class="modal" id="delete-modal">
+            Delete
+        </div>
+
         <script src="/canteen-preorder-system/public/assets/js/add-item.js"></script>
 
         <script>
-            const formInput = document.getElementById('searchInput');
-            console.log(formInput);
+            searchItemsFilter();
 
-            formInput.addEventListener('input', function() {
-                let from = this.dataset.from;
-                let word = this.value;
-                const url = ROOT + 'api/getItems';
-                if (word === '') {
-                    location.reload();
-                    return;
+            actionButtons();
+
+            function actionButtons() {
+
+                let menuGrid = document.getElementById('menuGrid');
+                menuGrid.addEventListener("click", e => {
+                    if (e.target.classList.contains('action-btn')) {
+
+                        let actionBtn = e.target;
+                        console.log(actionBtn);
+                        let menuCard = actionBtn.parentElement.parentElement.parentElement;
+                        if (actionBtn.dataset.action == "edit") {
+                            console.log("pressed edit");
+                            editItem(menuCard)
+                        }
+
+                        if (actionBtn.dataset.action == "disable") {
+                            console.log("pressed disable");
+                            updateItemStatus(actionBtn, menuCard)
+                        }
+
+                        if (actionBtn.dataset.action == "delete") {
+                            console.log("pressed edit");
+                            deleteItem(menuCard)
+                        }
+
+
+                    }
+                })
+            }
+
+
+            function editItem(menuCard) {
+                if (!document.getElementById('edit-modal')) {
+
+                    let div = document.createElement('div');
+                    div.classList.add('modal');
+                    div.id = "edit-modal";
+                    div.innerHTML = `
+                     <div class="modal-header">
+                    <div class="modal-title">Edit Item</div>
+                    <button data-close-button="close-button" class="close-button">&times;</button>
+                </div>
+    
+                <div class="modal-body">
+                    <form action="" method="post">
+                        <div class="form-group">
+    
+                            <input type="text" id="item-name" class="form-input" name="item-name" placeholder="Change Name">
+                        </div>
+                        <div class="form-group">
+    
+                            <input type="text" id="item-price" class="form-input" name="item-name" placeholder="Change Price">
+                        </div>
+    
+                        <div class="form-group">
+    
+                            <input type="text" id="item-description" class="form-input" name="item-name" placeholder="Change Description">
+                        </div>
+    
+                        <div class="form-group">
+    
+                            <input type="text" id="item-category" class="form-input" name="item-name" placeholder="Change Category">
+                        </div>
+                    </form>
+                </div>
+                `;
+
+                    document.body.append(div);
                 }
 
-                fetch(url, {
-                        method: "POST",
-                        headers: {
-                            "Content-type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            word: word,
-                            from: from
+
+
+                const closeModalButton = document.querySelectorAll('[data-close-button]');
+
+                closeModalButton.forEach(button => {
+
+                    button.addEventListener('click', () => {
+
+                        const modal = button.closest('.modal');
+                        closeModal(modal);
+                    })
+                })
+            };
+
+            function updateItemStatus(actionBtn, menuCard) {
+                console.log(actionBtn)
+                console.log(menuCard);
+            };
+
+            function deleteItem(menuCard) {
+                console.log(menuCard)
+            };
+
+
+
+
+
+            function searchItemsFilter() {
+                const formInput = document.getElementById('searchInput');
+                console.log(formInput);
+
+                formInput.addEventListener('input', function() {
+                    let from = this.dataset.from;
+                    let word = this.value;
+                    const url = ROOT + 'api/getItems';
+                    if (word === '') {
+                        location.reload();
+                        return;
+                    }
+
+                    let tMenuGrid = document.querySelector('.menu-grid');
+                    const menuGrid = tMenuGrid;
+                    let catSec = document.querySelector('.categories-section');
+                    let parent = tMenuGrid.parentNode;
+
+
+
+                    tMenuGrid.remove();
+
+
+
+                    parent.insertBefore(menuGrid, catSec);
+
+                    fetch(url, {
+                            method: "POST",
+                            headers: {
+                                "Content-type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                word: word,
+                                from: from
+                            })
                         })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.success) {
-                            console.log(data);
-                        }
-                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                console.log(data);
+
+                                menuGrid.innerHTML = '';
+
+                                console.log(menuGrid);
+
+                                data.items.forEach(item => {
 
 
-            })
+                                    let menuCardDiv = document.createElement('div');
+                                    menuCardDiv.classList.add('menu-card');
+                                    menuCardDiv.dataset.category = "main-course";
+                                    menuCardDiv.dataset.status = "available";
+                                    menuCardDiv.dataset.id = item.id;
+
+
+
+                                    menuCardDiv.innerHTML = `
+                                <div class="menu-card-content">
+                                       <h3 class="menu-item-name">${item.name}</h3>
+                                <p class="menu-item-description">${item.description}</p>
+                                <div class="menu-item-details">
+                                    <span class="menu-item-price">₹${item.price}</span>
+                                    <span class="menu-item-category">Main Course</span>
+                                </div>
+                                <div class="menu-item-actions">
+                                    <button class="action-btn edit-btn"> Edit</button>
+                                    <button class="action-btn toggle-btn available">Disable</button>
+                                    <button class="action-btn delete-btn">Delete</button>
+                                </div>
+                                 </div>
+                                `;
+
+                                    menuGrid.append(menuCardDiv);
+
+
+                                })
+
+                            }
+                        })
+
+
+                })
+            }
         </script>
 
 

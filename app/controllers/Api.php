@@ -246,29 +246,34 @@ class Api extends Controller
     public function getItems()
     {
         $data = json_decode(file_get_contents("php://input"), true);
+        header('Content-Type: application/json');
         $from = $data['from'];
         $word = $data['word'];
-        $college_id = COLLEGE_ID;
-        $canteen_id = CANTEEN_ID;
+        
+        
         $item = new Items;
 
         if ($from === "s") {
 
             $sql = "select DISTINCT items.* from items join canteen on items.canteen_id
-            where items.name like '%{$word}%' and canteen.college_id = {$college_id}
-            ";
+            where items.name like '%{$word}%' and canteen.college_id = ". COLLEGE_ID
+            ;
         } else {
             $sql = "select DISTINCT items.* from items join canteen on items.canteen_id
-            where items.name like '%{$word}%' and canteen.college_id = {$college_id} AND
-            canteen.id = {$canteen_id}
-            ";
+            where items.name like '%{$word}%' and canteen.college_id = ".COLLEGE_ID." AND
+            canteen.id = ".CANTEEN_ID
+            ;
         }
         $items = $item->query($sql);
 
 
         if (!empty($items)) {
             echo json_encode(['success' => true, 'items' => $items]);
+        }else{
+            echo json_encode(['success' => false, 'message' => 'no items']);
         }
+
+        
     }
 
 
