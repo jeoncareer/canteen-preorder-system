@@ -211,7 +211,7 @@
             <div class="menu-grid" id="menuGrid">
                 <?php foreach ($items as $item): ?>
                     <!-- Sample Menu Items -->
-                    <div class="menu-card" data-id="<?= $item->id ?>" data-category="main-course" data-status="available">
+                    <div class="menu-card" data-name="<?= $item->name ?>" data-id="<?= $item->id ?>" data-category="main-course" data-status="available">
                         <!-- <div class="menu-card-image">
                         🍛
                         <span class="status-badge status-available">Available</span>
@@ -224,7 +224,7 @@
                                 <span class="menu-item-category">Main Course</span>
                             </div>
                             <div class="menu-item-actions">
-                                <button data-modal-target="#edit-modal" data-action="edit" class="action-btn edit-btn"> Edit</button>
+                                <button data-modal-target="#edit-modal<?= $item->id ?>" data-action="edit" class="action-btn edit-btn"> Edit</button>
                                 <button data-modal-target="#disable-modal" data-action="disable" class="action-btn toggle-btn available">Disable</button>
                                 <button data-modal-target="#delete-modal" data-action="delete" class="action-btn delete-btn">Delete</button>
                             </div>
@@ -258,6 +258,8 @@
         <script src="/canteen-preorder-system/public/assets/js/add-item.js"></script>
 
         <script>
+            let categories = <?= json_encode($categories) ?>;
+            console.log(categories);
             searchItemsFilter();
 
             actionButtons();
@@ -293,11 +295,12 @@
 
 
             function editItem(menuCard) {
-                if (!document.getElementById('edit-modal')) {
-
+                const itemId = menuCard.dataset.id;
+                const itemName = menuCard.dataset.name;
+                if (!document.getElementById('edit-modal' + itemId)) {
                     let div = document.createElement('div');
                     div.classList.add('modal');
-                    div.id = "edit-modal";
+                    div.id = "edit-modal" + itemId;
                     div.innerHTML = `
                      <div class="modal-header">
                     <div class="modal-title">Edit Item</div>
@@ -305,30 +308,38 @@
                 </div>
     
                 <div class="modal-body">
-                    <form action="" method="post">
+                    <form action="${ROOT}canteen/edit_item" method="post">
                         <div class="form-group">
     
                             <input type="text" id="item-name" class="form-input" name="item-name" placeholder="Change Name">
                         </div>
                         <div class="form-group">
     
-                            <input type="text" id="item-price" class="form-input" name="item-name" placeholder="Change Price">
+                            <input type="text" id="item-price" class="form-input" name="price" placeholder="Change Price">
                         </div>
     
                         <div class="form-group">
     
-                            <input type="text" id="item-description" class="form-input" name="item-name" placeholder="Change Description">
+                            <input type="text" id="item-description" class="form-input" name="description" placeholder="Change Description">
                         </div>
+
     
-                        <div class="form-group">
-    
-                            <input type="text" id="item-category" class="form-input" name="item-name" placeholder="Change Category">
+                    
+                        <input type="hidden" name="item_id" value="${itemId}">
+                         <div class="modal-actions">
+                            <button type="button" class="btn btn-secondary" data-close-button="close-button">Cancel</button>
+                            <button type="submit" class="btn btn-primary">
+                                <span class="btn-icon">🏷️</span>
+                                Submit
+                            </button>
                         </div>
+
                     </form>
                 </div>
                 `;
 
                     document.body.append(div);
+                    openModal(div);
                 }
 
 

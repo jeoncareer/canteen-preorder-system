@@ -175,4 +175,33 @@ class Canteen extends Controller
 
         $this->view('canteen/orders', $data);
     }
+
+    public function edit_item()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == "POST") {
+            $data = [];
+            $where = [];
+            if (!empty($_POST['item-name'])) {
+                $data['name'] = $_POST['item-name'];
+            }
+
+            if (!empty($_POST['price'])) {
+                $data['price'] = $_POST['price'];
+            }
+
+            if (!empty($_POST['description'])) {
+                $data['description'] = $_POST['description'];
+            }
+            if (!empty($_POST['item_id'])) {
+                $where['id'] = $_POST['item_id'];
+            }
+            show($data);
+
+            $item = new Items;
+
+            $item->update($where, $data);
+
+            redirect('canteen/menu_management');
+        }
+    }
 }
