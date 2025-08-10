@@ -128,6 +128,7 @@ class Canteen extends Controller
         $canteen_items = $items->where(['canteen_id' => CANTEEN_ID]);
         $data['items'] = $canteen_items;
         //show($canteen_items);
+        //show($canteen_items);
 
 
 

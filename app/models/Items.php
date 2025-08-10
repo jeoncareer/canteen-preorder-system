@@ -14,7 +14,8 @@ class Items
         'price',
         'image_location',
         'category_id',
-        'description'
+        'description',
+        'status'
     ];
 
 

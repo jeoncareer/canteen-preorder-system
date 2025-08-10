@@ -1,4 +1,7 @@
-            const openModalButton = document.querySelectorAll('[data-modal-target]');
+     
+
+           
+           const openModalButton = document.querySelectorAll('[data-modal-target]');
             const closeModalButton = document.querySelectorAll('[data-close-button]');
             const overlay = document.getElementById('overlay');
 
@@ -38,3 +41,4 @@
             }
 
           console.log("hy from add-item");
+        

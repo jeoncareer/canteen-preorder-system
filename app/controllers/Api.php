@@ -281,4 +281,26 @@ class Api extends Controller
     {
         $data = json_decode(file_get_contents("php://input"), true);
     }
+
+    public function changeStatusItem()
+    {
+        $data = json_decode(file_get_contents("php://input"), true);
+        $items = new Items;
+        $item_id = $data['item_id'];
+        // $action = $data['action'];
+        $results = $items->first(['id' => $item_id]);
+        $newStatus = '';
+        if ($results->status == 'available') {
+            $newStatus = 'unavailable';
+        } else {
+            $newStatus = 'available';
+        }
+
+        $items->update(['id' => $item_id], ['status' => $newStatus]);
+
+
+
+
+        echo json_encode(['success' => true, 'newStatus' => $newStatus]);
+    }
 }
