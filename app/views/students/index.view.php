@@ -77,35 +77,37 @@
                     <div class="menu-grid">
                         <div class="menu-categories">
                             <!-- Main Course -->
-                            <?php foreach ($grouped as $key => $values): ?>
-                                <div class="category-section">
-                                    <h2 class="category-title">
-                                        <span>🍛</span>
-                                        <span><?= $key ?></span>
-                                    </h2>
-                                    <div class="menu-items-grid">
-                                        <?php foreach ($values as $value): ?>
+                            <?php if (!empty($grouped)): ?>
+                                <?php foreach ($grouped as $key => $values): ?>
+                                    <div class="category-section">
+                                        <h2 class="category-title">
+                                            <span>🍛</span>
+                                            <span><?= $key ?></span>
+                                        </h2>
+                                        <div class="menu-items-grid">
+                                            <?php foreach ($values as $value): ?>
 
 
-                                            <div class="menu-item" data-item-id="<?= $value->item_id ?>">
-                                                <div class="item-header">
-                                                    <div class="item-name"><?= ucwords($value->item_name) ?></div>
-                                                    <div class="item-price">₹<?= $value->price ?></div>
+                                                <div class="menu-item" data-item-id="<?= $value->item_id ?>">
+                                                    <div class="item-header">
+                                                        <div class="item-name"><?= ucwords($value->item_name) ?></div>
+                                                        <div class="item-price">₹<?= $value->price ?></div>
+                                                    </div>
+                                                    <div class="item-description">Fragrant basmati rice with tender chicken, aromatic spices, and boiled egg. Served with raita and pickle.</div>
+                                                    <div class="item-footer">
+                                                        <div class="availability available">Available</div>
+
+                                                    </div>
                                                 </div>
-                                                <div class="item-description">Fragrant basmati rice with tender chicken, aromatic spices, and boiled egg. Served with raita and pickle.</div>
-                                                <div class="item-footer">
-                                                    <div class="availability available">Available</div>
-
-                                                </div>
-                                            </div>
-                                        <?php endforeach; ?>
+                                            <?php endforeach; ?>
 
 
 
+                                        </div>
                                     </div>
-                                </div>
 
-                            <?php endforeach; ?>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
 
 
 

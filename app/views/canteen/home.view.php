@@ -522,7 +522,7 @@
               <button data-close-button="close-button" class="close-button">&times;</button>
             </div>
             <div class="modal-body">
-              <form class="add-item-form" method="POST" action="<?= ROOT ?>canteen/menu_management">
+              <form class="add-item-form" method="post" action="<?= ROOT ?>canteen/menu_management">
                 <div class="form-row">
                   <div class="form-group">
                     <label class="form-label" for="item-name">Item Name *</label>

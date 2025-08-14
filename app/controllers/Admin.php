@@ -9,11 +9,20 @@ class Admin extends Controller
         if (!isset($_SESSION['COLLEGE'])) {
             redirect('admin/login');
         }
+        $canteens = new Canteen_db;
+        $students = new Student;
+
+
 
         $data['college'] = $_SESSION['COLLEGE'];
+        $college_id = $_SESSION['COLLEGE']->id;
+        $data['canteens_count'] = $canteens->count(['college_id' => $college_id]);
+        $data['students_count'] = $canteens->count(['college_id' => $college_id]);
 
 
-        //show($data['college']);
+
+
+
         $this->view('admin/dashboard', $data);
     }
 

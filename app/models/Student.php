@@ -25,9 +25,9 @@ class Student
         if (!empty($result = $this->first(['email' => $data['email']]))) {
             $this->errors["user_exists"] = "email already exists";
         }
-        if (empty($data['college_name'])) {
-            $this->errors['college_name'] = "Please give College name";
-        } elseif (empty($college->first(["college_name" => $data["college_name"]]))) {
+        if (empty($data['college_id'])) {
+            $this->errors['college_id'] = "Please select College name";
+        } elseif (empty($college->first(["id" => $data["college_id"]]))) {
             $this->errors["college_doesn't exist"] = "College doesn't exist";
         }
 

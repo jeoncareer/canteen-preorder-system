@@ -10,7 +10,7 @@ class College
     protected $allowedColumns = [
         'id',
         'email',
-        'college_name',
+        'college_id',
         'password'
     ];
 

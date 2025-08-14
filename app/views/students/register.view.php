@@ -20,7 +20,7 @@
             <p class="auth-subtitle">Create a new Account</p>
         </div>
 
-        <form method="post" action="<?= ROOT ?>students/signup">
+        <form method="post" action="<?= ROOT ?>students/register">
             <div class="form-group">
                 <label class="form-label">Email</label>
                 <input name="email" type="email" class="form-input" placeholder="Enter your email" required>
@@ -29,10 +29,10 @@
             <div class="form-group">
                 <label class="form-label">College Name</label>
 
-                <select class="form-input" name="college_name" placeholder="Enter your college name" required>
+                <select class="form-input" name="college_id" placeholder="Enter your college name" required>
                     <option disabled selected>Select College</option>
                     <?php foreach ($colleges as $college): ?>
-                        <option value=""><?= $college ?></option>
+                        <option value="<?=$college->id?>"><?= $college->college_name ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>

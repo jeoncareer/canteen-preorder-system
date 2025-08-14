@@ -13,6 +13,7 @@
                 let modal = document.querySelector(e.target.dataset.modalTarget);
                 openModal(modal);
             }
+            e.preventDefault()
            })
  
             

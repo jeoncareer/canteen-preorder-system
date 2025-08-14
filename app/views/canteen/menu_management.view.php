@@ -209,34 +209,35 @@
 
             <!-- Menu Items Grid -->
             <div class="menu-grid" id="menuGrid">
-                <?php foreach ($items as $item): ?>
-                    <!-- Sample Menu Items -->
-                    <div class="menu-card" data-name="<?= $item->name ?>" data-id="<?= $item->id ?>" data-category="main-course" data-status="available">
-                        <!-- <div class="menu-card-image">
+                <?php if (!empty($items)): ?>
+                    <?php foreach ($items as $item): ?>
+                        <!-- Sample Menu Items -->
+                        <div class="menu-card" data-name="<?= $item->name ?>" data-id="<?= $item->id ?>" data-category="main-course" data-status="available">
+                            <!-- <div class="menu-card-image">
                         🍛
                         <span class="status-badge status-available">Available</span>
                     </div> -->
-                        <div class="menu-card-content">
-                            <h3 class="menu-item-name"><?= ucfirst($item->name) ?></h3>
-                            <p class="menu-item-description"><?= $item->description ?></p>
-                            <div class="menu-item-details">
-                                <span class="menu-item-price">₹<?= $item->price ?></span>
-                                <span class="menu-item-category">Main Course</span>
-                            </div>
-                            <div class="menu-item-actions">
-                                <button data-modal-target="#edit-modal<?= $item->id ?>" data-action="edit" class="action-btn edit-item edit-btn"> Edit</button>
-                                <?php if ($item->status == 'available'): ?>
-                                    <button data-action="change-status" class="action-btn change-status edit-item disable-btn  ">Disable</button>
-                                <?php else: ?>
-                                    <button data-action="change-status" class="action-btn change-status edit-item enable-btn  ">Enable</button>
-                                <?php endif; ?>
+                            <div class="menu-card-content">
+                                <h3 class="menu-item-name"><?= ucfirst($item->name) ?></h3>
+                                <p class="menu-item-description"><?= $item->description ?></p>
+                                <div class="menu-item-details">
+                                    <span class="menu-item-price">₹<?= $item->price ?></span>
+                                    <span class="menu-item-category">Main Course</span>
+                                </div>
+                                <div class="menu-item-actions">
+                                    <button data-modal-target="#edit-modal<?= $item->id ?>" data-action="edit" class="action-btn edit-item edit-btn"> Edit</button>
+                                    <?php if ($item->status == 'available'): ?>
+                                        <button data-action="change-status" class="action-btn change-status edit-item disable-btn  ">Disable</button>
+                                    <?php else: ?>
+                                        <button data-action="change-status" class="action-btn change-status edit-item enable-btn  ">Enable</button>
+                                    <?php endif; ?>
 
-                                <button data-modal-target="#delete-modal<?= $item->id ?>" data-action="delete" class="action-btn delete-btn edit-item">Delete</button>
+                                    <button data-modal-target="#delete-modal<?= $item->id ?>" data-action="delete" class="action-btn delete-btn edit-item">Delete</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
-
+                    <?php endforeach; ?>
+                <?php endif; ?>
 
             </div>
 
@@ -264,9 +265,9 @@
         <div id="overlay"></div>
 
 
-        <script src="/canteen-preorder-system/public/assets/js/add-item.js"></script>
+        <!-- <script src="<?= ROOT ?>assets/js/menu-management.js"> -->
+        <script src="<?= ROOT ?>assets/js/add-item.js"></script>
 
-        <script src="<?= ROOT ?>assets/js/menu-management.js">
 
         </script>
 

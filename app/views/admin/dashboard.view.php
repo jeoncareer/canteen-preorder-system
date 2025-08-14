@@ -150,6 +150,7 @@
             box-shadow: var(--card-shadow);
             padding: 2rem;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            align-self: start;
         }
 
         .admin-section-title {
@@ -340,16 +341,7 @@
             margin-bottom: 1rem;
         }
 
-        .metric-chart {
-            height: 200px;
-            background: #f8fafc;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #64748b;
-            font-weight: 600;
-        }
+
 
         @media (max-width: 1200px) {
             .admin-content-grid {
@@ -456,7 +448,7 @@
                     </p>
                 </div>
 
-                <div class="admin-stat-card staff">
+                <!-- <div class="admin-stat-card staff">
                     <div class="admin-stat-header">
                         <div class="admin-stat-icon staff">
                             👨‍🍳
@@ -467,7 +459,7 @@
                     <p class="admin-stat-change positive">
                         ↗ +3 new hires
                     </p>
-                </div>
+                </div> -->
 
                 <div class="admin-stat-card categories">
                     <div class="admin-stat-header">
@@ -683,7 +675,7 @@
                     </div>
 
                     <!-- System Alerts -->
-                    <div class="admin-section" style="margin-top: 2rem;">
+                    <!-- <div class="admin-section" style="margin-top: 2rem;">
                         <h2 class="admin-section-title">
                             🚨 System Alerts
                         </h2>
@@ -704,7 +696,7 @@
                                 <div style="font-size: 0.9rem; color: #475569;">All systems running smoothly</div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

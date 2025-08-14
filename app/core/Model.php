@@ -180,7 +180,7 @@ trait Model
 
 
         $data = array_merge($data, $data_not);
-        return $this->query($query, $data);
+        return $this->query($query, $data)[0]->count;
     }
 
 

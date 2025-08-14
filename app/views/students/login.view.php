@@ -42,7 +42,7 @@
             </div>
 
             <div class="auth-switch">
-                Don't have an account? <a href="./login">Register Here</a>
+                Don't have an account? <a href="./register">Register Here</a>
             </div>
         </div>
     </form>

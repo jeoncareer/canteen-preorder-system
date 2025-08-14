@@ -7,6 +7,7 @@ class Students extends Controller
     {
 
         $cart = new Cart;
+        $student_id = $_SESSION['STUDENT']->id;
 
         if (empty($_SESSION['STUDENT'])) {
             redirect('students/login');
@@ -20,15 +21,33 @@ class Students extends Controller
         categories on items.category_id = categories.id join college
          on canteen.college_id = college.id where college.id = $college_id";
         $items = $this->query($sql);
+        if (!empty($items)) {
 
-        foreach ($items as $item) {
+
+            foreach ($items as $item) {
             $category = $item->category_name;
 
             if (!isset($grouped[$category])) {
                 $grouped[$category] = [];
             }
 
-            $grouped[$category][] = $item;
+                $grouped[$category][] = $item;
+        }
+            $data['grouped'] = $grouped;
+
+            foreach ($grouped as $keys => $values) {
+                foreach ($values as $value) {
+                    $item_id = $value->item_id;
+
+                    $result = $cart->where(['item_id' => $item_id, 'student_id' => $student_id]);
+
+                    if (empty($result)) {
+                        $value->in_cart = false;
+                    } else {
+                        $value->in_cart = true;
+                    }
+                }
+            }
         }
 
 
@@ -41,7 +60,7 @@ class Students extends Controller
 
         //     }
         // }
-        $student_id = $_SESSION['STUDENT']->id;
+
 
         $carts = $cart->join(
 
@@ -57,22 +76,9 @@ class Students extends Controller
 
         $data['carts'] = $carts;
 
-        $data['grouped'] = $grouped;
         $data['total'] = 0;
 
-        foreach ($grouped as $keys => $values) {
-            foreach ($values as $value) {
-                $item_id = $value->item_id;
 
-                $result = $cart->where(['item_id' => $item_id, 'student_id' => $student_id]);
-
-                if (empty($result)) {
-                    $value->in_cart = false;
-                } else {
-                    $value->in_cart = true;
-                }
-            }
-        }
         //show($grouped);
 
 
@@ -84,14 +90,14 @@ class Students extends Controller
 
 
 
-    public function signup()
+    public function register()
     {
         $student = new Student();
         $college = new College();
 
         $colleges = $college->findAll();
         foreach ($colleges as $col) {
-            $data['colleges'][] = $col->college_name;
+            $data['colleges'][] = $col;
         }
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -100,22 +106,22 @@ class Students extends Controller
 
             if ($student->validate($_POST)) {
 
-                $result = $college->first(["college_name" => $_POST["college_name"]]);
+
                 $password = $_POST['password'];
                 $hash = password_hash($password, PASSWORD_BCRYPT);
                 $_POST['password'] = $hash;
-                $arr = array_merge($_POST, ['college_id' => $result->id]);
-                $student->insert($arr);
+
+                $student->insert($_POST);
                 redirect('students/login');
             } else {
                 $data['errors'] = $student->errors;
                 show($student->errors);
-                $this->view('students/signup', $data);
+                $this->view('students/register', $data);
             }
         } else {
 
 
-            $this->view('students/signup', $data);
+            $this->view('students/register', $data);
         }
     }
 

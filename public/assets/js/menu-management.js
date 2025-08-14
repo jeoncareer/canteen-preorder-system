@@ -1,4 +1,4 @@
-
+            console.log("hello world");
 
             searchItemsFilter();
 
@@ -277,6 +277,7 @@
                     }
                 })
 
+ 
                 // let confirmDeleteButtons = document.querySelectorAll('#confirm-delete-btn');
                 // confirmDeleteButtons.forEach(button => {
                 //     button.addEventListener('click', function() {
@@ -299,3 +300,5 @@
                 //     })
                 // })
             }
+
+        

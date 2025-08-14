@@ -9,6 +9,7 @@ class Canteen extends Controller
             redirect('canteen/login');
         }
         $order = new Orders;
+        $categories = new Categories;
         $orders = $order->join(
             [
                 'order_items' => 'orders.id = order_items.order_id',
@@ -31,6 +32,14 @@ class Canteen extends Controller
             $data['orders'][$order->id][] = $order;
         }
         }
+
+        $result = $categories->where(['canteen_id' => CANTEEN_ID]);
+        $data['categories'] = [];
+        foreach ($result as $res) {
+            $data['categories'][] = ['name' => $res->name, 'id' => $res->id];
+        }
+
+        show($data['categories']);
 
 
 
@@ -142,6 +151,8 @@ class Canteen extends Controller
         foreach ($result as $res) {
             $data['categories'][] = ['name' => $res->name, 'id' => $res->id];
         }
+
+
 
 
 
