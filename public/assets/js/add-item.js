@@ -1,18 +1,25 @@
      
-
+      
+        
+       
            updateCloseButton();
            
         
            const overlay = document.getElementById('overlay');
-        let mainContent = document.querySelector('.main-content');
+        let mainContent = document.body.querySelector('.main-content');
            
         
            mainContent.addEventListener('click',e => {
-            if(e.target.matches('[data-modal-target]')){
+            let targetElement = e.target.closest('[data-modal-target');
+            if(targetElement)
+            {
+
                 console.log('clicked data modal target');
-                let modal = document.querySelector(e.target.dataset.modalTarget);
+                let modal = document.querySelector(targetElement.dataset.modalTarget);
                 openModal(modal);
             }
+            // if(e.target.matches('[data-modal-target]')){
+            // }
             e.preventDefault()
            })
  

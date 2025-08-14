@@ -265,11 +265,8 @@
         <div id="overlay"></div>
 
 
-        <!-- <script src="<?= ROOT ?>assets/js/menu-management.js"> -->
+        <script src="<?= ROOT ?>assets/js/menu-management.js"></script>
         <script src="<?= ROOT ?>assets/js/add-item.js"></script>
-
-
-        </script>
 
 
 </body>
