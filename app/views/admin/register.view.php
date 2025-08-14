@@ -7,7 +7,12 @@
     <title>Campus Canteen - Register</title>
     <link rel="stylesheet" href="<?= ROOT ?>assets/css/auth.css">
     <style>
-
+        .error-msg {
+            color: red;
+            font-size: 0.85rem;
+            margin-top: 4px;
+            display: block;
+        }
     </style>
 </head>
 
@@ -23,22 +28,31 @@
         <form method="post" action="<?= ROOT ?>admin/register">
             <div class="form-group">
                 <label class="form-label">Email</label>
-                <input name="email" type="email" class="form-input" placeholder="Enter your email" required>
+                <input name="email" type="email" value="<?= $values['email'] ?? '' ?>" class=" form-input" placeholder="Enter your email" required>
+                <?php if (!empty($errors['email'])): ?>
+
+                    <small class="error-msg"><?= $errors['email'] ?></small>
+                <?php endif; ?>
             </div>
 
             <div class="form-group">
                 <label class="form-label">College Name</label>
-                <input type="text" class="form-input" name="college_name" list="colleges" placeholder="Enter your college name" required>
-                <datalist id="colleges">
-                    <?php foreach ($colleges as $college): ?>
-                        <option value="<?= $college ?>"></option>
-                    <?php endforeach; ?>
-                </datalist>
+                <input type="text" value="<?= $values['college_name'] ?? '' ?>" class=" form-input" name="college_name" placeholder="Enter your college name" autocomplete="off" required>
+                <?php if (!empty($errors['college_name'])): ?>
+
+                    <small class="error-msg"><?= $errors['college_name'] ?></small>
+                <?php endif; ?>
+
+
             </div>
 
             <div class="form-group">
                 <label class="form-label">Password</label>
                 <input type="password" name="password" class="form-input" placeholder="Create a password" required>
+                <?php if (!empty($errors['password'])): ?>
+
+                    <small class="error-msg"><?= $errors['password'] ?>,Try Again</small>
+                <?php endif; ?>
             </div>
 
             <button type="submit" class="submit-btn">Create</button>

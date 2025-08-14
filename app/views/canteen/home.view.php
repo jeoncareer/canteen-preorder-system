@@ -450,39 +450,39 @@
               </tr>
             </thead>
             <tbody>
-
-              <?php foreach ($orders as $order_id => $order): ?>
-                <tr>
-                  <td><span data-order-id="<?= $order_id ?>" class="order-id">#<?= $order_id ?></span></td>
-                  <td><span class="student-name"><?= $order[0]->student_id ?></span></td>
-                  <td><span class="order-items">
-                      <?php foreach ($order as $or): ?>
-                        <?= ucfirst($or->name) ?> x<?= $or->quantity ?>,
-                      <?php endforeach; ?>
-                    </span></td>
-                  <td>
-                    <select data-id='<?= $order[0]->id ?>' class="status-select <?= $order[0]->status ?>">
-                      <option value="pending" <?php if ($order[0]->status == 'pending') {
+              <?php if (!empty($orders)): ?>
+                <?php foreach ($orders as $order_id => $order): ?>
+                  <tr>
+                    <td><span data-order-id="<?= $order_id ?>" class="order-id">#<?= $order_id ?></span></td>
+                    <td><span class="student-name"><?= $order[0]->student_id ?></span></td>
+                    <td><span class="order-items">
+                        <?php foreach ($order as $or): ?>
+                          <?= ucfirst($or->name) ?> x<?= $or->quantity ?>,
+                        <?php endforeach; ?>
+                      </span></td>
+                    <td>
+                      <select data-id='<?= $order[0]->id ?>' class="status-select <?= $order[0]->status ?>">
+                        <option value="pending" <?php if ($order[0]->status == 'pending') {
+                                                  echo 'selected';
+                                                } ?>>Pending</option>
+                        <option value="accepted" <?php if ($order[0]->status == 'accepted') {
+                                                    echo 'selected';
+                                                  } ?>>Accepted</option>
+                        <option value="completed" <?php if ($order[0]->status == 'completed') {
+                                                    echo 'selected';
+                                                  } ?>>Completed</option>
+                        <option value="ready" <?php if ($order[0]->status == 'ready') {
                                                 echo 'selected';
-                                              } ?>>Pending</option>
-                      <option value="accepted" <?php if ($order[0]->status == 'accepted') {
-                                                  echo 'selected';
-                                                } ?>>Accepted</option>
-                      <option value="completed" <?php if ($order[0]->status == 'completed') {
-                                                  echo 'selected';
-                                                } ?>>Completed</option>
-                      <option value="ready" <?php if ($order[0]->status == 'ready') {
-                                              echo 'selected';
-                                            } ?>>Ready</option>
-                      <option value="rejected" <?php if ($order[0]->status == 'rejected') {
-                                                  echo 'selected';
-                                                } ?>>Rejected</option>
-                    </select>
-                  </td>
-                  <td><span class="order-time"><?= $order[0]->time ?></span></td>
-                </tr>
-              <?php endforeach; ?>
-
+                                              } ?>>Ready</option>
+                        <option value="rejected" <?php if ($order[0]->status == 'rejected') {
+                                                    echo 'selected';
+                                                  } ?>>Rejected</option>
+                      </select>
+                    </td>
+                    <td><span class="order-time"><?= $order[0]->time ?></span></td>
+                  </tr>
+                <?php endforeach; ?>
+              <?php endif; ?>
 
 
 

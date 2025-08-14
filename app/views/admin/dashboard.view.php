@@ -484,7 +484,7 @@
             </div>
 
             <!-- Quick Actions -->
-            <div class="quick-actions-grid">
+            <!-- <div class="quick-actions-grid">
                 <div class="quick-action-card">
                     <div class="quick-action-icon">🏢</div>
                     <div class="quick-action-title">Manage Canteens</div>
@@ -508,24 +508,10 @@
                     <div class="quick-action-title">System Settings</div>
                     <div class="quick-action-desc">Configure system preferences</div>
                 </div>
-            </div>
+            </div> -->
 
-            <!-- Performance Metrics -->
-            <div class="performance-metrics">
-                <div class="metric-card">
-                    <div class="metric-title">📈 Daily Orders Trend</div>
-                    <div class="metric-chart">
-                        Orders Chart - Connect to Chart.js
-                    </div>
-                </div>
 
-                <div class="metric-card">
-                    <div class="metric-title">💰 Revenue Analytics</div>
-                    <div class="metric-chart">
-                        Revenue Chart - Connect to Chart.js
-                    </div>
-                </div>
-            </div>
+
 
             <!-- Content Grid -->
             <div class="admin-content-grid">

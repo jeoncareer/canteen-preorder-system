@@ -33,8 +33,8 @@ class Canteen_db
         if (empty($data['password'])) {
             $this->errors['password'] = "password is required";
         }
-        if (empty($data['college_name'])) {
-            $this->errors['college_name'] = "Please Enter College Name";
+        if (empty($data['college_id'])) {
+            $this->errors['college_id'] = "Please Enter College Name";
         }
 
         if (empty($data['canteen_name'])) {
@@ -70,11 +70,11 @@ class Canteen_db
                 if (!$hash) {
 
 
-                    $this->errors['wrong_password'] = "password doesn't match";
+                    $this->errors['password'] = "password doesn't match";
                 }
             }
         } else {
-            $this->errors['email_not_exist'] = "Canteen doesn't exist";
+            $this->errors['email'] = "Canteen doesn't exist";
         }
 
         if (empty($this->errors)) {                                                    //if no errors return empty

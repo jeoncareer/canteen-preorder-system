@@ -4,6 +4,10 @@ class Canteen extends Controller
 {
     public function index()
     {
+
+        if (!isset($_SESSION['CANTEEN'])) {
+            redirect('canteen/login');
+        }
         $order = new Orders;
         $orders = $order->join(
             [
@@ -20,8 +24,12 @@ class Canteen extends Controller
 
 
         $data['orders'] = [];
-        foreach ($orders as $order) {
+        if (!empty($orders)) {
+
+
+            foreach ($orders as $order) {
             $data['orders'][$order->id][] = $order;
+        }
         }
 
 
@@ -31,7 +39,7 @@ class Canteen extends Controller
         $this->view('canteen/home', $data);
     }
 
-    public function signin()
+    public function register()
     {
 
         $college = new College();
@@ -40,43 +48,39 @@ class Canteen extends Controller
 
 
         foreach ($colleges as $col) {
-            $data['colleges'][] = $col->college_name;
+            $data['colleges'][] = $col;
         }
+
+        show($data['colleges']);
         if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
             if ($canteen->validate($_POST)) {
 
-                $college_name = $_POST['college_name'];
+                $college_id = $_POST['college_id'];
                 $password = $_POST['password'];
                 $hash = password_hash($password, PASSWORD_BCRYPT);
                 $_POST['password'] = $hash;
-                if (empty($college->first(['college_name' => $_POST['college_name']]))) {
-                    $college->insert(["college_name" => $college_name]);
-                }
 
-                $result = $college->first(['college_name' => $_POST['college_name']]);
 
-                $arr = ["college_id" => $result->id,];
-                $arr = array_merge($_POST, $arr);
 
                 //print_r($arr);
-                $canteen_id = $canteen->insert($arr);
+                $canteen_id = $canteen->insert($_POST);
                 $dcategories = new Dcategories();
                 $categories = new Categories();
                 $result = $dcategories->findAll();
-                show($result);
+
                 foreach ($result as $res) {
                     $categories->insert(['canteen_id' => $canteen_id, 'name' => $res->name]);
                 }
-                //redirect('canteen/login');
+                redirect('canteen/login');
             } else {
                 $data["errors"] = $canteen->errors;
                 show($canteen->errors);
 
-                $this->view('canteen/signup', $data);
+                $this->view('canteen/register', $data);
             }
         } else {
-            $this->view('canteen/signup', $data);
+            $this->view('canteen/register', $data);
         }
     }
 
@@ -94,7 +98,8 @@ class Canteen extends Controller
 
                 redirect('canteen/home');
             } else {
-                print_r($canteen->errors);
+                $data['errors'] = $canteen->errors;
+                $this->view('canteen/login', $data);
             }
         } else {
             $this->view('canteen/login');

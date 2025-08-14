@@ -10,25 +10,65 @@ class Admin extends Controller
             redirect('admin/login');
         }
 
-        if ($_SERVER['REQUEST_METHOD'] === "POST") {
-            show($_POST);
-            die;
-        }
+        $data['college'] = $_SESSION['COLLEGE'];
 
-        $this->view('admin/dashboard');
+
+        //show($data['college']);
+        $this->view('admin/dashboard', $data);
     }
 
     public function login()
     {
         if ($_SERVER['REQUEST_METHOD'] === "POST") {
-            show($_POST);
-            die;
+
+            $college = new College;
+            if ($college->validate($_POST)) {
+
+                $admin = $college->first(['email' => $_POST['email']]);
+
+
+                $_SESSION['COLLEGE'] = $admin;
+                redirect('admin');
+            } else {
+                $data['email'] = $_POST['email'];
+                $data['errors'] = $college->errors;
+                $this->view('admin/login', $data);
+                die;
+            }
         }
+
         $this->view('admin/login');
     }
 
     public function register()
     {
+        $college = new College;
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if ($college->register_validate($_POST)) {
+
+                $email = $_POST['email'];
+                $college_name = $_POST['college_name'];
+                $password = $_POST['password'];
+                $hash = password_hash($password, PASSWORD_BCRYPT);
+                $_POST['password'] = $hash;
+
+
+                $college->insert($_POST);
+                redirect('admin');
+            } else {
+                $data['errors'] = $college->errors;
+                $values['email'] = $_POST['email'];
+                $values['college_name'] = $_POST['college_name'];
+                $data['values'] = $values;
+                $this->view('admin/register', $data);
+                die;
+            }
+        }
+
+
+
+
+
 
         $this->view('admin/register');
     }

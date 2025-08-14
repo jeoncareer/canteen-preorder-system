@@ -28,12 +28,13 @@
 
             <div class="form-group">
                 <label class="form-label">College Name</label>
-                <input type="text" class="form-input" name="college_name" list="colleges" placeholder="Enter your college name" required>
-                <datalist id="colleges">
+
+                <select class="form-input" name="college_name" placeholder="Enter your college name" required>
+                    <option disabled selected>Select College</option>
                     <?php foreach ($colleges as $college): ?>
-                        <option value="<?= $college ?>"></option>
+                        <option value=""><?= $college ?></option>
                     <?php endforeach; ?>
-                </datalist>
+                </select>
             </div>
 
             <div class="form-group">

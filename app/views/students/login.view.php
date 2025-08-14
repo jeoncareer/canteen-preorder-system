@@ -14,7 +14,7 @@
 
 <body>
     <div class="logo">Campus Canteen</div>
-    <form action="" method="post">
+    <form action="<?= ROOT ?>students/login" method="post">
 
         <div class="auth-container">
             <div class="auth-header">

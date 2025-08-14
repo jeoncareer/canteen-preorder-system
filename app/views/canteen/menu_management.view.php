@@ -180,16 +180,16 @@
             </div>
 
             <!-- Current Categories Section -->
-            <div class="categories-section">
+            <!-- <div class="categories-section">
                 <div class="section-header">
                     <h2 class="section-title">🏷️ Current Categories</h2>
                 </div>
 
-                <div class="categories-grid">
+                <div class="categories-grid"> -->
 
-                    <?php foreach ($categories as $category): ?>
-                        <!-- Sample Categories - Replace with PHP loop -->
-                        <div class="category-card">
+            <!-- <?php foreach ($categories as $category): ?> -->
+            <!-- Sample Categories - Replace with PHP loop -->
+            <!-- <div class="category-card">
                             <div class="category-info">
                                 <h4 class="category-name"><?= ucfirst($category['name']) ?></h4>
                                 <p class="category-count">12 items</p>
@@ -198,14 +198,14 @@
                                 <button data-id="<?= $category['id'] ?>" data-modal-target="#category-items-modal" class="action-btn edit-btn category-edit">Edit</button>
                                 <button class="action-btn delete-btn category-delete"> Delete</button>
                             </div>
-                        </div>
+                        </div> -->
 
-                    <?php endforeach; ?>
+            <!-- <?php endforeach; ?> -->
 
 
 
-                </div>
-            </div>
+            <!-- </div>
+            </div> -->
 
             <!-- Menu Items Grid -->
             <div class="menu-grid" id="menuGrid">
@@ -253,76 +253,10 @@
 
 
 
-        <div class="modal" id="disable-modal">
-            disable
-        </div>
 
-        <!-- Category Items Modal -->
-        <div class="modal" id="category-items-moddal">
-            <div class="modal-header">
-                <div class="modal-title" id="category-items-title">📂 Category Items</div>
-                <button data-close-button="close-button" class="close-button">&times;</button>
-            </div>
-            <div class="modal-body">
-                <!-- Category name -->
-                <h3 id="category-name-heading">Breakfast</h3>
 
-                <!-- Items list -->
-                <div class="menu-grid" id="category-items-list">
-                    <div class="menu-card">
-                        <div class="menu-card-content">
-                            <h3 class="menu-item-name">Idli</h3>
-                            <p class="menu-item-description">Soft steamed rice cakes served with chutney.</p>
-                            <div class="menu-item-details">
-                                <span class="menu-item-price">₹15</span>
-                                <span class="menu-item-category">Breakfast</span>
-                            </div>
-                            <div class="menu-item-actions">
-                                <button class="action-btn edit-btn">Edit</button>
-                                <button class="action-btn disable-btn">Disable</button>
-                                <button class="action-btn delete-btn">Delete</button>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="menu-card">
-                        <div class="menu-card-content">
-                            <h3 class="menu-item-name">Masala Dosa</h3>
-                            <p class="menu-item-description">Crispy dosa filled with spiced potato curry.</p>
-                            <div class="menu-item-details">
-                                <span class="menu-item-price">₹40</span>
-                                <span class="menu-item-category">Breakfast</span>
-                            </div>
-                            <div class="menu-item-actions">
-                                <button class="action-btn edit-btn">Edit</button>
-                                <button class="action-btn disable-btn">Disable</button>
-                                <button class="action-btn delete-btn">Delete</button>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="menu-card">
-                        <div class="menu-card-content">
-                            <h3 class="menu-item-name">Poha</h3>
-                            <p class="menu-item-description">Flattened rice cooked with onions, peas, and mild spices.</p>
-                            <div class="menu-item-details">
-                                <span class="menu-item-price">₹25</span>
-                                <span class="menu-item-category">Breakfast</span>
-                            </div>
-                            <div class="menu-item-actions">
-                                <button class="action-btn edit-btn">Edit</button>
-                                <button class="action-btn disable-btn">Disable</button>
-                                <button class="action-btn delete-btn">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-actions">
-                    <button type="button" class="btn btn-secondary" data-close-button="close-button">Close</button>
-                </div>
-            </div>
-        </div>
 
 
 
@@ -332,326 +266,8 @@
 
         <script src="/canteen-preorder-system/public/assets/js/add-item.js"></script>
 
-        <script>
-            let categories = <?= json_encode($categories) ?>;
+        <script src="<?= ROOT ?>assets/js/menu-management.js">
 
-            searchItemsFilter();
-
-            actionButtons();
-
-            function actionButtons() {
-
-                let mainContent = document.querySelector('.main-content');
-                mainContent.addEventListener("click", e => {
-                    if (e.target.classList.contains('edit-item')) {
-
-                        let actionBtn = e.target;
-
-                        let menuCard = actionBtn.parentElement.parentElement.parentElement;
-                        if (actionBtn.dataset.action == "edit") {
-                            console.log("pressed edit");
-                            editItem(menuCard)
-                        }
-
-                        if (actionBtn.dataset.action == "change-status") {
-                            console.log("pressed disable");
-                            updateItemStatus(actionBtn, menuCard)
-                        }
-
-                        if (actionBtn.dataset.action == "delete") {
-                            console.log("pressed delete");
-                            deleteItem(menuCard)
-                        }
-
-
-                    }
-                })
-            }
-
-
-            function editItem(menuCard) {
-                const itemId = menuCard.dataset.id;
-                const itemName = menuCard.dataset.name;
-                if (!document.getElementById('edit-modal' + itemId)) {
-                    let div = document.createElement('div');
-                    div.classList.add('modal');
-                    div.id = "edit-modal" + itemId;
-                    div.innerHTML = `
-                     <div class="modal-header">
-                    <div class="modal-title">Edit Item</div>
-                    <button data-close-button="close-button" class="close-button">&times;</button>
-                </div>
-    
-                <div class="modal-body">
-                    <form action="${ROOT}canteen/edit_item" method="post">
-                        <div class="form-group">
-    
-                            <input type="text" id="item-name" class="form-input" name="item-name" placeholder="Change Name">
-                        </div>
-                        <div class="form-group">
-    
-                            <input type="text" id="item-price" class="form-input" name="price" placeholder="Change Price">
-                        </div>
-    
-                        <div class="form-group">
-    
-                            <input type="text" id="item-description" class="form-input" name="description" placeholder="Change Description">
-                        </div>
-
-    
-                    
-                        <input type="hidden" name="item_id" value="${itemId}">
-                         <div class="modal-actions">
-                            <button type="button" class="btn btn-secondary" data-close-button="close-button">Cancel</button>
-                            <button type="submit" class="btn btn-primary">
-                                <span class="btn-icon">🏷️</span>
-                                Submit
-                            </button>
-                        </div>
-
-                    </form>
-                </div>
-                `;
-
-                    document.body.append(div);
-                    console.log(div);
-                    openModal(div);
-                } else {
-                    let div = document.getElementById('edit-modal' + itemId);
-                    openModal(div);
-                }
-
-
-
-
-                const closeModalButton = document.querySelectorAll('[data-close-button]');
-
-                closeModalButton.forEach(button => {
-
-                    button.addEventListener('click', () => {
-
-                        const modal = button.closest('.modal');
-                        closeModal(modal);
-                    })
-                })
-            };
-
-            function updateItemStatus(actionBtn, menuCard) {
-                const itemId = menuCard.dataset.id;
-                // const action = menuCard.dataset.action;
-                const url = ROOT + 'api/changeStatusItem';
-                fetch(url, {
-                        method: 'POST',
-                        headers: {
-                            "Content-type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            item_id: itemId,
-                            // action: action
-                        })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.success) {
-                            console.log(data);
-                            let newStatus = data.newStatus;
-                            if (newStatus == 'available') {
-                                actionBtn.classList.remove('enable-btn');
-                                actionBtn.classList.add('disable-btn');
-                                actionBtn.textContent = 'Disable';
-                            } else {
-                                actionBtn.classList.remove('disable-btn');
-                                actionBtn.classList.add('enable-btn');
-                                actionBtn.textContent = 'Enable';
-                            }
-
-                        }
-                    })
-
-
-            };
-
-            function deleteItem(menuCard) {
-                console.log(menuCard);
-                const itemId = menuCard.dataset.id;
-                if (!document.getElementById('delete-modal' + itemId)) {
-
-                    let div = document.createElement('div');
-                    div.classList.add('modal');
-                    div.id = 'delete-modal' + itemId;
-                    div.innerHTML = `
-                         <div class="modal-header">
-                    <div class="modal-title">⚠️ Confirm Deletion of item with id ${itemId}</div>
-                    <button data-close-button="close-button" class="close-button">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to delete this item? This action cannot be undone.</p>
-    
-                    <div class="modal-actions">
-                        <button type="button" class="btn btn-secondary" data-close-button="close-button">Cancel</button>
-                        <button data-id="${itemId}" type="button" id="confirm-delete-btn" class="btn btn-danger">
-                            <span class="btn-icon">🗑️</span>
-                            Delete Item
-                        </button>
-                    </div>
-                </div>
-                    `;
-                    document.body.append(div);
-                    openModal(div);
-
-
-                    const closeModalButton = document.querySelectorAll('[data-close-button]');
-
-                    closeModalButton.forEach(button => {
-
-                        button.addEventListener('click', () => {
-
-                            const modal = button.closest('.modal');
-                            closeModal(modal);
-                        })
-                    })
-                } else {
-                    const div = document.getElementById('delete-modal' + itemId);
-                    openModal(div);
-                }
-
-                setListenerForDeleteItem();
-            }
-
-            function searchItemsFilter() {
-                const formInput = document.getElementById('searchInput');
-                console.log(formInput);
-
-                formInput.addEventListener('input', function() {
-                    let from = this.dataset.from;
-                    let word = this.value;
-                    const url = ROOT + 'api/getItems';
-                    if (word === '') {
-                        location.reload();
-                        return;
-                    }
-
-                    let tMenuGrid = document.querySelector('.menu-grid');
-                    const menuGrid = tMenuGrid;
-                    let catSec = document.querySelector('.categories-section');
-                    let parent = tMenuGrid.parentNode;
-
-
-
-                    tMenuGrid.remove();
-
-
-
-                    parent.insertBefore(menuGrid, catSec);
-
-                    fetch(url, {
-                            method: "POST",
-                            headers: {
-                                "Content-type": "application/json"
-                            },
-                            body: JSON.stringify({
-                                word: word,
-                                from: from
-                            })
-                        })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.success) {
-                                console.log(data);
-
-                                menuGrid.innerHTML = '';
-
-                                console.log(menuGrid);
-
-                                data.items.forEach(item => {
-
-
-                                    let menuCardDiv = document.createElement('div');
-                                    menuCardDiv.classList.add('menu-card');
-                                    menuCardDiv.dataset.category = "main-course";
-                                    menuCardDiv.dataset.status = "available";
-                                    menuCardDiv.dataset.id = item.id;
-                                    menuCardDiv.dataset.name = item.name;
-
-
-
-                                    menuCardDiv.innerHTML = `
-                                <div class="menu-card-content">
-                                       <h3 class="menu-item-name">${item.name}</h3>
-                                <p class="menu-item-description">${item.description}</p>
-                                <div class="menu-item-details">
-                                    <span class="menu-item-price">₹${item.price}</span>
-                                    <span class="menu-item-category">Main Course</span>
-                                </div>
-                                <div class="menu-item-actions">
-                                    <button data-modal-target="#edit-modal${item.id}" data-action="edit" class="action-btn edit-btn"> Edit</button>
-                                    <button class="action-btn toggle-btn available">Disable</button>
-                                    <button data-modal-target="#delete-modal${item.id}" data-action="delete" class="action-btn delete-btn edit-item">Delete</button>
-                                </div>
-                                 </div>
-                                `;
-                                    console.log(menuCardDiv);
-
-                                    menuGrid.append(menuCardDiv);
-                                    setListenerForEditButton();
-
-
-                                })
-
-                            }
-                        })
-
-
-                })
-            }
-
-            function setListenerForDeleteItem() {
-                let confirmDeleteButtons = document.querySelectorAll('#confirm-delete-btn');
-                confirmDeleteButtons.forEach(button => {
-                    button.addEventListener('click', function() {
-                        const itemId = button.dataset.id;
-                        const url = ROOT + 'ItemController/delete';
-                        fetch(url, {
-                                method: 'POST',
-                                headers: {
-                                    "Content-type": 'application/json'
-                                },
-                                body: JSON.stringify({
-                                    item_id: itemId
-                                })
-                            })
-                            .then(res => res.json())
-                            .then(data => {
-                                console.log(data);
-                            })
-
-                    })
-                })
-            }
-
-
-            let categoryEditButtons = document.querySelectorAll('.category-edit');
-            categoryEditButtons.forEach(button => {
-                button.addEventListener("click", function() {
-                    const id = button.dataset.id;
-                    const url = ROOT + 'ItemController/category';
-                    fetch(url, {
-                            method: 'POST',
-                            headers: {
-                                'Content-type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                category_id: id
-                            })
-
-
-                        })
-                        .then(res => res.json())
-                        .then(data => {
-                            console.log(data);
-                        })
-                })
-            })
         </script>
 
 
