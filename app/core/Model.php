@@ -30,7 +30,7 @@ trait Model
     }
 
 
-    public function where($data, $data_not = [], $limit = '')
+    public function where($data, $data_not = [], $limit = '', $custom = '')
     {
         $keys = array_keys($data);
         $keys_not = array_keys($data_not);
@@ -48,6 +48,11 @@ trait Model
 
         if (!empty($limit)) {
             $query .= " limit $this->limit offset $this->offset ";
+        }
+
+
+        if (!empty($custom)) {
+            $query .= ' ' . $custom;
         }
 
         $data = array_merge($data, $data_not);
@@ -164,11 +169,12 @@ trait Model
     }
 
 
-    public function count($data, $data_not = [])
+    public function count($data,  $data_not = [], $custom = '')
     {
         $keys = array_keys($data);
         $keys_not = array_keys($data_not);
         $query = "select COUNT(*) as count from $this->table where ";
+
         foreach ($keys as $key) {
             $query .= $key . " = :" . $key . " AND ";
         }
@@ -177,6 +183,12 @@ trait Model
             $query .= $key . " != :" . $key . " AND ";
         }
         $query = trim($query, " AND ");
+
+        if (!empty($custom)) {
+            $query .= ' ' . $custom;
+        }
+
+        //show($query);
 
 
         $data = array_merge($data, $data_not);

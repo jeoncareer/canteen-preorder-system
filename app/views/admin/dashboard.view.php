@@ -402,8 +402,8 @@
                             🍽️
                         </div>
                     </div>
-                    <h2 class="admin-stat-value">8</h2>
-                    <p class="admin-stat-label">Active Canteens</p>
+                    <h2 class="admin-stat-value"><?= $canteens_count ?></h2>
+                    <p class="admin-stat-label"> Canteens</p>
                     <p class="admin-stat-change positive">
                         ↗ +2 new this semester
                     </p>
@@ -415,7 +415,7 @@
                             👨‍🎓
                         </div>
                     </div>
-                    <h2 class="admin-stat-value">2,847</h2>
+                    <h2 class="admin-stat-value"><?= $students_count ?></h2>
                     <p class="admin-stat-label">Registered Students</p>
                     <p class="admin-stat-change positive">
                         ↗ +156 this month
@@ -428,7 +428,7 @@
                             📋
                         </div>
                     </div>
-                    <h2 class="admin-stat-value">15,892</h2>
+                    <h2 class="admin-stat-value"><?= $order_count ?></h2>
                     <p class="admin-stat-label">Total Orders</p>
                     <p class="admin-stat-change positive">
                         ↗ +8% this week
@@ -441,7 +441,7 @@
                             💰
                         </div>
                     </div>
-                    <h2 class="admin-stat-value">₹8,45,680</h2>
+                    <h2 class="admin-stat-value">₹<?= $this_month_revenue ?></h2>
                     <p class="admin-stat-label">Total Revenue</p>
                     <p class="admin-stat-change positive">
                         ↗ +15% this month
@@ -461,7 +461,7 @@
                     </p>
                 </div> -->
 
-                <div class="admin-stat-card categories">
+                <!-- <div class="admin-stat-card categories">
                     <div class="admin-stat-header">
                         <div class="admin-stat-icon categories">
                             🏷️
@@ -472,7 +472,7 @@
                     <p class="admin-stat-change positive">
                         ↗ +5 new categories
                     </p>
-                </div>
+                </div> -->
             </div>
 
             <!-- Quick Actions -->
@@ -517,79 +517,36 @@
                         <thead>
                             <tr>
                                 <th>Canteen Name</th>
-                                <th>Location</th>
-                                <th>Status</th>
+
+                                <!-- <th>Status</th> -->
                                 <th>Orders Today</th>
                                 <th>Revenue</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><strong>Main Campus Canteen</strong></td>
-                                <td>Central Block</td>
-                                <td><span class="status-badge status-active">Active</span></td>
-                                <td>67</td>
-                                <td>₹18,450</td>
-                                <td>
-                                    <div class="admin-actions">
-                                        <a href="#" class="admin-action-btn view-btn">👁️ View</a>
-                                        <a href="#" class="admin-action-btn edit-btn">✏️ Edit</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Engineering Block Canteen</strong></td>
-                                <td>Engineering Wing</td>
-                                <td><span class="status-badge status-active">Active</span></td>
-                                <td>45</td>
-                                <td>₹12,300</td>
-                                <td>
-                                    <div class="admin-actions">
-                                        <a href="#" class="admin-action-btn view-btn">👁️ View</a>
-                                        <a href="#" class="admin-action-btn edit-btn">✏️ Edit</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Library Cafe</strong></td>
-                                <td>Library Building</td>
-                                <td><span class="status-badge status-inactive">Maintenance</span></td>
-                                <td>0</td>
-                                <td>₹0</td>
-                                <td>
-                                    <div class="admin-actions">
-                                        <a href="#" class="admin-action-btn view-btn">👁️ View</a>
-                                        <a href="#" class="admin-action-btn edit-btn">✏️ Edit</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Sports Complex Canteen</strong></td>
-                                <td>Sports Complex</td>
-                                <td><span class="status-badge status-active">Active</span></td>
-                                <td>32</td>
-                                <td>₹8,750</td>
-                                <td>
-                                    <div class="admin-actions">
-                                        <a href="#" class="admin-action-btn view-btn">👁️ View</a>
-                                        <a href="#" class="admin-action-btn edit-btn">✏️ Edit</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Hostel Mess A</strong></td>
-                                <td>Boys Hostel</td>
-                                <td><span class="status-badge status-active">Active</span></td>
-                                <td>89</td>
-                                <td>₹24,680</td>
-                                <td>
-                                    <div class="admin-actions">
-                                        <a href="#" class="admin-action-btn view-btn">👁️ View</a>
-                                        <a href="#" class="admin-action-btn edit-btn">✏️ Edit</a>
-                                    </div>
-                                </td>
-                            </tr>
+                            <?php if (!empty($canteens)): ?>
+                                <?php foreach ($canteens as $canteen): ?>
+                                    <tr>
+                                        <td><strong><?= $canteen->canteen_name ?></strong></td>
+
+                                        <!-- <td><span class="status-badge status-active">Active</span></td> -->
+                                        <td><?= $canteen->total_orders ?></td>
+                                        <td>₹<?= $canteen->total_revenue ?></td>
+                                        <td>
+                                            <div class="admin-actions">
+                                                <a href="#" class="admin-action-btn view-btn">👁️ View</a>
+                                                <a href="#" class="admin-action-btn edit-btn">✏️ Edit</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+
+                            <?php endif; ?>
+
+
+
+
                         </tbody>
                     </table>
 

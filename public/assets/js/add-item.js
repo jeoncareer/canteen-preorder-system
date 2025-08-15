@@ -20,7 +20,7 @@
             }
             // if(e.target.matches('[data-modal-target]')){
             // }
-            e.preventDefault()
+            
            })
  
             

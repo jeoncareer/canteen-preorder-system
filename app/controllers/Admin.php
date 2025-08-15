@@ -9,17 +9,54 @@ class Admin extends Controller
         if (!isset($_SESSION['COLLEGE'])) {
             redirect('admin/login');
         }
-        $canteens = new Canteen_db;
+        $canteen = new Canteen_db;
         $students = new Student;
+        $college_orders = new College_orders_view;
+        $canteen_orders = new Canteen_orders_view;
+
+        $college_id = $_SESSION['COLLEGE']->id;
+        $firstDay = new DateTime('first day of this month');
+        $now = new DateTime('today');
+        $today = $now->format('Y-m-d');
+        $this_month = $firstDay->format('Y-m');
+        $this_month_revenue_sql = "select sum(total) as total from college_orders_view where DATE_FORMAT(time,'%Y-%m') = '{$this_month}' AND college_id = {$college_id}";
+
+        $canteens = $canteen->where(['college_id' => $college_id]);
+        foreach ($canteens as $cant) {
+            $result = $canteen_orders->query("
+                SELECT COUNT(*) AS total_orders,SUM(total) AS total_revenue 
+                FROM canteen_orders_view 
+                WHERE DATE_FORMAT(time, '%Y-%m-%d') = '{$today}' 
+                AND canteen_id = {$cant->id}
+            ");
+
+            // Assuming your query() returns an array of stdClass objects:
+            if ($result && isset($result[0])) {
+                $cant->total_orders = $result[0]->total_orders;
+                $cant->total_revenue = $result[0]->total_revenue;
+            } else {
+                $cant->total_orders = 0;
+                $cant->total_revenue = 0;
+            }
+        }
+
+        show($canteens);
+
+
+
+
+
 
 
 
         $data['college'] = $_SESSION['COLLEGE'];
-        $college_id = $_SESSION['COLLEGE']->id;
-        $data['canteens_count'] = $canteens->count(['college_id' => $college_id]);
-        $data['students_count'] = $canteens->count(['college_id' => $college_id]);
+        $data['canteens_count'] = $canteen->count(['college_id' => $college_id]);
+        $data['students_count'] = $students->count(['college_id' => $college_id]);
+        $data['order_count'] = $college_orders->count(['college_id' => $college_id]);
+        $data['this_month_revenue'] =  $college_orders->query($this_month_revenue_sql)[0]->total;
+        $data['canteens'] = $canteens;
 
-
+        show($data);
 
 
 

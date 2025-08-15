@@ -1,5 +1,6 @@
 
 <?php
+date_default_timezone_set('Asia/Kolkata');
 
 if ($_SERVER['SERVER_NAME'] == 'localhost') {
     define('DBNAME', 'canteen_system');
