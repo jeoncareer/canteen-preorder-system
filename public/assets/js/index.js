@@ -206,3 +206,9 @@ function updateTotalPrice() {
             }
         })
 }
+
+
+  function ucWords(word)
+                {
+                    return word.charAt(0).toUpperCase()+word.slice(1);
+                }

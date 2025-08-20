@@ -10,7 +10,7 @@ class Admin extends Controller
             redirect('admin/login');
         }
         $canteen = new Canteen_db;
-        $students = new Student;
+        $student = new Student;
         $college_orders = new College_orders_view;
         $canteen_orders = new Canteen_orders_view;
 
@@ -40,7 +40,9 @@ class Admin extends Controller
             }
         }
 
-        show($canteens);
+
+
+
 
 
 
@@ -51,12 +53,13 @@ class Admin extends Controller
 
         $data['college'] = $_SESSION['COLLEGE'];
         $data['canteens_count'] = $canteen->count(['college_id' => $college_id]);
-        $data['students_count'] = $students->count(['college_id' => $college_id]);
+        $data['students_count'] = $student->count(['college_id' => $college_id]);
         $data['order_count'] = $college_orders->count(['college_id' => $college_id]);
         $data['this_month_revenue'] =  $college_orders->query($this_month_revenue_sql)[0]->total;
         $data['canteens'] = $canteens;
+        $data['students'] = $student->where(['college_id' => $college_id]);
 
-        show($data);
+
 
 
 
@@ -122,17 +125,58 @@ class Admin extends Controller
 
     public function canteens()
     {
-        $this->view('admin/canteens');
+
+        $data['college'] = $_SESSION['COLLEGE'];
+        $this->view('admin/canteens', $data);
     }
 
     public function students()
     {
-        $this->view('admin/students');
+        $student = new Student;
+        $data['college'] = $_SESSION['COLLEGE'];
+        $college_id = $_SESSION['COLLEGE']->id;
+
+        $sql = "SELECT students.email as student_email,students.student_name,students.reg_no,
+        students.status,students.id,count(orders.id) AS 
+        total_orders FROM students 
+        left JOIN orders ON students.id = orders.student_id
+        WHERE students.college_id = {$college_id}
+        GROUP BY students.id ORDER BY students.id desc limit 10 offset 0";
+        $data['student_total_orders'] = $student->query($sql);
+        $data['totalRows'] = count($student->where(['college_id' => $college_id]));
+        $totalPageNumbers = $data['totalRows'] / 10;
+        $data['lastValue'] = $data['totalRows'] / 10;
+
+
+        if ($data['totalRows'] % 10 != 0) {
+            $totalPageNumbers++;
+        }
+
+        $data['totalPageNumbers'] = $totalPageNumbers;
+
+
+
+        $this->view('admin/students', $data);
     }
 
     public function student_reports()
     {
+        $data['college'] = $_SESSION['COLLEGE'];
         $data['page'] = 'student_reports';
         $this->view('admin/student_reports', $data);
+    }
+
+    public function courses()
+    {
+        $data['college'] = $_SESSION['COLLEGE'];
+        $data['page'] = 'courses';
+        $this->view('admin/courses', $data);
+    }
+
+    public function orders()
+    {
+        $data['college'] = $_SESSION['COLLEGE'];
+        $data['page'] = 'orders';
+        $this->view('admin/orders', $data);
     }
 }

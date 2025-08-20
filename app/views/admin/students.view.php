@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/sidebar.css">
     <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/student-general.css">
     <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/canteen-common.css">
+    <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/add-item.css">
+    <script>
+        const ROOT = '<?= ROOT ?>';
+    </script>
     <style>
         /* Students Management Specific Styles */
         .students-header {
@@ -64,7 +68,7 @@
             transform: translateY(-2px);
         }
 
-        . summary-cards {
+        .summary-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
@@ -106,6 +110,52 @@
 
         .summary-card.active .summary-value {
             color: #8b5cf6;
+        }
+
+        /* Filters Section */
+        .filters-section {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-input,
+        .form-select {
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
         }
 
         .students-table-container {
@@ -294,6 +344,38 @@
         .pagination-controls {
             display: flex;
             gap: 0.5rem;
+            align-items: center;
+        }
+
+        .page-numbers-container {
+            max-width: 400px;
+            overflow-x: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 #f1f5f9;
+        }
+
+        .page-numbers-container::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .page-numbers-container::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+
+        .page-numbers-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        .page-numbers-container::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .page-numbers {
+            display: flex;
+            gap: 5px;
+            padding: 5px 0;
         }
 
         .pagination-btn {
@@ -322,6 +404,57 @@
             background: var(--secondary-color);
             color: white;
             border-color: var(--secondary-color);
+        }
+
+        /* Range Selector Styles */
+        .range-selector {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .range-info {
+            color: #64748b;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .range-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .range-controls label {
+            color: #374151;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .range-dropdown {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            color: #374151;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .range-dropdown:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .range-dropdown:hover {
+            border-color: #cbd5e1;
         }
 
         @media (max-width: 900px) {
@@ -387,9 +520,9 @@
                     All Registered Students
                 </h2>
                 <div class="students-actions">
-                    <a href="#" class="add-student-btn">
+                    <!-- <a href="#" class="add-student-btn">
                         ➕ Add New Student
-                    </a>
+                    </a> -->
                     <a href="#" class="export-btn">
                         📊 Export Data
                     </a>
@@ -471,227 +604,160 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <div class="student-info">
-                                    <div class="student-avatar">ET</div>
-                                    <div class="student-details">
-                                        <h4>Emma Thompson</h4>
-                                        <p>emma.thompson@college.edu</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><strong>CS2021001</strong></td>
-                            <td><span class="department-badge dept-cs">Computer Science</span></td>
-                            <td>3rd Year</td>
-                            <td><span class="status-badge status-verified">Verified</span></td>
-                            <td>47</td>
-                            <td>Jan 15, 2021</td>
-                            <td>
-                                <div class="student-actions">
-                                    <a href="#" class="student-action-btn view-btn">👁️</a>
-                                    <a href="#" class="student-action-btn edit-btn">✏️</a>
-                                    <button class="student-action-btn suspend-btn">🚫</button>
-                                </div>
-                            </td>
-                        </tr>
+                        <?php if (!empty($student_total_orders)): ?>
+                            <?php foreach ($student_total_orders as $student): ?>
+                                <tr>
+                                    <td>
+                                        <div class="student-info">
+                                            <div class="student-avatar">ET</div>
+                                            <div class="student-details">
+                                                <h4><?= $student->student_name ?></h4>
+                                                <p><?= $student->student_email ?></p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><strong><?= $student->reg_no ?></strong></td>
+                                    <td><span class="department-badge dept-cs">Computer Science</span></td>
+                                    <td>3rd Year</td>
+                                    <td><span class="status-badge status-<?= $student->status ?>"><?= $student->status ?></span></td>
+                                    <td><?= $student->total_orders ?></td>
+                                    <td>Jan 15, 2021</td>
+                                    <td>
+                                        <div class="student-actions">
+                                            <a href="#" class="student-action-btn view-btn">👁️</a>
+                                            <a href="#" class="student-action-btn edit-btn">✏️</a>
+                                            <button class="student-action-btn suspend-btn">🚫</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
 
-                        <tr>
-                            <td>
-                                <div class="student-info">
-                                    <div class="student-avatar">DK</div>
-                                    <div class="student-details">
-                                        <h4>David Kumar</h4>
-                                        <p>david.kumar@college.edu</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><strong>ME2022015</strong></td>
-                            <td><span class="department-badge dept-me">Mechanical Eng.</span></td>
-                            <td>2nd Year</td>
-                            <td><span class="status-badge status-pending">Pending</span></td>
-                            <td>23</td>
-                            <td>Aug 20, 2022</td>
-                            <td>
-                                <div class="student-actions">
-                                    <a href="#" class="student-action-btn view-btn">👁️</a>
-                                    <a href="#" class="student-action-btn edit-btn">✏️</a>
-                                    <button class="student-action-btn suspend-btn">🚫</button>
-                                </div>
-                            </td>
-                        </tr>
 
-                        <tr>
-                            <td>
-                                <div class="student-info">
-                                    <div class="student-avatar">LC</div>
-                                    <div class="student-details">
-                                        <h4>Lisa Chen</h4>
-                                        <p>lisa.chen@college.edu</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><strong>BA2020087</strong></td>
-                            <td><span class="department-badge dept-ba">Business Admin</span></td>
-                            <td>4th Year</td>
-                            <td><span class="status-badge status-verified">Verified</span></td>
-                            <td>89</td>
-                            <td>Sep 10, 2020</td>
-                            <td>
-                                <div class="student-actions">
-                                    <a href="#" class="student-action-btn view-btn">👁️</a>
-                                    <a href="#" class="student-action-btn edit-btn">✏️</a>
-                                    <button class="student-action-btn suspend-btn">🚫</button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <div class="student-info">
-                                    <div class="student-avatar">RS</div>
-                                    <div class="student-details">
-                                        <h4>Robert Singh</h4>
-                                        <p>robert.singh@college.edu</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><strong>EE2021045</strong></td>
-                            <td><span class="department-badge dept-ee">Electrical Eng.</span></td>
-                            <td>3rd Year</td>
-                            <td><span class="status-badge status-verified">Verified</span></td>
-                            <td>156</td>
-                            <td>Feb 28, 2021</td>
-                            <td>
-                                <div class="student-actions">
-                                    <a href="#" class="student-action-btn view-btn">👁️</a>
-                                    <a href="#" class="student-action-btn edit-btn">✏️</a>
-                                    <button class="student-action-btn suspend-btn">🚫</button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <div class="student-info">
-                                    <div class="student-avatar">MG</div>
-                                    <div class="student-details">
-                                        <h4>Maria Garcia</h4>
-                                        <p>maria.garcia@college.edu</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><strong>CE2023012</strong></td>
-                            <td><span class="department-badge dept-ce">Civil Engineering</span></td>
-                            <td>1st Year</td>
-                            <td><span class="status-badge status-pending">Pending</span></td>
-                            <td>8</td>
-                            <td>Jul 15, 2023</td>
-                            <td>
-                                <div class="student-actions">
-                                    <a href="#" class="student-action-btn view-btn">👁️</a>
-                                    <a href="#" class="student-action-btn edit-btn">✏️</a>
-                                    <button class="student-action-btn suspend-btn">🚫</button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <div class="student-info">
-                                    <div class="student-avatar">AJ</div>
-                                    <div class="student-details">
-                                        <h4>Alex Johnson</h4>
-                                        <p>alex.johnson@college.edu</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><strong>CS2022089</strong></td>
-                            <td><span class="department-badge dept-cs">Computer Science</span></td>
-                            <td>2nd Year</td>
-                            <td><span class="status-badge status-verified">Verified</span></td>
-                            <td>67</td>
-                            <td>Jan 05, 2022</td>
-                            <td>
-                                <div class="student-actions">
-                                    <a href="#" class="student-action-btn view-btn">👁️</a>
-                                    <a href="#" class="student-action-btn edit-btn">✏️</a>
-                                    <button class="student-action-btn suspend-btn">🚫</button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <div class="student-info">
-                                    <div class="student-avatar">SP</div>
-                                    <div class="student-details">
-                                        <h4>Sarah Patel</h4>
-                                        <p>sarah.patel@college.edu</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><strong>ME2020156</strong></td>
-                            <td><span class="department-badge dept-me">Mechanical Eng.</span></td>
-                            <td>4th Year</td>
-                            <td><span class="status-badge status-verified">Verified</span></td>
-                            <td>234</td>
-                            <td>Aug 12, 2020</td>
-                            <td>
-                                <div class="student-actions">
-                                    <a href="#" class="student-action-btn view-btn">👁️</a>
-                                    <a href="#" class="student-action-btn edit-btn">✏️</a>
-                                    <button class="student-action-btn suspend-btn">🚫</button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <div class="student-info">
-                                    <div class="student-avatar">JW</div>
-                                    <div class="student-details">
-                                        <h4>James Wilson</h4>
-                                        <p>james.wilson@college.edu</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><strong>EE2023034</strong></td>
-                            <td><span class="department-badge dept-ee">Electrical Eng.</span></td>
-                            <td>1st Year</td>
-                            <td><span class="status-badge status-verified">Verified</span></td>
-                            <td>12</td>
-                            <td>Sep 03, 2023</td>
-                            <td>
-                                <div class="student-actions">
-                                    <a href="#" class="student-action-btn view-btn">👁️</a>
-                                    <a href="#" class="student-action-btn edit-btn">✏️</a>
-                                    <button class="student-action-btn suspend-btn">🚫</button>
-                                </div>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
 
-                <!-- Pagination -->
+                <!-- Pagination with Horizontal Scroll -->
                 <div class="pagination">
                     <div class="pagination-info">
-                        Showing 1-8 of 2,847 students
+                        Showing 1-10 of <?= number_format($totalRows) ?> students
                     </div>
                     <div class="pagination-controls">
-                        <button class="pagination-btn" disabled>← Previous</button>
-                        <button class="pagination-btn active">1</button>
-                        <button class="pagination-btn">2</button>
-                        <button class="pagination-btn">3</button>
-                        <button class="pagination-btn">4</button>
-                        <button class="pagination-btn">...</button>
-                        <button class="pagination-btn">356</button>
-                        <button class="pagination-btn">Next →</button>
+                        <button class="pagination-btn nav-btn" id="prev-page-btn" disabled>← Previous</button>
+                        <div class="page-numbers-container">
+                            <div class="page-numbers" id="pageNumbers">
+                                <?php for ($i = 1; $i < $totalPageNumbers; $i++): ?>
+                                    <?php if ($i == 1): ?>
+                                        <button value="<?= ($i - 1) * 10 ?>" class="pagination-btn active"><?= $i ?></button>
+                                    <?php else: ?>
+                                        <button value="<?= ($i - 1) * 10 ?>" class="pagination-btn "><?= $i ?></button>
+                                    <?php endif; ?>
+                                <?php endfor; ?>
+                            </div>
+                        </div>
+                        <button class="pagination-btn nav-btn" id="next-page-btn">Next →</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+
+
+    <script src="<?= ROOT ?>assets/js/index.js"></script>
+    <script src="<?= ROOT ?>assets/js/add-item.js"></script>
+    <script>
+        let prevPageBtn = document.getElementById('prev-page-btn');
+        let nextPageBtn = document.getElementById('next-page-btn');
+        updateStudentsDetails();
+
+        function updateStudentsDetails() {
+
+            let pageNumbers = document.querySelector('#pageNumbers');
+            pageNumbers.addEventListener('click', e => {
+                let btn = e.target;
+                if (btn.classList.contains("pagination-btn")) {
+                    let value = parseInt(btn.value);
+
+                    if (btn.classList.contains('active')) {
+                        return false;
+                    }
+                    if (value === 0) {
+                        prevPageBtn.disabled = true;
+                    } else {
+                        prevPageBtn.disabled = false;
+                    }
+
+                    if (btn.matches(":last-child")) {
+                        nextPageBtn.disabled = true;
+                    } else {
+                        nextPageBtn.disabled = false;
+                    }
+
+
+                    console.log(value);
+                    fetchStudentData(value);
+                    paginationBtnChange(btn);
+                }
+            })
+
+
+
+
+        }
+
+
+
+        function fetchStudentData(value) {
+            const url = ROOT + 'OrdersController/students?offset=' + value;
+
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        let students = data.orders;
+                        let tBody = document.querySelector('.students-table tbody');
+                        tBody.innerHTML = '';
+
+                        students.forEach(student => {
+                            let tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                      <td>
+                                        <div class="student-info">
+                                            <div class="student-avatar">ET</div>
+                                            <div class="student-details">
+                                                <h4>${student.student_name}</h4>
+                                                <p>${student.student_email}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><strong>${student.reg_no}</strong></td>
+                                    <td><span class="department-badge dept-cs">Computer Science</span></td>
+                                    <td>3rd Year</td>
+                                    <td><span class="status-badge status-${student.status}">${student.status}</span></td>
+                                    <td>${student.total_orders}</td>
+                                    <td>Jan 15, 2021</td>
+                                    <td>
+                                        <div class="student-actions">
+                                            <a href="#" class="student-action-btn view-btn">👁️</a>
+                                            <a href="#" class="student-action-btn edit-btn">✏️</a>
+                                            <button class="student-action-btn suspend-btn">🚫</button>
+                                        </div>
+                                    </td>
+                            `;
+
+                            tBody.appendChild(tr);
+                        })
+                    }
+                })
+        }
+
+        function paginationBtnChange(newBtn) {
+            currentButton = document.querySelector('.pagination-btn.active');
+            currentButton.classList.remove('active');
+            newBtn.classList.add('active');
+        }
+    </script>
 </body>
 
 </html>

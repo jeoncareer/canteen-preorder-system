@@ -19,7 +19,7 @@
         </li>
 
         <li class="nav-item">
-            <a href="<?= ROOT ?>canteen/orders" class="nav-link <?php if ($page === 'order_history') {
+            <a href="<?= ROOT ?>canteen/orders" class="nav-link <?php if ($page === 'orders') {
                                                                     echo 'active';
                                                                 } ?>">
                 <span class="nav-icon">📊</span>
@@ -27,16 +27,14 @@
             </a>
         </li>
 
-
-        <!-- 
         <li class="nav-item">
-            <a href="#" class="nav-link <?php if ($page === 'order_history') {
-                                            echo 'active';
-                                        } ?>">
-                <span class="nav-icon">📊</span>
-                <span>Order History</span>
+            <a href="<?= ROOT ?>canteen/settings" class="nav-link <?php if ($page === 'settings') {
+                                                                        echo 'active';
+                                                                    } ?>">
+                <span class="nav-icon">⚙️</span>
+                <span>Canteen Settings</span>
             </a>
-        </li> -->
+        </li>
 
         <li class="nav-item">
             <a href="#" class="nav-link <?php if ($page === 'order_history') {

@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/sidebar.css">
     <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/student-general.css">
     <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/canteen-common.css">
+    <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/menu-management.css">
+    <link rel="stylesheet" href="<?= ROOT ?>assets/css/add-item.css">
+
     <style>
         /* Canteens Management Specific Styles */
         .canteens-header {
@@ -77,7 +80,7 @@
             display: grid;
             grid-template-columns: 2fr 1fr 1fr 1fr;
             gap: 1.5rem;
-            align-items: end;
+            align-items: start;
         }
 
         .canteens-grid {
@@ -208,50 +211,60 @@
 
         .canteen-actions {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.75rem;
+            margin-top: 1rem;
         }
 
         .canteen-action-btn {
             flex: 1;
-            padding: 0.8rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            /* space between emoji/icon and text */
+            padding: 0.6rem 1rem;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-weight: 600;
             cursor: pointer;
-            transition: var(--transition);
             text-decoration: none;
             text-align: center;
             font-size: 0.9rem;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
+        .canteen-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Specific styles */
         .view-details-btn {
             background: var(--secondary-color);
-            color: white;
+            color: #fff;
         }
 
         .view-details-btn:hover {
             background: #2980b9;
-            transform: translateY(-2px);
         }
 
         .edit-canteen-btn {
             background: var(--warning-color);
-            color: white;
+            color: #fff;
         }
 
         .edit-canteen-btn:hover {
             background: #d68910;
-            transform: translateY(-2px);
         }
 
         .toggle-status-btn {
             background: var(--success-color);
-            color: white;
+            color: #fff;
         }
 
         .toggle-status-btn:hover {
             background: #229954;
-            transform: translateY(-2px);
         }
 
         .toggle-status-btn.inactive {
@@ -261,6 +274,7 @@
         .toggle-status-btn.inactive:hover {
             background: #c0392b;
         }
+
 
         .summary-cards {
             display: grid;
@@ -489,265 +503,78 @@
                         </div>
 
                         <div class="canteen-actions">
-                            <a href="#" class="canteen-action-btn view-details-btn">👁️ View Details</a>
-                            <a href="#" class="canteen-action-btn edit-canteen-btn">✏️ Edit</a>
-                            <button class="canteen-action-btn toggle-status-btn">🔄 Disable</button>
+                            <a href="#" data-modal-target="#canteen-view-modal" class="canteen-action-btn view-details-btn"> View Details</a>
+                            <a href="#" class="canteen-action-btn edit-canteen-btn"> Edit</a>
+                            <button class="canteen-action-btn toggle-status-btn"> Disable</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Engineering Block Canteen -->
-                <div class="canteen-card">
-                    <div class="canteen-header">
-                        <div class="canteen-status active">Active</div>
-                        <h3 class="canteen-name">Engineering Block Canteen</h3>
-                        <p class="canteen-location">📍 Engineering Wing, 1st Floor</p>
-                    </div>
-                    <div class="canteen-body">
-                        <div class="canteen-stats">
-                            <div class="canteen-stat">
-                                <div class="canteen-stat-value">45</div>
-                                <div class="canteen-stat-label">Orders Today</div>
-                            </div>
-                            <div class="canteen-stat">
-                                <div class="canteen-stat-value">₹12,300</div>
-                                <div class="canteen-stat-label">Revenue</div>
-                            </div>
-                            <div class="canteen-stat">
-                                <div class="canteen-stat-value">4.6</div>
-                                <div class="canteen-stat-label">Rating</div>
-                            </div>
-                        </div>
 
-                        <div class="canteen-info">
-                            <div class="canteen-info-item">
-                                <span class="canteen-info-label">Manager</span>
-                                <span class="canteen-info-value">Priya Sharma</span>
-                            </div>
-                            <div class="canteen-info-item">
-                                <span class="canteen-info-label">Staff Count</span>
-                                <span class="canteen-info-value">6 members</span>
-                            </div>
-                            <div class="canteen-info-item">
-                                <span class="canteen-info-label">Operating Hours</span>
-                                <span class="canteen-info-value">8:00 AM - 8:00 PM</span>
-                            </div>
-                            <div class="canteen-info-item">
-                                <span class="canteen-info-label">Contact</span>
-                                <span class="canteen-info-value">+91 98765 43211</span>
-                            </div>
-                        </div>
 
-                        <div class="canteen-actions">
-                            <a href="#" class="canteen-action-btn view-details-btn">👁️ View Details</a>
-                            <a href="#" class="canteen-action-btn edit-canteen-btn">✏️ Edit</a>
-                            <button class="canteen-action-btn toggle-status-btn">🔄 Disable</button>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Library Cafe -->
-                <div class="canteen-card">
-                    <div class="canteen-header">
-                        <div class="canteen-status maintenance">Maintenance</div>
-                        <h3 class="canteen-name">Library Cafe</h3>
-                        <p class="canteen-location">📍 Library Building, Ground Floor</p>
-                    </div>
-                    <div class="canteen-body">
-                        <div class="canteen-stats">
-                            <div class="canteen-stat">
-                                <div class="canteen-stat-value">0</div>
-                                <div class="canteen-stat-label">Orders Today</div>
-                            </div>
-                            <div class="canteen-stat">
-                                <div class="canteen-stat-value">₹0</div>
-                                <div class="canteen-stat-label">Revenue</div>
-                            </div>
-                            <div class="canteen-stat">
-                                <div class="canteen-stat-value">4.2</div>
-                                <div class="canteen-stat-label">Rating</div>
-                            </div>
-                        </div>
 
-                        <div class="canteen-info">
-                            <div class="canteen-info-item">
-                                <span class="canteen-info-label">Manager</span>
-                                <span class="canteen-info-value">Amit Patel</span>
-                            </div>
-                            <div class="canteen-info-item">
-                                <span class="canteen-info-label">Staff Count</span>
-                                <span class="canteen-info-value">3 members</span>
-                            </div>
-                            <div class="canteen-info-item">
-                                <span class="canteen-info-label">Operating Hours</span>
-                                <span class="canteen-info-value">9:00 AM - 6:00 PM</span>
-                            </div>
-                            <div class="canteen-info-item">
-                                <span class="canteen-info-label">Contact</span>
-                                <span class="canteen-info-value">+91 98765 43212</span>
-                            </div>
-                        </div>
 
-                        <div class="canteen-actions">
-                            <a href="#" class="canteen-action-btn view-details-btn">👁️ View Details</a>
-                            <a href="#" class="canteen-action-btn edit-canteen-btn">✏️ Edit</a>
-                            <button class="canteen-action-btn toggle-status-btn">🔄 Enable</button>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Sports Complex Canteen -->
-                <div class="canteen-card">
-                    <div class="canteen-header">
-                        <div class="canteen-status active">Active</div>
-                        <h3 class="canteen-name">Sports Complex Canteen</h3>
-                        <p class="canteen-location">📍 Sports Complex, Main Hall</p>
-                    </div>
-                    <div class="canteen-body">
-                        <div class="canteen-stats">
-                            <div class="canteen-stat">
-                                <div class="canteen-stat-value">32</div>
-                                <div class="canteen-stat-label">Orders Today</div>
-                            </div>
-                            <div class="canteen-stat">
-                                <div class="canteen-stat-value">₹8,750</div>
-                                <div class="canteen-stat-label">Revenue</div>
-                            </div>
-                            <div class="canteen-stat">
-                                <div class="canteen-stat-value">4.5</div>
-                                <div class="canteen-stat-label">Rating</div>
-                            </div>
-                        </div>
 
-                        <div class="canteen-info">
-                            <div class="canteen-info-item">
-                                <span class="canteen-info-label">Manager</span>
-                                <span class="canteen-info-value">Sunita Verma</span>
-                            </div>
-                            <div class="canteen-info-item">
-                                <span class="canteen-info-label">Staff Count</span>
-                                <span class="canteen-info-value">4 members</span>
-                            </div>
-                            <div class="canteen-info-item">
-                                <span class="canteen-info-label">Operating Hours</span>
-                                <span class="canteen-info-value">6:00 AM - 10:00 PM</span>
-                            </div>
-                            <div class="canteen-info-item">
-                                <span class="canteen-info-label">Contact</span>
-                                <span class="canteen-info-value">+91 98765 43213</span>
-                            </div>
-                        </div>
 
-                        <div class="canteen-actions">
-                            <a href="#" class="canteen-action-btn view-details-btn">👁️ View Details</a>
-                            <a href="#" class="canteen-action-btn edit-canteen-btn">✏️ Edit</a>
-                            <button class="canteen-action-btn toggle-status-btn">🔄 Disable</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Hostel Mess A -->
-                <div class="canteen-card">
-                    <div class="canteen-header">
-                        <div class="canteen-status active">Active</div>
-                        <h3 class="canteen-name">Hostel Mess A</h3>
-                        <p class="canteen-location">📍 Boys Hostel, Ground Floor</p>
-                    </div>
-                    <div class="canteen-body">
-                        <div class="canteen-stats">
-                            <div class="canteen-stat">
-                                <div class="canteen-stat-value">89</div>
-                                <div class="canteen-stat-label">Orders Today</div>
-                            </div>
-                            <div class="canteen-stat">
-                                <div class="canteen-stat-value">₹24,680</div>
-                                <div class="canteen-stat-label">Revenue</div>
-                            </div>
-                            <div class="canteen-stat">
-                                <div class="canteen-stat-value">4.7</div>
-                                <div class="canteen-stat-label">Rating</div>
-                            </div>
-                        </div>
-
-                        <div class="canteen-info">
-                            <div class="canteen-info-item">
-                                <span class="canteen-info-label">Manager</span>
-                                <span class="canteen-info-value">Vikram Singh</span>
-                            </div>
-                            <div class="canteen-info-item">
-                                <span class="canteen-info-label">Staff Count</span>
-                                <span class="canteen-info-value">10 members</span>
-                            </div>
-                            <div class="canteen-info-item">
-                                <span class="canteen-info-label">Operating Hours</span>
-                                <span class="canteen-info-value">6:00 AM - 11:00 PM</span>
-                            </div>
-                            <div class="canteen-info-item">
-                                <span class="canteen-info-label">Contact</span>
-                                <span class="canteen-info-value">+91 98765 43214</span>
-                            </div>
-                        </div>
-
-                        <div class="canteen-actions">
-                            <a href="#" class="canteen-action-btn view-details-btn">👁️ View Details</a>
-                            <a href="#" class="canteen-action-btn edit-canteen-btn">✏️ Edit</a>
-                            <button class="canteen-action-btn toggle-status-btn">🔄 Disable</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Hostel Mess B -->
-                <div class="canteen-card">
-                    <div class="canteen-header">
-                        <div class="canteen-status active">Active</div>
-                        <h3 class="canteen-name">Hostel Mess B</h3>
-                        <p class="canteen-location">📍 Girls Hostel, Ground Floor</p>
-                    </div>
-                    <div class="canteen-body">
-                        <div class="canteen-stats">
-                            <div class="canteen-stat">
-                                <div class="canteen-stat-value">76</div>
-                                <div class="canteen-stat-label">Orders Today</div>
-                            </div>
-                            <div class="canteen-stat">
-                                <div class="canteen-stat-value">₹21,340</div>
-                                <div class="canteen-stat-label">Revenue</div>
-                            </div>
-                            <div class="canteen-stat">
-                                <div class="canteen-stat-value">4.9</div>
-                                <div class="canteen-stat-label">Rating</div>
-                            </div>
-                        </div>
-
-                        <div class="canteen-info">
-                            <div class="canteen-info-item">
-                                <span class="canteen-info-label">Manager</span>
-                                <span class="canteen-info-value">Meera Joshi</span>
-                            </div>
-                            <div class="canteen-info-item">
-                                <span class="canteen-info-label">Staff Count</span>
-                                <span class="canteen-info-value">8 members</span>
-                            </div>
-                            <div class="canteen-info-item">
-                                <span class="canteen-info-label">Operating Hours</span>
-                                <span class="canteen-info-value">6:00 AM - 11:00 PM</span>
-                            </div>
-                            <div class="canteen-info-item">
-                                <span class="canteen-info-label">Contact</span>
-                                <span class="canteen-info-value">+91 98765 43215</span>
-                            </div>
-                        </div>
-
-                        <div class="canteen-actions">
-                            <a href="#" class="canteen-action-btn view-details-btn">👁️ View Details</a>
-                            <a href="#" class="canteen-action-btn edit-canteen-btn">✏️ Edit</a>
-                            <button class="canteen-action-btn toggle-status-btn">🔄 Disable</button>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+
+    <!-- View Canteen Modal -->
+    <div class="modal" id="canteen-view-modal">
+        <div class="modal-header">
+            <div class="modal-title">🏫 Canteen Details</div>
+            <button data-close-button="close-button" class="close-button">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="canteen-details">
+                <!-- Basic Details -->
+                <div class="form-group">
+                    <label class="form-label">Name</label>
+                    <p class="form-value" id="canteen-name">Main Campus Canteen</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Location</label>
+                    <p class="form-value" id="canteen-location">Central Block, Ground Floor</p>
+                </div>
+
+                <!-- Revenue Section with Toggle -->
+                <div class="form-group">
+                    <label class="form-label">Revenue</label>
+                    <div class="revenue-section">
+                        <select id="revenue-filter" class="form-input">
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                        </select>
+                        <p class="form-value" id="canteen-revenue">₹18,450</p>
+                    </div>
+                </div>
+
+                <!-- Rating -->
+                <div class="form-group">
+                    <label class="form-label">Rating</label>
+                    <p class="form-value" id="canteen-rating">4.8 ⭐</p>
+                </div>
+
+                <!-- Messaging Feature -->
+                <div class="form-group">
+                    <label class="form-label">Message Manager</label>
+                    <textarea id="message-text" class="form-input" rows="3" placeholder="Type your message..."></textarea>
+                    <button class="btn btn-primary mt-2" id="send-message-btn">📨 Send</button>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" data-close-button="close-button">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="<?= ROOT ?>assets/js/add-item.js"></script>
 </body>
 
 </html>

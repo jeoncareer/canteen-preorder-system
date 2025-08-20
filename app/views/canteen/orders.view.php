@@ -224,20 +224,25 @@
                         </tbody>
                     </table>
 
-                    <!-- Pagination -->
-                    <!-- <div class="pagination">
-                            <div class="pagination-info">
-                                Showing 1-6 of 47 orders
+                    <!-- Pagination with Horizontal Scroll -->
+                    <div class="pagination">
+                        <button class="page-btn nav-btn" id="prevBtn">Previous</button>
+                        <div class="page-numbers-container">
+                            <div class="page-numbers" id="pageNumbers">
+                                <button class="page-btn active">1</button>
+                                <button class="page-btn">2</button>
+                                <button class="page-btn">3</button>
+                                <button class="page-btn">4</button>
+                                <button class="page-btn">5</button>
+                                <button class="page-btn">6</button>
+                                <button class="page-btn">7</button>
+                                <button class="page-btn">8</button>
+                                <button class="page-btn">9</button>
+                                <button class="page-btn">10</button>
                             </div>
-                            <div class="pagination-controls">
-                                <button class="pagination-btn" disabled>← Previous</button>
-                                <button class="pagination-btn active">1</button>
-                                <button class="pagination-btn">2</button>
-                                <button class="pagination-btn">3</button>
-                                <button class="pagination-btn">4</button>
-                                <button class="pagination-btn">Next →</button>
-                            </div>
-                        </div> -->
+                        </div>
+                        <button class="page-btn nav-btn" id="nextBtn">Next</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -254,3 +259,125 @@
 </body>
 
 </html>
+<script>
+    // Horizontal Scrolling Pagination JavaScript for Canteen Orders
+    document.addEventListener('DOMContentLoaded', function() {
+        const pageNumbersContainer = document.querySelector('.page-numbers-container');
+        const prevBtn = document.querySelector('#prevBtn');
+        const nextBtn = document.querySelector('#nextBtn');
+        const paginationBtns = document.querySelectorAll('.page-btn:not(.nav-btn)');
+
+        let currentPage = 1;
+        const totalOrders = 47;
+        const itemsPerPage = 10;
+        const totalPages = Math.ceil(totalOrders / itemsPerPage);
+
+        // Handle page number clicks
+        paginationBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (!this.classList.contains('nav-btn')) {
+                    // Remove active class from all buttons
+                    paginationBtns.forEach(b => b.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+
+                    currentPage = parseInt(this.textContent);
+                    updatePaginationState();
+
+                    // Scroll the clicked button into view
+                    this.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'nearest',
+                        inline: 'center'
+                    });
+                }
+            });
+        });
+
+        // Handle Previous button
+        if (prevBtn) {
+            prevBtn.addEventListener('click', function() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    updateActivePage();
+                    updatePaginationState();
+                    scrollToActivePage();
+                }
+            });
+        }
+
+        // Handle Next button
+        if (nextBtn) {
+            nextBtn.addEventListener('click', function() {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    updateActivePage();
+                    updatePaginationState();
+                    scrollToActivePage();
+                }
+            });
+        }
+
+        // Update active page button
+        function updateActivePage() {
+            paginationBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (parseInt(btn.textContent) === currentPage) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // Update pagination state (enable/disable prev/next buttons)
+        function updatePaginationState() {
+            if (prevBtn) prevBtn.disabled = currentPage === 1;
+            if (nextBtn) nextBtn.disabled = currentPage >= totalPages;
+        }
+
+        // Scroll active page into view
+        function scrollToActivePage() {
+            const activeBtn = document.querySelector('.page-btn.active:not(.nav-btn)');
+            if (activeBtn) {
+                activeBtn.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest',
+                    inline: 'center'
+                });
+            }
+        }
+
+        // Mouse wheel scrolling for page numbers
+        if (pageNumbersContainer) {
+            pageNumbersContainer.addEventListener('wheel', function(e) {
+                e.preventDefault();
+                this.scrollLeft += e.deltaY;
+            });
+
+            // Touch scrolling for mobile
+            let isScrolling = false;
+            let startX = 0;
+            let scrollLeft = 0;
+
+            pageNumbersContainer.addEventListener('touchstart', function(e) {
+                isScrolling = true;
+                startX = e.touches[0].pageX - this.offsetLeft;
+                scrollLeft = this.scrollLeft;
+            });
+
+            pageNumbersContainer.addEventListener('touchmove', function(e) {
+                if (!isScrolling) return;
+                e.preventDefault();
+                const x = e.touches[0].pageX - this.offsetLeft;
+                const walk = (x - startX) * 2;
+                this.scrollLeft = scrollLeft - walk;
+            });
+
+            pageNumbersContainer.addEventListener('touchend', function() {
+                isScrolling = false;
+            });
+        }
+
+        // Initialize pagination state
+        updatePaginationState();
+    });
+</script>

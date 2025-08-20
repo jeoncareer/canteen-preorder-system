@@ -532,7 +532,7 @@
 
                                         <!-- <td><span class="status-badge status-active">Active</span></td> -->
                                         <td><?= $canteen->total_orders ?></td>
-                                        <td>₹<?= $canteen->total_revenue ?></td>
+                                        <td>₹<?= $canteen->total_revenue ?? 0 ?></td>
                                         <td>
                                             <div class="admin-actions">
                                                 <a href="#" class="admin-action-btn view-btn">👁️ View</a>
@@ -567,62 +567,29 @@
                             <thead>
                                 <tr>
                                     <th>Student Name</th>
-                                    <th>Department</th>
+                                    <th>Reg No</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><strong>Emma Thompson</strong></td>
-                                    <td>Computer Science</td>
-                                    <td><span class="status-badge status-verified">Verified</span></td>
-                                    <td>
-                                        <div class="admin-actions">
-                                            <a href="#" class="admin-action-btn view-btn">👁️</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong>David Kumar</strong></td>
-                                    <td>Mechanical Eng.</td>
-                                    <td><span class="status-badge status-pending">Pending</span></td>
-                                    <td>
-                                        <div class="admin-actions">
-                                            <a href="#" class="admin-action-btn view-btn">👁️</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Lisa Chen</strong></td>
-                                    <td>Business Admin</td>
-                                    <td><span class="status-badge status-verified">Verified</span></td>
-                                    <td>
-                                        <div class="admin-actions">
-                                            <a href="#" class="admin-action-btn view-btn">👁️</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Robert Singh</strong></td>
-                                    <td>Electrical Eng.</td>
-                                    <td><span class="status-badge status-verified">Verified</span></td>
-                                    <td>
-                                        <div class="admin-actions">
-                                            <a href="#" class="admin-action-btn view-btn">👁️</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Maria Garcia</strong></td>
-                                    <td>Civil Engineering</td>
-                                    <td><span class="status-badge status-pending">Pending</span></td>
-                                    <td>
-                                        <div class="admin-actions">
-                                            <a href="#" class="admin-action-btn view-btn">👁️</a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                <?php if (!empty($students)): ?>
+                                    <?php foreach ($students as $student): ?>
+                                        <tr>
+                                            <td><strong><?= $student->email ?></strong></td>
+                                            <td><?= $student->reg_no ?></td>
+                                            <td><span class="status-badge status-verified">Verified</span></td>
+                                            <td>
+                                                <div class="admin-actions">
+                                                    <a href="#" class="admin-action-btn view-btn">👁️</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+
+
+
                             </tbody>
                         </table>
 

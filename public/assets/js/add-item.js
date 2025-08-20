@@ -1,7 +1,7 @@
      
       
         
-       
+        console.log('from add-item.js');
            updateCloseButton();
            
         
@@ -10,9 +10,11 @@
            
         
            mainContent.addEventListener('click',e => {
+           
             let targetElement = e.target.closest('[data-modal-target');
             if(targetElement)
             {
+                e.preventDefault();
 
                 console.log('clicked data modal target');
                 let modal = document.querySelector(targetElement.dataset.modalTarget);

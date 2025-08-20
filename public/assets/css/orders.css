@@ -541,3 +541,72 @@
                 gap: 1rem;
             }
         }
+/* R
+agination with Horizontal Scroll */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 1.5rem 2rem;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+}
+
+.page-numbers-container {
+    max-width: 400px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+.page-numbers-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.page-numbers-container::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 3px;
+}
+
+.page-numbers-container::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.page-numbers-container::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+.page-numbers {
+    display: flex;
+    gap: 5px;
+    padding: 5px 0;
+}
+
+.page-btn {
+    padding: 8px 16px;
+    border: 2px solid #e1e5e9;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.page-btn.active {
+    background: var(--secondary-color);
+    color: white;
+    border-color: var(--secondary-color);
+}
+
+.page-btn:hover:not(.active) {
+    background: #f8f9fa;
+    border-color: #cbd5e1;
+}
+
+.nav-btn {
+    flex-shrink: 0;
+}

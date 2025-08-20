@@ -22,8 +22,17 @@
 
         <form method="post" action="<?= ROOT ?>students/register">
             <div class="form-group">
+                <label class="form-label">Name</label>
+                <input name="student_name" type="text" class="form-input" placeholder="Enter Your Name" required>
+            </div>
+            <div class="form-group">
                 <label class="form-label">Email</label>
                 <input name="email" type="email" class="form-input" placeholder="Enter your email" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Register No:</label>
+                <input name="reg_no" type="text" class="form-input" placeholder="Enter your Register Number" required>
             </div>
 
             <div class="form-group">
@@ -32,7 +41,7 @@
                 <select class="form-input" name="college_id" placeholder="Enter your college name" required>
                     <option disabled selected>Select College</option>
                     <?php foreach ($colleges as $college): ?>
-                        <option value="<?=$college->id?>"><?= $college->college_name ?></option>
+                        <option value="<?= $college->id ?>"><?= $college->college_name ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>

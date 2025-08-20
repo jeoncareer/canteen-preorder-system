@@ -25,14 +25,14 @@ class Students extends Controller
 
 
             foreach ($items as $item) {
-            $category = $item->category_name;
+                $category = $item->category_name;
 
-            if (!isset($grouped[$category])) {
-                $grouped[$category] = [];
-            }
+                if (!isset($grouped[$category])) {
+                    $grouped[$category] = [];
+                }
 
                 $grouped[$category][] = $item;
-        }
+            }
             $data['grouped'] = $grouped;
 
             foreach ($grouped as $keys => $values) {
@@ -170,6 +170,9 @@ class Students extends Controller
 
     public function my_orders()
     {
+        if (!isset($_SESSION['STUDENT'])) {
+            redirect('students/login');
+        }
         $orders = new Orders;
 
         $results = $orders->join(

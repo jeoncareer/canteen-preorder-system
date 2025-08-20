@@ -8,7 +8,9 @@ class Student
     protected $allowedColumns = [
         'email',
         'password',
-        'college_id'
+        'college_id',
+        'reg_no',
+        'student_name'
     ];
 
     public function validate($data)
@@ -20,6 +22,14 @@ class Student
             $this->errors['email'] = "email is required";
         } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             $this->errors['email'] = " Not a valid email";
+        }
+
+        if (empty($data['reg_no'])) {
+            $this->errors['reg_no'] = "Please enter your Register No";
+        }
+
+        if (empty($data['student_name'])) {
+            $this->errors['reg_no'] = "Please enter your Name";
         }
 
         if (!empty($result = $this->first(['email' => $data['email']]))) {

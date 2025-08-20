@@ -29,8 +29,8 @@ class Canteen extends Controller
 
 
             foreach ($orders as $order) {
-            $data['orders'][$order->id][] = $order;
-        }
+                $data['orders'][$order->id][] = $order;
+            }
         }
 
         $result = $categories->where(['canteen_id' => CANTEEN_ID]);
@@ -220,5 +220,10 @@ class Canteen extends Controller
 
             redirect('canteen/menu_management');
         }
+    }
+
+    public function settings()
+    {
+        $this->view('canteen/settings');
     }
 }
