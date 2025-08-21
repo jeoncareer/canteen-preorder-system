@@ -670,6 +670,8 @@
         let prevPageBtn = document.getElementById('prev-page-btn');
         let nextPageBtn = document.getElementById('next-page-btn');
         updateStudentsDetails();
+        nextPageBtnListner();
+        prevPageBtnListner();
 
         function updateStudentsDetails() {
 
@@ -709,6 +711,7 @@
 
 
         function fetchStudentData(value) {
+            console.log("inside fetchstudentdata");
             const url = ROOT + 'OrdersController/students?offset=' + value;
 
             fetch(url)
@@ -752,10 +755,44 @@
                 })
         }
 
+        function prevPageBtnListner() {
+            prevPageBtn.addEventListener('click', () => {
+                let activeBtn = document.querySelector('.pagination-btn.active');
+                let value = parseInt(activeBtn.value) - 10;
+                let newBtn = document.querySelector(`.pagination-btn[value="${value}"]`);
+
+                fetchStudentData(value);
+                paginationBtnChange(newBtn);
+            })
+        }
+
+        function nextPageBtnListner() {
+            nextPageBtn.addEventListener('click', () => {
+                let activeBtn = document.querySelector('.pagination-btn.active');
+                let value = parseInt(activeBtn.value) + 10;
+                let newBtn = document.querySelector(`.pagination-btn[value="${value}"]`);
+                fetchStudentData(value);
+                paginationBtnChange(newBtn);
+            })
+        }
+
         function paginationBtnChange(newBtn) {
             currentButton = document.querySelector('.pagination-btn.active');
             currentButton.classList.remove('active');
             newBtn.classList.add('active');
+            let value = parseInt(newBtn.value);
+
+            if (value === 0) {
+                prevPageBtn.disabled = true;
+            } else {
+                prevPageBtn.disabled = false;
+            }
+
+            if (newBtn.matches(":last-child")) {
+                nextPageBtn.disabled = true;
+            } else {
+                nextPageBtn.disabled = false;
+            }
         }
     </script>
 </body>

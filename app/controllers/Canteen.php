@@ -39,11 +39,10 @@ class Canteen extends Controller
             $data['categories'][] = ['name' => $res->name, 'id' => $res->id];
         }
 
-        show($data['categories']);
 
 
 
-        //show($data['orders']);
+
 
         $this->view('canteen/home', $data);
     }

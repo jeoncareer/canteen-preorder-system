@@ -47,6 +47,7 @@ trait Model
         $query .= " order by $this->order_column $this->order_type ";
 
         if (!empty($limit)) {
+            $this->limit = $limit;
             $query .= " limit $this->limit offset $this->offset ";
         }
 

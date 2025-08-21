@@ -57,7 +57,7 @@ class Admin extends Controller
         $data['order_count'] = $college_orders->count(['college_id' => $college_id]);
         $data['this_month_revenue'] =  $college_orders->query($this_month_revenue_sql)[0]->total;
         $data['canteens'] = $canteens;
-        $data['students'] = $student->where(['college_id' => $college_id]);
+        $data['students'] = $student->where(['college_id' => $college_id], [], 5);
 
 
 
