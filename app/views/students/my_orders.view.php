@@ -76,7 +76,7 @@
                                 <?php if ($order[$order_id]['status'] === 'ready'): ?>
                                     <button class="btn btn-primary">✓ Pick Up</button>
                                 <?php endif; ?>
-                                <button data-modal-target="order-details-modal" class="btn btn-secondary">View Details</button>
+                                <button data-modal-target="#order-details-modal" class="btn btn-secondary">View Details</button>
                             </div>
                         </div>
                     </div>
@@ -104,32 +104,30 @@
     <!-- View Order Details Modal -->
     <div class="modal" id="order-details-modal">
         <div class="modal-header">
-            <div class="modal-title">📋 Order Details</div>
+            <div class="modal-title">📦 Order Details</div>
             <button data-close-button="close-button" class="close-button">&times;</button>
         </div>
         <div class="modal-body">
-            <!-- Order Info -->
             <div class="order-info">
-                <p><strong>Order ID:</strong> <span id="order-id"></span></p>
-                <p><strong>Date & Time:</strong> <span id="order-datetime"></span></p>
-                <p><strong>Status:</strong> <span id="order-status"></span></p>
+                <p><strong>Order ID:</strong> #127</p>
+                <p><strong>Date & Time:</strong> Today, 11:30 AM</p>
+                <p><strong>Status:</strong> Ready for collection</p>
             </div>
 
             <hr>
 
-            <!-- Items List -->
             <div class="order-items">
                 <h4>Items</h4>
-                <ul id="order-items-list">
-                    <!-- Dynamically added items here -->
+                <ul>
+                    <li>🍗 Chicken Biriyani — Qty: 1 — ₹70</li>
+                    <li>🍴 Meals — Qty: 1 — ₹10</li>
                 </ul>
             </div>
 
             <hr>
 
-            <!-- Total -->
             <div class="order-total">
-                <p><strong>Total:</strong> ₹<span id="order-total"></span></p>
+                <p><strong>Total:</strong> ₹80.00</p>
             </div>
 
             <div class="modal-actions">
@@ -137,6 +135,7 @@
             </div>
         </div>
     </div>
+
     <div id="overlay"></div>
 
     <script src="<?= ROOT ?>assets/js/add-item.js"></script>

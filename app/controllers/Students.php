@@ -212,40 +212,33 @@ class Students extends Controller
 
     public function history()
     {
-        $orders = new Orders;
+        $order = new Orders;
+        $order_item = new Order_items;
+        $item = new Items;
+        $data = [];
 
-        $completed_results = $orders->join(
-            [
-                'order_items' => 'orders.id = order_items.order_id',
-                'items' => 'order_items.item_id = items.id'
-            ],
-            ['orders.student_id' => STUDENT_ID, 'orders.status' => 'completed'],
-            'orders.*, items.name,items.price, items.id as item_id, order_items.quantity'
-        );
+        $orders = $order->where(['student_id' => STUDENT_ID], ['status' => "pending"]);
+        if ($orders) {
 
-        $rejected_results = $orders->join(
-            [
-                'order_items' => 'orders.id = order_items.order_id',
-                'items' => 'order_items.item_id = items.id'
-            ],
-            ['orders.student_id' => STUDENT_ID, 'orders.status' => 'rejected'],
-            'orders.*, items.name,items.price, items.id as item_id, order_items.quantity'
-        );
+            foreach ($orders as $order) {
+                $order_items = $order_item->where(['order_id' => $order->id]);
 
-        $results = array_merge($completed_results, $rejected_results);
+                $items = [];
+                $i = 0;
+                foreach ($order_items as $row) {
+                    $items[] = $item->first(['id' => $row->item_id]);
+                    $items[$i]->quantity = $row->quantity;
+                    $i++;
+                }
 
-        $list_of_orders = [];
-
-
-        foreach ($results as $result) {
-            $list_of_orders[$result->id][] = $result;
+                $order->items = $items;
+            }
+            $data['orders'] = $orders;
         }
 
 
+        show($orders);
 
-        $data['orders'] = $list_of_orders;
-
-        //show($data['orders']);
 
         $this->view('students/order_history', $data);
     }
@@ -258,34 +251,12 @@ class Students extends Controller
             redirect('students/login');
         }
 
-        $data['page'] = 'contact';
 
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            // Here you would typically save the report to database
-            // For now, we'll just show a success message
 
-            $subject = $_POST['subject'] ?? '';
-            $priority = $_POST['priority'] ?? '';
-            $message = $_POST['message'] ?? '';
-            $contact_method = $_POST['contact_method'] ?? '';
-            $student_id = $_SESSION['STUDENT']->id;
+        $data['success'] = "Your report has been submitted successfully. We'll get back to you soon.";
 
-            // TODO: Save to database
-            // $report = new StudentReports();
-            // $report->insert([
-            //     'student_id' => $student_id,
-            //     'subject' => $subject,
-            //     'priority' => $priority,
-            //     'message' => $message,
-            //     'contact_method' => $contact_method,
-            //     'status' => 'pending',
-            //     'created_at' => date('Y-m-d H:i:s')
-            // ]);
 
-            $data['success'] = "Your report has been submitted successfully. We'll get back to you soon.";
-        }
-
-        $this->view('students/contact', $data);
+        $this->view('students/contact_admin', $data);
     }
 
     public function order()

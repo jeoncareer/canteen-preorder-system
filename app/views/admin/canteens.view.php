@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/canteen-common.css">
     <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/menu-management.css">
     <link rel="stylesheet" href="<?= ROOT ?>assets/css/add-item.css">
+    <script>
+        const ROOT = '<?= ROOT ?>';
+    </script>
 
     <style>
         /* Canteens Management Specific Styles */
@@ -436,14 +439,14 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Location</label>
-                        <select class="form-select" id="locationFilter">
-                            <option value="">All Locations</option>
-                            <option value="central">Central Block</option>
-                            <option value="engineering">Engineering Wing</option>
-                            <option value="library">Library Building</option>
-                            <option value="sports">Sports Complex</option>
-                            <option value="hostel">Hostel Area</option>
+                        <label class="form-label">Revenue & Orders</label>
+                        <select class="form-select" id="ordersFilter">
+
+                            <option value="today">Today</option>
+                            <option value="">All Time</option>
+                            <option value="thisMonth">This Month</option>
+                            <option value="thisYear">This Year</option>
+
                         </select>
                     </div>
                     <div class="form-group">
@@ -461,55 +464,58 @@
             <!-- Canteens Grid -->
             <div class="canteens-grid">
                 <!-- Main Campus Canteen -->
-                <div class="canteen-card">
-                    <div class="canteen-header">
-                        <div class="canteen-status active">Active</div>
-                        <h3 class="canteen-name">Main Campus Canteen</h3>
-                        <p class="canteen-location">📍 Central Block, Ground Floor</p>
-                    </div>
-                    <div class="canteen-body">
-                        <div class="canteen-stats">
-                            <div class="canteen-stat">
-                                <div class="canteen-stat-value">67</div>
-                                <div class="canteen-stat-label">Orders Today</div>
+                <?php if (!empty($canteens)): ?>
+                    <?php foreach ($canteens as $canteen): ?>
+                        <div data-canteen-id="<?= $canteen->id ?>" class="canteen-card">
+                            <div class="canteen-header">
+                                <div class="canteen-status <?= $canteen->status ?? 'maintenance' ?>"><?= $canteen->status ?? 'maintenance' ?></div>
+                                <h3 class="canteen-name"><?= $canteen->canteen_name ?></h3>
+                                <p class="canteen-location">📍 Central Block, Ground Floor</p>
                             </div>
-                            <div class="canteen-stat">
-                                <div class="canteen-stat-value">₹18,450</div>
-                                <div class="canteen-stat-label">Revenue</div>
-                            </div>
-                            <div class="canteen-stat">
-                                <div class="canteen-stat-value">4.8</div>
-                                <div class="canteen-stat-label">Rating</div>
+                            <div class="canteen-body">
+                                <div class="canteen-stats">
+                                    <div class="canteen-stat">
+                                        <div class="canteen-stat-value orders">0</div>
+                                        <div class="canteen-stat-label">Orders Today</div>
+                                    </div>
+                                    <div class="canteen-stat">
+                                        <div class="canteen-stat-value revenue">₹0</div>
+                                        <div class="canteen-stat-label">Revenue</div>
+                                    </div>
+                                    <div class="canteen-stat">
+                                        <div class="canteen-stat-value">4.8</div>
+                                        <div class="canteen-stat-label">Rating</div>
+                                    </div>
+                                </div>
+
+                                <div class="canteen-info">
+                                    <div class="canteen-info-item">
+                                        <span class="canteen-info-label">Manager</span>
+                                        <span class="canteen-info-value"><?= $canteen->manager_name ?></span>
+                                    </div>
+                                    <div class="canteen-info-item">
+                                        <span class="canteen-info-label">Staff Count</span>
+                                        <span class="canteen-info-value">8 members</span>
+                                    </div>
+                                    <div class="canteen-info-item">
+                                        <span class="canteen-info-label">Operating Hours</span>
+                                        <span class="canteen-info-value"><?= convertTime($canteen->open) ?> - <?= convertTime($canteen->close) ?></span>
+                                    </div>
+                                    <div class="canteen-info-item">
+                                        <span class="canteen-info-label">Contact</span>
+                                        <span class="canteen-info-value"><?= $canteen->phn_no ?></span>
+                                    </div>
+                                </div>
+
+                                <div class="canteen-actions">
+                                    <!-- <a href="#" data-modal-target="#canteen-view-modal" class="canteen-action-btn view-details-btn"> View Details</a>
+                            <a href="#" class="canteen-action-btn edit-canteen-btn"> Edit</a> -->
+                                    <button class="canteen-action-btn toggle-status-btn"> Disable</button>
+                                </div>
                             </div>
                         </div>
-
-                        <div class="canteen-info">
-                            <div class="canteen-info-item">
-                                <span class="canteen-info-label">Manager</span>
-                                <span class="canteen-info-value">Rajesh Kumar</span>
-                            </div>
-                            <div class="canteen-info-item">
-                                <span class="canteen-info-label">Staff Count</span>
-                                <span class="canteen-info-value">8 members</span>
-                            </div>
-                            <div class="canteen-info-item">
-                                <span class="canteen-info-label">Operating Hours</span>
-                                <span class="canteen-info-value">7:00 AM - 9:00 PM</span>
-                            </div>
-                            <div class="canteen-info-item">
-                                <span class="canteen-info-label">Contact</span>
-                                <span class="canteen-info-value">+91 98765 43210</span>
-                            </div>
-                        </div>
-
-                        <div class="canteen-actions">
-                            <a href="#" data-modal-target="#canteen-view-modal" class="canteen-action-btn view-details-btn"> View Details</a>
-                            <a href="#" class="canteen-action-btn edit-canteen-btn"> Edit</a>
-                            <button class="canteen-action-btn toggle-status-btn"> Disable</button>
-                        </div>
-                    </div>
-                </div>
-
+                    <?php endforeach; ?>
+                <?php endif; ?>
 
 
 
@@ -574,7 +580,111 @@
         </div>
     </div>
 
-    <script src="<?= ROOT ?>assets/js/add-item.js"></script>
+    <div id="overlay"></div>
+
+
+
+    <script src="<?= ROOT ?>assets/js/add-item.js">
+
+    </script>
+
+    <script>
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth() + 1;
+        const day = currentDate.getDay();
+
+        let units = {
+            YEAR: year,
+            MONTH: month,
+
+        };
+        displayTotalOrders(units);
+
+        function displayTotalOrders(units) {
+
+            let canteenCard = document.querySelectorAll('.canteen-card');
+            canteenCard.forEach(card => {
+                let canteenId = card.dataset.canteenId;
+                let ordersTag = card.querySelector('.canteen-stat-value.orders');
+                let revenueTag = card.querySelector('.canteen-stat-value.revenue');
+                let url = ROOT + 'OrdersController/ordersByDate';
+                fetch(url, {
+                        method: "POST",
+                        headers: {
+                            "Content-type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            data: {
+                                canteen_id: canteenId
+                            },
+                            units: units
+
+
+
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data.query);
+                        let totalOrder = 0;
+                        let totalRevenue = 0;
+                        if (data.results) {
+                            totalOrder = data.results[0]['total_orders'];
+                            totalRevenue = data.results[0]['total'] ?? 0;
+                            console.log(totalRevenue);
+
+
+                        }
+                        ordersTag.textContent = totalOrder;
+                        revenueTag.textContent = '₹' + totalRevenue;
+                    })
+
+            })
+        }
+
+
+        let options = document.querySelectorAll("#ordersFilter option");
+        options.forEach(option => {
+            option.addEventListener('click', e => {
+                let value = option.value;
+                let units = {};
+                switch (value) {
+                    case '':
+                        units = {
+
+                        }
+                        break;
+                    case 'today':
+                        units = {
+                            YEAR: year,
+                            MONTH: month,
+                            DAY: day
+                        }
+                        break;
+                    case 'thisMonth':
+                        units = {
+                            YEAR: year,
+                            MONTH: month,
+
+                        }
+                        break;
+                    case 'thisYear':
+                        units = {
+                            YEAR: year,
+
+                        }
+                }
+
+                displayTotalOrders(units);
+            })
+        })
+
+        let ordersFilter = document.getElementById('ordersFilter');
+        ordersFilter.addEventListener('change', e => {
+            console.log(e.target.selectedOptions[0]);
+        })
+    </script>
 </body>
 
 </html>

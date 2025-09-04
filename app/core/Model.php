@@ -244,7 +244,7 @@ trait Model
             $this->limit = $limit;
             $query .= " LIMIT {$this->limit} OFFSET {$this->offset}";
         }
-        //show($query);
+        // show($query);
         return $this->query($query, $where);
 
         // example

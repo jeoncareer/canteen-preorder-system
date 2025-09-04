@@ -624,8 +624,8 @@
                                     <td>Jan 15, 2021</td>
                                     <td>
                                         <div class="student-actions">
-                                            <a href="#" class="student-action-btn view-btn">👁️</a>
-                                            <a href="#" class="student-action-btn edit-btn">✏️</a>
+                                            <div data-modal-target="#view-profile-modal" class="student-action-btn view-btn">👁️</div>
+                                            <div class="student-action-btn edit-btn">✏️</div>
                                             <button class="student-action-btn suspend-btn">🚫</button>
                                         </div>
                                     </td>
@@ -658,6 +658,56 @@
                         <button class="pagination-btn nav-btn" id="next-page-btn">Next →</button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="view-profile-modal">
+        <div class="modal-header">
+            <div class="modal-title">👤 View Profile</div>
+            <button data-close-button="close-button" class="close-button">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="profile-card">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <p class="form-value">John Doe</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <p class="form-value">john.doe@example.com</p>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Phone</label>
+                        <p class="form-value">+91 98765 43210</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Role</label>
+                        <p class="form-value">Canteen Manager</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Address</label>
+                    <p class="form-value">123, Main Street, Kochi, Kerala</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Joined On</label>
+                    <p class="form-value">01 Jan 2024</p>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" data-close-button="close-button">Close</button>
+                <button type="button" class="btn btn-primary">
+                    <span class="btn-icon">✏️</span>
+                    Edit Profile
+                </button>
             </div>
         </div>
     </div>

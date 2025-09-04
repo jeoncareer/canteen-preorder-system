@@ -125,8 +125,13 @@ class Admin extends Controller
 
     public function canteens()
     {
-
+        $canteen = new Canteen_db;
+        $canteens = $canteen->where(['college_id' => $_SESSION['COLLEGE']->id]);
         $data['college'] = $_SESSION['COLLEGE'];
+        foreach ($canteens as $canteen) {
+        }
+        $data['canteens'] = $canteens;
+        show($data);
         $this->view('admin/canteens', $data);
     }
 
