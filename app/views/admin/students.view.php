@@ -556,7 +556,7 @@
                         <label class="form-label">Search Students</label>
                         <input type="text" class="form-input" placeholder="Search by name, email, or student ID..." id="searchInput">
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label class="form-label">Department</label>
                         <select class="form-select" id="departmentFilter">
                             <option value="">All Departments</option>
@@ -566,7 +566,7 @@
                             <option value="ce">Civil Engineering</option>
                             <option value="ba">Business Administration</option>
                         </select>
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <label class="form-label">Status</label>
                         <select class="form-select" id="statusFilter">
@@ -581,7 +581,7 @@
                         <select class="form-select" id="sortBy">
                             <option value="name">Name</option>
                             <option value="recent">Recently Joined</option>
-                            <option value="department">Department</option>
+
                             <option value="orders">Order Count</option>
                         </select>
                     </div>
@@ -760,9 +760,9 @@
 
 
 
-        function fetchStudentData(value) {
+        function fetchStudentData(offset) {
             console.log("inside fetchstudentdata");
-            const url = ROOT + 'OrdersController/students?offset=' + value;
+            const url = ROOT + 'OrdersController/students?offset=' + offset;
 
             fetch(url)
                 .then(res => res.json())

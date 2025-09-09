@@ -313,7 +313,7 @@
                             </select>
                         </div>
 
-                        <div class="form-group mb-4">
+                        <!-- <div class="form-group mb-4">
                             <label class="form-label">Priority Level</label>
                             <div class="priority-selector">
                                 <div class="priority-option priority-low" data-priority="low">
@@ -329,7 +329,7 @@
                                     <small>Urgent matter</small>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="form-group mb-4">
                             <label class="form-label">Message</label>

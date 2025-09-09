@@ -2,95 +2,101 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canteens Management - College Admin</title>
-    <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/header.css">
-    <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/sidebar.css">
-    <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/student-general.css">
-    <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/canteen-common.css">
-    <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/menu-management.css">
+    <link rel="stylesheet" href="<?= ROOT ?>assets/css/header.css">
+    <link rel="stylesheet" href="<?= ROOT ?>assets/css/sidebar.css">
+    <link rel="stylesheet" href="<?= ROOT ?>assets/css/student-general.css">
+    <link rel="stylesheet" href="<?= ROOT ?>assets/css/base.css">
     <link rel="stylesheet" href="<?= ROOT ?>assets/css/add-item.css">
     <script>
         const ROOT = '<?= ROOT ?>';
     </script>
-
     <style>
-        /* Canteens Management Specific Styles */
-        .canteens-header {
+        /* Main content with sidebar layout */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            background: #f8fafc;
+            overflow-y: auto;
+        }
+
+        .page-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2rem;
         }
 
-        .canteens-title {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        .page-title {
             font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-
-        .canteens-actions {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .add-canteen-btn,
-        .export-btn {
-            padding: 0.8rem 1.5rem;
-            border: 2px solid var(--secondary-color);
-            background: var(--secondary-color);
-            color: white;
-            border-radius: 8px;
-            text-decoration: none;
             font-weight: 600;
+            color: var(--gray-800);
+            margin: 0;
+        }
+
+        .add-canteen-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
             transition: var(--transition);
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        .export-btn {
-            background: white;
-            color: var(--secondary-color);
-        }
-
         .add-canteen-btn:hover {
-            background: #2980b9;
-            border-color: #2980b9;
-            transform: translateY(-2px);
+            background: var(--primary-hover);
+            transform: translateY(-1px);
         }
 
-        .export-btn:hover {
-            background: var(--secondary-color);
-            color: white;
-            transform: translateY(-2px);
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
-        .filters-section {
+        .stat-card {
             background: white;
             border-radius: var(--border-radius);
+            padding: 1.5rem;
             box-shadow: var(--card-shadow);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            transition: var(--transition);
         }
 
-        .filters-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 1.5rem;
-            align-items: start;
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--gray-600);
+            font-size: 0.875rem;
         }
 
         .canteens-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
         }
 
         .canteen-card {
@@ -99,16 +105,15 @@
             box-shadow: var(--card-shadow);
             overflow: hidden;
             transition: var(--transition);
-            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .canteen-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         .canteen-header {
-            background: #4f46e5;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
             color: white;
             padding: 1.5rem;
             position: relative;
@@ -118,572 +123,451 @@
             position: absolute;
             top: 1rem;
             right: 1rem;
-            padding: 0.3rem 0.8rem;
+            padding: 0.25rem 0.75rem;
             border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-size: 0.75rem;
+            font-weight: 500;
         }
 
-        .canteen-status.active {
-            background: rgba(16, 185, 129, 0.2);
-            color: #10b981;
-            border: 1px solid rgba(16, 185, 129, 0.3);
+        .status-active {
+            background: rgba(39, 174, 96, 0.2);
+            color: #27ae60;
+            border: 1px solid #27ae60;
         }
 
-        .canteen-status.inactive {
-            background: rgba(239, 68, 68, 0.2);
-            color: #ef4444;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
-        .canteen-status.maintenance {
-            background: rgba(245, 158, 11, 0.2);
-            color: #f59e0b;
-            border: 1px solid rgba(245, 158, 11, 0.3);
+        .status-inactive {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+            border: 1px solid #e74c3c;
         }
 
         .canteen-name {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin: 0 0 0.5rem 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
         }
 
         .canteen-location {
-            font-size: 1rem;
             opacity: 0.9;
-            margin: 0;
+            font-size: 0.875rem;
         }
 
         .canteen-body {
-            padding: 2rem;
-        }
-
-        .canteen-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .canteen-stat {
-            text-align: center;
-            padding: 1rem;
-            background: #f8fafc;
-            border-radius: 8px;
-        }
-
-        .canteen-stat-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin: 0;
-        }
-
-        .canteen-stat-label {
-            font-size: 0.8rem;
-            color: #64748b;
-            margin: 0.3rem 0 0 0;
+            padding: 1.5rem;
         }
 
         .canteen-info {
-            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
 
-        .canteen-info-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.8rem 0;
-            border-bottom: 1px solid #f1f5f9;
+        .info-item {
+            text-align: center;
         }
 
-        .canteen-info-item:last-child {
-            border-bottom: none;
-        }
-
-        .canteen-info-label {
+        .info-number {
+            font-size: 1.5rem;
             font-weight: 600;
             color: var(--primary-color);
         }
 
-        .canteen-info-value {
-            color: #64748b;
+        .info-label {
+            font-size: 0.75rem;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .canteen-contact {
+            background: var(--gray-50);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .contact-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .contact-icon {
+            width: 16px;
+            text-align: center;
         }
 
         .canteen-actions {
             display: flex;
-            gap: 0.75rem;
-            margin-top: 1rem;
+            gap: 0.5rem;
         }
 
-        .canteen-action-btn {
+        .action-btn {
             flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.4rem;
-            /* space between emoji/icon and text */
-            padding: 0.6rem 1rem;
+            padding: 0.5rem;
             border: none;
-            border-radius: 12px;
-            font-weight: 600;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
             cursor: pointer;
-            text-decoration: none;
-            text-align: center;
-            font-size: 0.9rem;
-            transition: all 0.2s ease-in-out;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
         }
 
-        .canteen-action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        .btn-view {
+            background: var(--primary-color);
+            color: white;
         }
 
-        /* Specific styles */
-        .view-details-btn {
-            background: var(--secondary-color);
-            color: #fff;
+        .btn-view:hover {
+            background: var(--primary-hover);
         }
 
-        .view-details-btn:hover {
-            background: #2980b9;
-        }
-
-        .edit-canteen-btn {
+        .btn-edit {
             background: var(--warning-color);
-            color: #fff;
+            color: white;
         }
 
-        .edit-canteen-btn:hover {
-            background: #d68910;
+        .btn-edit:hover {
+            background: #e67e22;
         }
 
-        .toggle-status-btn {
+        .btn-toggle {
             background: var(--success-color);
-            color: #fff;
+            color: white;
         }
 
-        .toggle-status-btn:hover {
+        .btn-toggle:hover {
             background: #229954;
         }
 
-        .toggle-status-btn.inactive {
+        .btn-toggle.inactive {
             background: var(--danger-color);
         }
 
-        .toggle-status-btn.inactive:hover {
+        .btn-toggle.inactive:hover {
             background: #c0392b;
         }
 
-
-        .summary-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
         }
 
-        .summary-card {
-            background: white;
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 2rem;
             border-radius: var(--border-radius);
-            box-shadow: var(--card-shadow);
-            padding: 1.5rem;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
-        .summary-value {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
         }
 
-        .summary-label {
-            color: #64748b;
-            font-size: 0.9rem;
-            font-weight: 500;
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-800);
         }
 
-        .summary-card.total .summary-value {
-            color: var(--secondary-color);
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray-500);
         }
 
-        .summary-card.active .summary-value {
+        .close-btn:hover {
+            color: var(--gray-800);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group-full {
+            grid-column: 1 / -1;
+        }
+
+        .success-message {
+            background: rgba(39, 174, 96, 0.1);
+            border: 1px solid var(--success-color);
             color: var(--success-color);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
         }
 
-        .summary-card.inactive .summary-value {
-            color: var(--danger-color);
-        }
-
-        .summary-card.maintenance .summary-value {
-            color: var(--warning-color);
-        }
-
-        @media (max-width: 1200px) {
-            .canteens-grid {
-                grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            }
-
-            .filters-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 1rem;
-            }
-        }
-
-        @media (max-width: 900px) {
-            .main-content {
-                padding: 1rem;
-            }
-
-            .canteens-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .filters-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .canteens-header {
+        @media (max-width: 768px) {
+            .page-header {
                 flex-direction: column;
                 gap: 1rem;
                 align-items: stretch;
             }
 
-            .canteens-actions {
-                justify-content: center;
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
 
-            .canteen-stats {
+            .canteens-grid {
                 grid-template-columns: 1fr;
             }
 
-            .canteen-actions {
-                flex-direction: column;
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .canteen-info {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 
 <body>
-    <!-- Header -->
     <?php require 'header.view.php'; ?>
 
     <!-- Container for sidebar and main content -->
     <div class="container">
         <!-- Sidebar -->
-        <?php $page = "canteens";
-        require 'sidebar.view.php'; ?>
+        <?php
+        $page = "canteens";
+        require 'sidebar.view.php';
+        ?>
 
         <!-- Main Content -->
         <div class="main-content">
             <!-- Page Header -->
             <div class="page-header">
-                <div class="page-header-content">
-                    <h1 class="page-title">🍽️ Canteens Management</h1>
-                </div>
+                <h1 class="page-title">🍽️ Canteens Management</h1>
+
             </div>
 
-            <!-- Canteens Header -->
-            <div class="canteens-header">
-                <h2 class="canteens-title">
-                    All Campus Canteens
-                </h2>
-                <div class="canteens-actions">
-                    <a href="#" class="add-canteen-btn">
-                        ➕ Add New Canteen
-                    </a>
-                    <a href="#" class="export-btn">
-                        📊 Export Data
-                    </a>
+            <!-- Statistics -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🏪</div>
+                    <div class="stat-number"><?= $canteens_count ?></div>
+                    <div class="stat-label">Total Canteens</div>
                 </div>
-            </div>
-
-            <!-- Summary Cards -->
-            <div class="summary-cards">
-                <div class="summary-card total">
-                    <div class="summary-value">8</div>
-                    <div class="summary-label">Total Canteens</div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-number" id="stat-canteen-count">6</div>
+                    <div class="stat-label">Active Canteens</div>
                 </div>
-                <div class="summary-card active">
-                    <div class="summary-value">6</div>
-                    <div class="summary-label">Active</div>
+                <div class="stat-card">
+                    <div class="stat-icon">📋</div>
+                    <div class="stat-number" id="total-orders">142</div>
+                    <div class="stat-label">Total Orders Today</div>
                 </div>
-                <div class="summary-card maintenance">
-                    <div class="summary-value">1</div>
-                    <div class="summary-label">Maintenance</div>
-                </div>
-                <div class="summary-card inactive">
-                    <div class="summary-value">1</div>
-                    <div class="summary-label">Inactive</div>
-                </div>
-            </div>
-
-            <!-- Filters Section -->
-            <div class="filters-section">
-                <div class="filters-grid">
-                    <div class="form-group">
-                        <label class="form-label">Search Canteens</label>
-                        <input type="text" class="form-input" placeholder="Search by name or location..." id="searchInput">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Status Filter</label>
-                        <select class="form-select" id="statusFilter">
-                            <option value="">All Status</option>
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                            <option value="maintenance">Maintenance</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Revenue & Orders</label>
-                        <select class="form-select" id="ordersFilter">
-
-                            <option value="today">Today</option>
-                            <option value="">All Time</option>
-                            <option value="thisMonth">This Month</option>
-                            <option value="thisYear">This Year</option>
-
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Sort By</label>
-                        <select class="form-select" id="sortBy">
-                            <option value="name">Name</option>
-                            <option value="orders">Orders (High to Low)</option>
-                            <option value="revenue">Revenue (High to Low)</option>
-                            <option value="status">Status</option>
-                        </select>
-                    </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-number" id="total-revenue">₹28,450</div>
+                    <div class="stat-label">Revenue Today</div>
                 </div>
             </div>
 
             <!-- Canteens Grid -->
             <div class="canteens-grid">
-                <!-- Main Campus Canteen -->
-                <?php if (!empty($canteens)): ?>
-                    <?php foreach ($canteens as $canteen): ?>
-                        <div data-canteen-id="<?= $canteen->id ?>" class="canteen-card">
-                            <div class="canteen-header">
-                                <div class="canteen-status <?= $canteen->status ?? 'maintenance' ?>"><?= $canteen->status ?? 'maintenance' ?></div>
-                                <h3 class="canteen-name"><?= $canteen->canteen_name ?></h3>
-                                <p class="canteen-location">📍 Central Block, Ground Floor</p>
+                <!-- Canteen 1 -->
+
+                <?php foreach ($canteens as $canteen): ?>
+                    <div data-canteen-id="<?= $canteen->id ?>" class="canteen-card">
+                        <div class="canteen-header">
+                            <div class="canteen-status status-<?= $canteen->status ?>"><?= $canteen->status ?></div>
+                            <div class="canteen-name">Main Campus Canteen</div>
+                            <div class="canteen-location">📍 Ground Floor, Main Building</div>
+                        </div>
+                        <div class="canteen-body">
+                            <div class="canteen-info">
+                                <div class="info-item">
+                                    <div class="total-menu-items info-number">45</div>
+                                    <div class="info-label">Menu Items</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="total-orders info-number">23</div>
+                                    <div class="info-label">Orders Today</div>
+                                </div>
                             </div>
-                            <div class="canteen-body">
-                                <div class="canteen-stats">
-                                    <div class="canteen-stat">
-                                        <div class="canteen-stat-value orders">0</div>
-                                        <div class="canteen-stat-label">Orders Today</div>
-                                    </div>
-                                    <div class="canteen-stat">
-                                        <div class="canteen-stat-value revenue">₹0</div>
-                                        <div class="canteen-stat-label">Revenue</div>
-                                    </div>
-                                    <div class="canteen-stat">
-                                        <div class="canteen-stat-value">4.8</div>
-                                        <div class="canteen-stat-label">Rating</div>
-                                    </div>
+                            <div class="canteen-contact">
+                                <div class="contact-item">
+                                    <span class="contact-icon">📧</span>
+                                    <span><?= $canteen->email ?></span>
                                 </div>
-
-                                <div class="canteen-info">
-                                    <div class="canteen-info-item">
-                                        <span class="canteen-info-label">Manager</span>
-                                        <span class="canteen-info-value"><?= $canteen->manager_name ?></span>
-                                    </div>
-                                    <div class="canteen-info-item">
-                                        <span class="canteen-info-label">Staff Count</span>
-                                        <span class="canteen-info-value">8 members</span>
-                                    </div>
-                                    <div class="canteen-info-item">
-                                        <span class="canteen-info-label">Operating Hours</span>
-                                        <span class="canteen-info-value"><?= convertTime($canteen->open) ?> - <?= convertTime($canteen->close) ?></span>
-                                    </div>
-                                    <div class="canteen-info-item">
-                                        <span class="canteen-info-label">Contact</span>
-                                        <span class="canteen-info-value"><?= $canteen->phn_no ?></span>
-                                    </div>
+                                <div class="contact-item">
+                                    <span class="contact-icon">📱</span>
+                                    <span><?= $canteen->phn_no ?></span>
                                 </div>
-
-                                <div class="canteen-actions">
-                                    <!-- <a href="#" data-modal-target="#canteen-view-modal" class="canteen-action-btn view-details-btn"> View Details</a>
-                            <a href="#" class="canteen-action-btn edit-canteen-btn"> Edit</a> -->
-                                    <button class="canteen-action-btn toggle-status-btn"> Disable</button>
+                                <div class="contact-item">
+                                    <span class="contact-icon">👤</span>
+                                    <span>Manager: <?= $canteen->manager_name ?></span>
                                 </div>
+                            </div>
+                            <div class="canteen-actions">
+                                <button data-canteen-id="<?= $canteen->id ?>" class="action-btn btn-view canteen-view-details"> View</button>
+                                <button class="action-btn btn-edit">Edit</button>
+                                <button class="action-btn btn-toggle">Disable</button>
                             </div>
                         </div>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-
-
-
-
-
-
-
-
-            </div>
-        </div>
-    </div>
-
-    <!-- View Canteen Modal -->
-    <div class="modal" id="canteen-view-modal">
-        <div class="modal-header">
-            <div class="modal-title">🏫 Canteen Details</div>
-            <button data-close-button="close-button" class="close-button">&times;</button>
-        </div>
-        <div class="modal-body">
-            <div class="canteen-details">
-                <!-- Basic Details -->
-                <div class="form-group">
-                    <label class="form-label">Name</label>
-                    <p class="form-value" id="canteen-name">Main Campus Canteen</p>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Location</label>
-                    <p class="form-value" id="canteen-location">Central Block, Ground Floor</p>
-                </div>
-
-                <!-- Revenue Section with Toggle -->
-                <div class="form-group">
-                    <label class="form-label">Revenue</label>
-                    <div class="revenue-section">
-                        <select id="revenue-filter" class="form-input">
-                            <option value="today">Today</option>
-                            <option value="week">This Week</option>
-                            <option value="month">This Month</option>
-                        </select>
-                        <p class="form-value" id="canteen-revenue">₹18,450</p>
                     </div>
-                </div>
+                <?php endforeach; ?>
 
-                <!-- Rating -->
-                <div class="form-group">
-                    <label class="form-label">Rating</label>
-                    <p class="form-value" id="canteen-rating">4.8 ⭐</p>
-                </div>
-
-                <!-- Messaging Feature -->
-                <div class="form-group">
-                    <label class="form-label">Message Manager</label>
-                    <textarea id="message-text" class="form-input" rows="3" placeholder="Type your message..."></textarea>
-                    <button class="btn btn-primary mt-2" id="send-message-btn">📨 Send</button>
-                </div>
-            </div>
-
-            <div class="modal-actions">
-                <button type="button" class="btn btn-secondary" data-close-button="close-button">Close</button>
             </div>
         </div>
     </div>
 
-    <div id="overlay"></div>
 
 
 
-    <script src="<?= ROOT ?>assets/js/add-item.js">
-
-    </script>
 
     <script>
-        const currentDate = new Date();
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth() + 1;
-        const day = currentDate.getDay();
+        const statCanteenCount = document.getElementById('stat-canteen-count');
+
+        fetchTotalCanteensByCollege('active');
+
+        function fetchTotalCanteensByCollege(status) {
+
+            let url = ROOT + 'CanteenController/CanteenCountByStatus/' + status;
+
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    let count = '';
+                    if (data.success) {
+                        count = data.count;
+                    } else {
+                        count = 'unavailable';
+                    }
+
+                    statCanteenCount.textContent = count;
+                })
+        }
+
+        let data = {
+            college_id: 11
+        }
 
         let units = {
-            YEAR: year,
-            MONTH: month,
-
-        };
-        displayTotalOrders(units);
-
-        function displayTotalOrders(units) {
-
-            let canteenCard = document.querySelectorAll('.canteen-card');
-            canteenCard.forEach(card => {
-                let canteenId = card.dataset.canteenId;
-                let ordersTag = card.querySelector('.canteen-stat-value.orders');
-                let revenueTag = card.querySelector('.canteen-stat-value.revenue');
-                let url = ROOT + 'OrdersController/ordersByDate';
-                fetch(url, {
-                        method: "POST",
-                        headers: {
-                            "Content-type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            data: {
-                                canteen_id: canteenId
-                            },
-                            units: units
+            YEAR: 2025,
+            MONTH: 9
+        }
 
 
+        fetchOrderByDateCollege(data, units);
 
-                        })
+        function fetchOrderByDateCollege(data, units) {
+            let url = ROOT + 'OrdersController/ordersByDateCollege';
+            let totalOrders = document.getElementById('total-orders');
+            let totalRevenue = document.getElementById('total-revenue');
+
+            fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        data: data,
+                        units: units
                     })
-                    .then(res => res.json())
-                    .then(data => {
-                        console.log(data.query);
-                        let totalOrder = 0;
-                        let totalRevenue = 0;
-                        if (data.results) {
-                            totalOrder = data.results[0]['total_orders'];
-                            totalRevenue = data.results[0]['total'] ?? 0;
-                            console.log(totalRevenue);
-
-
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        const results = data.results[0];
+                        result = {
+                            count: results.total_orders,
+                            revenue: results.total
                         }
-                        ordersTag.textContent = totalOrder;
-                        revenueTag.textContent = '₹' + totalRevenue;
-                    })
+
+                        totalOrders.textContent = result.count;
+                        totalRevenue.textContent = '₹' + result.revenue;
+
+
+
+
+                    }
+                })
+        }
+        settingRealValuesForCanteenCards();
+
+        function settingRealValuesForCanteenCards() {
+
+            let canteenCards = document.querySelectorAll('.canteen-card');
+
+            canteenCards.forEach(card => {
+
+                setTotalMenuItems(card);
+                setTotalOrders(card, 'YEAR');
+
 
             })
         }
 
+        function setTotalMenuItems(card) {
+            let canteenId = card.dataset.canteenId;
+            let totalMenuItemsCard = card.querySelector('.total-menu-items');
 
-        let options = document.querySelectorAll("#ordersFilter option");
-        options.forEach(option => {
-            option.addEventListener('click', e => {
-                let value = option.value;
-                let units = {};
-                switch (value) {
-                    case '':
-                        units = {
 
-                        }
-                        break;
-                    case 'today':
-                        units = {
-                            YEAR: year,
-                            MONTH: month,
-                            DAY: day
-                        }
-                        break;
-                    case 'thisMonth':
-                        units = {
-                            YEAR: year,
-                            MONTH: month,
+            const MenuUrl = ROOT + 'CanteenController/totalMenuItems/' + canteenId;
+            console.log(MenuUrl);
+            fetch(MenuUrl)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        totalMenuItemsCard.textContent = data.count;
+                    }
+                })
+        }
 
-                        }
-                        break;
-                    case 'thisYear':
-                        units = {
-                            YEAR: year,
+        function setTotalOrders(card, date) {
+            let canteenId = card.dataset.canteenId;
+            let totalOrdersCard = card.querySelector('.total-orders');
+            const orderUrl = ROOT + 'CanteenController/totalOrdersByCanteen/' + canteenId + '/' + date;
+            fetch(orderUrl)
+                .then(res => res.json())
+                .then(data => {
+                    let count = data.results[0].count;
+                    totalOrdersCard.textContent = count;
+                })
+        }
 
-                        }
-                }
+        redirectCanteenViewDetails();
 
-                displayTotalOrders(units);
+        function redirectCanteenViewDetails() {
+            let btns = document.querySelectorAll('.canteen-view-details');
+
+            btns.forEach(btn => {
+                btn.addEventListener('click', e => {
+                    canteenId = btn.dataset.canteenId;
+                    window.location.href = ROOT + 'admin/canteenDetails/' + canteenId;
+                })
             })
-        })
-
-        let ordersFilter = document.getElementById('ordersFilter');
-        ordersFilter.addEventListener('change', e => {
-            console.log(e.target.selectedOptions[0]);
-        })
+        }
     </script>
 </body>
 

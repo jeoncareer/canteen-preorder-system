@@ -36,7 +36,7 @@ class OrdersController extends Controller
     }
 
 
-    public function ordersByDate()
+    public function ordersByDateCanteen()
     {
         $data = json_decode(file_get_contents("php://input"), true);
 
@@ -69,6 +69,42 @@ class OrdersController extends Controller
 
 
         echo json_encode(['results' => $results, 'query' => $query]);
+    }
+
+
+    public function ordersByDateCollege()
+    {
+        $data = json_decode(file_get_contents("php://input"), true);
+
+        $where = $data['data'];
+
+        $units = $data['units'] ?: [];
+
+        $where_keys = array_keys($where);
+        $unit_keys = array_keys($units);
+
+
+        $query = "select sum(total) as total, count(*) as total_orders  from college_orders_view where";
+        foreach ($where_keys as $key) {
+            $query .= " {$key} = :{$key} AND ";
+        }
+
+
+        if (!empty($units)) {
+
+            foreach ($unit_keys as $key) {
+                $query .= " {$key}(`time`) = :{$key} AND ";
+            }
+        }
+
+        $query = trim($query, " AND ");
+
+        $data = array_merge($where, $units);
+        $results = $this->query($query, $data);
+
+
+
+        echo json_encode(['success' => true, 'results' => $results, 'query' => $query, 'results' => $results]);
     }
 
     public function studentOrders($status = '')

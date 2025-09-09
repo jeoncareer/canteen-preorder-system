@@ -404,9 +404,9 @@
                     </div>
                     <h2 class="admin-stat-value"><?= $canteens_count ?></h2>
                     <p class="admin-stat-label"> Canteens</p>
-                    <p class="admin-stat-change positive">
+                    <!-- <p class="admin-stat-change positive">
                         ↗ +2 new this semester
-                    </p>
+                    </p> -->
                 </div>
 
                 <div class="admin-stat-card students">
@@ -417,9 +417,9 @@
                     </div>
                     <h2 class="admin-stat-value"><?= $students_count ?></h2>
                     <p class="admin-stat-label">Registered Students</p>
-                    <p class="admin-stat-change positive">
+                    <!-- <p class="admin-stat-change positive">
                         ↗ +156 this month
-                    </p>
+                    </p> -->
                 </div>
 
                 <div class="admin-stat-card orders">
@@ -430,9 +430,9 @@
                     </div>
                     <h2 class="admin-stat-value"><?= $order_count ?></h2>
                     <p class="admin-stat-label">Total Orders</p>
-                    <p class="admin-stat-change positive">
+                    <!-- <p class="admin-stat-change positive">
                         ↗ +8% this week
-                    </p>
+                    </p> -->
                 </div>
 
                 <div class="admin-stat-card revenue">
@@ -443,9 +443,9 @@
                     </div>
                     <h2 class="admin-stat-value">₹<?= $this_month_revenue ?></h2>
                     <p class="admin-stat-label">Total Revenue</p>
-                    <p class="admin-stat-change positive">
+                    <!-- <p class="admin-stat-change positive">
                         ↗ +15% this month
-                    </p>
+                    </p> -->
                 </div>
 
                 <!-- <div class="admin-stat-card staff">
@@ -521,7 +521,7 @@
                                 <!-- <th>Status</th> -->
                                 <th>Orders Today</th>
                                 <th>Revenue</th>
-                                <th>Actions</th>
+                                <!-- <th>Actions</th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -533,12 +533,12 @@
                                         <!-- <td><span class="status-badge status-active">Active</span></td> -->
                                         <td><?= $canteen->total_orders ?></td>
                                         <td>₹<?= $canteen->total_revenue ?? 0 ?></td>
-                                        <td>
-                                            <div class="admin-actions">
+                                        <!-- <td>
+                                             <div class="admin-actions">
                                                 <a href="#" class="admin-action-btn view-btn">👁️ View</a>
                                                 <a href="#" class="admin-action-btn edit-btn">✏️ Edit</a>
-                                            </div>
-                                        </td>
+                                            </div> 
+                                        </td> -->
                                     </tr>
                                 <?php endforeach; ?>
 
@@ -550,7 +550,7 @@
                         </tbody>
                     </table>
 
-                    <a href="#" class="view-all-link">
+                    <a href="<?= ROOT ?>admin/canteens" class="view-all-link">
                         View All Canteens →
                     </a>
                 </div>
@@ -593,7 +593,7 @@
                             </tbody>
                         </table>
 
-                        <a href="#" class="view-all-link">
+                        <a href="<?= ROOT ?>admin/students" class="view-all-link">
                             View All Students →
                         </a>
                     </div>

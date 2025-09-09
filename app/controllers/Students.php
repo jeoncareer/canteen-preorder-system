@@ -251,6 +251,15 @@ class Students extends Controller
             redirect('students/login');
         }
 
+        $col = new College;
+
+        $student = $_SESSION['STUDENT'];
+        $college = $col->where(['id' => $student->college_id]);
+        show($student);
+        show($college);
+
+
+
 
 
         $data['success'] = "Your report has been submitted successfully. We'll get back to you soon.";

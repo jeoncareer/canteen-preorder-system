@@ -9,6 +9,7 @@ class Categories
     protected $allowedColumns = [
         'id',
         'canteen_id',
-        'name'
+        'name',
+        'category_id'
     ];
 }

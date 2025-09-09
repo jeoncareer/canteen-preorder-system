@@ -6,6 +6,7 @@ class Student
     protected $table = 'students';
 
     protected $allowedColumns = [
+        'id',
         'email',
         'password',
         'college_id',

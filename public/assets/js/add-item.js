@@ -6,7 +6,7 @@
            
         
            const overlay = document.getElementById('overlay');
-        let mainContent = document.body.querySelector('.main-content');
+        let mainContent = document.body.querySelector('body');
            
         
            mainContent.addEventListener('click',e => {
