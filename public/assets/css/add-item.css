@@ -50,6 +50,31 @@
   margin-top: 1rem;
 }
 
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 0.5rem;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #64748b;
+    cursor: pointer;
+    margin-left: auto;
+    margin-right: 0;
+    align-self: flex-start;
+    line-height: 1;
+    padding: 0;
+    transition: color 0.2s;
+}
+.close-button:hover {
+    color: #c0392b;
+}
+
 #overlay.active {
   opacity: 1;
   pointer-events: all;

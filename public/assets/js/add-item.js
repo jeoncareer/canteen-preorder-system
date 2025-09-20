@@ -6,10 +6,10 @@
            
         
            const overlay = document.getElementById('overlay');
-        let mainContent = document.body.querySelector('body');
+        
            
         
-           mainContent.addEventListener('click',e => {
+           document.body.addEventListener('click',e => {
            
             let targetElement = e.target.closest('[data-modal-target');
             if(targetElement)

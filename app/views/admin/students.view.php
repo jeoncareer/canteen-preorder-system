@@ -31,6 +31,10 @@
             color: var(--primary-color);
         }
 
+        .students-table tbody {
+            transition: opacity 0.3s;
+        }
+
         .students-actions {
             display: flex;
             gap: 1rem;
@@ -556,17 +560,7 @@
                         <label class="form-label">Search Students</label>
                         <input type="text" class="form-input" placeholder="Search by name, email, or student ID..." id="searchInput">
                     </div>
-                    <!-- <div class="form-group">
-                        <label class="form-label">Department</label>
-                        <select class="form-select" id="departmentFilter">
-                            <option value="">All Departments</option>
-                            <option value="cs">Computer Science</option>
-                            <option value="me">Mechanical Engineering</option>
-                            <option value="ee">Electrical Engineering</option>
-                            <option value="ce">Civil Engineering</option>
-                            <option value="ba">Business Administration</option>
-                        </select>
-                    </div> -->
+
                     <div class="form-group">
                         <label class="form-label">Status</label>
                         <select class="form-select" id="statusFilter">
@@ -579,7 +573,7 @@
                     <div class="form-group">
                         <label class="form-label">Sort By</label>
                         <select class="form-select" id="sortBy">
-                            <option value="name">Name</option>
+                            <option value="id">Name</option>
                             <option value="recent">Recently Joined</option>
 
                             <option value="orders">Order Count</option>
@@ -601,6 +595,7 @@
                             <th>Orders</th>
                             <th>Joined</th>
                             <th>Actions</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -624,11 +619,9 @@
                                     <td>Jan 15, 2021</td>
                                     <td>
                                         <div class="student-actions">
-                                            <div data-modal-target="#view-profile-modal" class="student-action-btn view-btn">👁️</div>
-                                            <div class="student-action-btn edit-btn">✏️</div>
-                                            <button class="student-action-btn suspend-btn">🚫</button>
+                                            <div data-student-id="<?= $student->id ?>" data-modal-target="#view-profile-modal" class="student-action-btn view-btn">View Profile</div>
+
                                         </div>
-                                    </td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php endif; ?>
@@ -669,180 +662,355 @@
         </div>
         <div class="modal-body">
             <div class="profile-card">
+
                 <div class="form-row">
                     <div class="form-group">
+                        <label class="form-label">Student Id</label>
+                        <p class="form-value" id="profile-id"></p>
+                    </div>
+                    <div class="form-group">
                         <label class="form-label">Full Name</label>
-                        <p class="form-value">John Doe</p>
+                        <p class="form-value" id="profile-name"></p>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Email</label>
-                        <p class="form-value">john.doe@example.com</p>
+                        <p class="form-value" id="profile-email"></p>
                     </div>
                 </div>
-
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">Phone</label>
-                        <p class="form-value">+91 98765 43210</p>
+                        <p class="form-value" id="profile-phone"></p>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Role</label>
-                        <p class="form-value">Canteen Manager</p>
+                        <label class="form-label">Department</label>
+                        <p class="form-value" id="profile-department"></p>
                     </div>
                 </div>
-
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Year</label>
+                        <p class="form-value" id="profile-year"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Status</label>
+                        <span class="status-badge" id="profile-status"></span>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label class="form-label">Address</label>
-                    <p class="form-value">123, Main Street, Kochi, Kerala</p>
+                    <p class="form-value" id="profile-address"></p>
                 </div>
-
                 <div class="form-group">
                     <label class="form-label">Joined On</label>
-                    <p class="form-value">01 Jan 2024</p>
+                    <p class="form-value" id="profile-joined"></p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Total Orders</label>
+                    <p class="form-value" id="profile-orders"></p>
                 </div>
             </div>
-
             <div class="modal-actions">
                 <button type="button" class="btn btn-secondary" data-close-button="close-button">Close</button>
-                <button type="button" class="btn btn-primary">
+                <!-- <button type="button" class="btn btn-primary">
                     <span class="btn-icon">✏️</span>
                     Edit Profile
+                </button> -->
+                <button data-student-id="" data-status="" type="button" class="status-indicator btn btn-danger">
+                    <span class="btn-icon">🚫</span>
+                    Suspend Profile
                 </button>
             </div>
         </div>
     </div>
 
+    <div id="overlay"></div>
 
 
-    <script src="<?= ROOT ?>assets/js/index.js"></script>
     <script src="<?= ROOT ?>assets/js/add-item.js"></script>
     <script>
-        let prevPageBtn = document.getElementById('prev-page-btn');
-        let nextPageBtn = document.getElementById('next-page-btn');
-        updateStudentsDetails();
-        nextPageBtnListner();
-        prevPageBtnListner();
+        document.addEventListener('DOMContentLoaded', function() {
+            const pageNumbersContainer = document.querySelector('.page-numbers-container');
+            const pageNumbers = document.getElementById('pageNumbers');
+            const prevBtn = document.getElementById('prev-page-btn');
+            const nextBtn = document.getElementById('next-page-btn');
 
-        function updateStudentsDetails() {
+            function updatePaginationButtons() {
+                const activeBtn = pageNumbers.querySelector('.pagination-btn.active');
+                const allBtns = pageNumbers.querySelectorAll('.pagination-btn');
+                const activeIndex = Array.from(allBtns).indexOf(activeBtn);
 
-            let pageNumbers = document.querySelector('#pageNumbers');
-            pageNumbers.addEventListener('click', e => {
-                let btn = e.target;
-                if (btn.classList.contains("pagination-btn")) {
-                    let value = parseInt(btn.value);
+                prevBtn.disabled = activeIndex === 0;
+                nextBtn.disabled = activeIndex === allBtns.length - 1;
+            }
 
-                    if (btn.classList.contains('active')) {
-                        return false;
-                    }
-                    if (value === 0) {
-                        prevPageBtn.disabled = true;
-                    } else {
-                        prevPageBtn.disabled = false;
-                    }
+            // Scroll page numbers horizontally when clicking prev/next
+            prevBtn.addEventListener('click', function() {
+                const activeBtn = pageNumbers.querySelector('.pagination-btn.active');
+                const allBtns = pageNumbers.querySelectorAll('.pagination-btn');
+                const activeIndex = Array.from(allBtns).indexOf(activeBtn);
 
-                    if (btn.matches(":last-child")) {
-                        nextPageBtn.disabled = true;
-                    } else {
-                        nextPageBtn.disabled = false;
-                    }
+                if (activeIndex > 0) {
+                    allBtns[activeIndex].classList.remove('active');
+                    allBtns[activeIndex - 1].classList.add('active');
+                    allBtns[activeIndex - 1].scrollIntoView({
+                        behavior: 'smooth',
+                        inline: 'center'
+                    });
+                    updatePaginationButtons();
+                    // TODO: Fetch new data for the selected page
+                }
+            });
+
+            nextBtn.addEventListener('click', function() {
+                const activeBtn = pageNumbers.querySelector('.pagination-btn.active');
+                const allBtns = pageNumbers.querySelectorAll('.pagination-btn');
+                const activeIndex = Array.from(allBtns).indexOf(activeBtn);
+
+                if (activeIndex < allBtns.length - 1) {
+                    allBtns[activeIndex].classList.remove('active');
+                    allBtns[activeIndex + 1].classList.add('active');
+                    allBtns[activeIndex + 1].scrollIntoView({
+                        behavior: 'smooth',
+                        inline: 'center'
+                    });
+                    updatePaginationButtons();
+                    // TODO: Fetch new data for the selected page
+                }
+            });
+
+            // Clicking a page number button
+            pageNumbers.addEventListener('click', function(e) {
+                if (e.target.classList.contains('pagination-btn')) {
+                    pageNumbers.querySelectorAll('.pagination-btn').forEach(btn => btn.classList.remove('active'));
+                    e.target.classList.add('active');
+                    e.target.scrollIntoView({
+                        behavior: 'smooth',
+                        inline: 'center'
+                    });
+                    updatePaginationButtons();
+                    // TODO: Fetch new data for the selected page
+                }
+            });
+
+            function resetPagination(totalPages, activeIndex = 0) {
+                const pageNumbers = document.getElementById('pageNumbers');
+                pageNumbers.innerHTML = ''; // Clear existing buttons
+
+                for (let i = 0; i < totalPages; i++) {
+                    const btn = document.createElement('button');
+                    btn.value = i * 10;
+                    btn.className = 'pagination-btn';
+                    btn.textContent = i + 1;
+                    if (i === activeIndex) btn.classList.add('active');
+                    pageNumbers.appendChild(btn);
+                }
+            }
+
+            function fetchStudents({
+                offset = 0,
+                fromFilter = false
+            }) {
+                // Get filter values
+                const search = document.getElementById('searchInput').value;
+                const status = document.getElementById('statusFilter').value;
+                const sort = document.getElementById('sortBy').value;
+
+                // If coming from filter, always reset offset to 0
+                if (fromFilter) offset = 0;
+
+                // Fetch data from API
+
+                const url = ROOT + `/OrdersController/students?offset=${offset}&search=${encodeURIComponent(search)}&status=${status}&sort=${sort}`;
+                fetch(url)
+                    .then(res => res.json())
+                    .then(data => {
+
+                        console.log(data);
+                        let results = data.orders || [];
+
+                        updateTable(results);
+                        if (fromFilter) {
+                            resetPagination(data.totalPageNumbers, 0);
+                        }
+                        // ...update table code here...
+                    });
+            }
+
+            // Filter change events
+            document.getElementById('searchInput').addEventListener('input', () => fetchStudents({
+                fromFilter: true
+            }));
+            document.getElementById('statusFilter').addEventListener('change', () => fetchStudents({
+                fromFilter: true
+            }));
+            document.getElementById('sortBy').addEventListener('change', () => fetchStudents({
+                fromFilter: true
+            }));
+
+            // Pagination button click
+            document.getElementById('pageNumbers').addEventListener('click', function(e) {
+                if (e.target.classList.contains('pagination-btn')) {
+                    const offset = parseInt(e.target.value, 10);
+                    fetchStudents({
+                        offset,
+                        fromFilter: false
+                    });
+                }
+            });
 
 
-                    console.log(value);
-                    fetchStudentData(value);
-                    paginationBtnChange(btn);
+            function updateTable(data) {
+                const tbody = document.querySelector('.students-table tbody');
+                // Fade out
+                tbody.style.opacity = 0;
+
+                setTimeout(() => {
+                    tbody.innerHTML = ''; // Clear old rows
+
+                    data.forEach(student => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                        
+                        <td>
+                            <div class="student-info">
+                            <div class="student-avatar">ET</div>
+                                <div class="student-details">
+                                    <h4>${student.student_name}</h4>
+                                    <p>${student.student_email}</p>
+                                </div>
+                            </div>
+                        </td>
+                <td>${student.reg_no}</td>
+                <td><span class="department-badge dept-cs">Computer Science</span></td>
+                 <td>3rd Year</td>
+                <td>${student.status}</td>
+                <td>${student.total_orders}</td>
+                <td>Jan 15, 2021</td>
+                <td>
+                    <div class="student-actions">
+                        <div data-student-id="${student.id}" data-modal-target="#view-profile-modal" class="student-action-btn view-btn">View Profile</div>
+                      
+                    </div>
+                </td>
+
+            `;
+                        tbody.appendChild(tr);
+                    });
+
+                    // Fade in
+                    tbody.style.transition = 'opacity 0.3s';
+                    tbody.style.opacity = 1;
+                }, 200); // Wait for fade out
+            }
+
+
+            updatePaginationButtons();
+        });
+
+        viewStudentProfile();
+
+        function viewStudentProfile() {
+            const tbody = document.querySelector('.students-table tbody');
+            const modal = document.getElementById('view-profile-modal');
+
+            tbody.addEventListener('click', function(e) {
+                if (e.target.classList.contains('view-btn')) {
+                    let btn = e.target;
+                    let studentId = btn.dataset.studentId;
+                    console.log("View profile for student ID:", studentId);
+                    let url = ROOT + '/StudentController/student/' + studentId;
+
+                    fetch(url)
+                        .then(res => res.json())
+                        .then(data => {
+                            console.log(data);
+                            if (data.student) {
+                                const student = data.student;
+                                document.getElementById('profile-id').textContent = student.id;
+                                document.getElementById('profile-name').textContent = student.student_name;
+                                document.getElementById('profile-email').textContent = student.email;
+                                document.getElementById('profile-phone').textContent = student.phone || 'N/A';
+                                document.getElementById('profile-department').textContent = student.department || 'N/A';
+                                document.getElementById('profile-year').textContent = student.year || 'N/A';
+                                const statusBadge = document.getElementById('profile-status');
+                                statusBadge.textContent = student.status;
+                                statusBadge.className = 'status-badge status-' + student.status;
+                                document.getElementById('profile-address').textContent = student.address || 'N/A';
+                                document.getElementById('profile-joined').textContent = new Date(student.created_at).toLocaleDateString();
+                                document.getElementById('profile-orders').textContent = data.total_orders || 0;
+                                let statusIndicatorBtn = modal.querySelector('.status-indicator');
+                                statusIndicatorBtn.dataset.studentId = student.id;
+                                statusIndicatorBtn.dataset.status = student.status;
+                                // Update button text and style based on status
+                                if (student.status === 'suspended') {
+                                    statusIndicatorBtn.textContent = '🚫 Reactivate Profile';
+                                    statusIndicatorBtn.classList.remove('btn-danger');
+                                    statusIndicatorBtn.classList.add('btn-success');
+                                } else {
+                                    statusIndicatorBtn.textContent = '🚫 Suspend Profile';
+                                    statusIndicatorBtn.classList.remove('btn-success');
+                                    statusIndicatorBtn.classList.add('btn-danger');
+                                }
+                                // Open modal
+                                modal.classList.add('active');
+                                document.getElementById('overlay').classList.add('active');
+                            } else {
+                                alert('Student data not found.');
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Error fetching student data:', err);
+                            alert('Error fetching student data.');
+                        });
                 }
             })
-
-
-
-
         }
 
 
+        let statusIndicatorBtn = document.querySelector('.status-indicator');
+        statusIndicatorBtn.addEventListener('click', function() {
+            let studentId = this.dataset.studentId;
+            let currentStatus = this.dataset.status;
 
-        function fetchStudentData(offset) {
-            console.log("inside fetchstudentdata");
-            const url = ROOT + 'OrdersController/students?offset=' + offset;
+            console.log("Toggling status for student ID:", studentId, "Current status:", currentStatus);
+            let newStatus = '';
+            if (currentStatus === 'suspended') {
+                // Reactivate
+                newStatus = 'verified';
+                this.textContent = '🚫 Suspend Profile';
+                this.dataset.status = 'verified';
+                this.classList.remove('btn-success');
+                this.classList.add('btn-danger');
+            } else {
+                // Suspend
+                newStatus = 'suspended';
+                this.textContent = 'Reactivate Profile';
+                this.dataset.status = 'suspended';
+                this.classList.remove('btn-danger');
+                this.classList.add('btn-success');
+            }
+            console.log("New status:", newStatus);
 
-            fetch(url)
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        let students = data.orders;
-                        let tBody = document.querySelector('.students-table tbody');
-                        tBody.innerHTML = '';
+            toggleStudentStatus(studentId, newStatus);
+        });
 
-                        students.forEach(student => {
-                            let tr = document.createElement('tr');
-                            tr.innerHTML = `
-                                      <td>
-                                        <div class="student-info">
-                                            <div class="student-avatar">ET</div>
-                                            <div class="student-details">
-                                                <h4>${student.student_name}</h4>
-                                                <p>${student.student_email}</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><strong>${student.reg_no}</strong></td>
-                                    <td><span class="department-badge dept-cs">Computer Science</span></td>
-                                    <td>3rd Year</td>
-                                    <td><span class="status-badge status-${student.status}">${student.status}</span></td>
-                                    <td>${student.total_orders}</td>
-                                    <td>Jan 15, 2021</td>
-                                    <td>
-                                        <div class="student-actions">
-                                            <a href="#" class="student-action-btn view-btn">👁️</a>
-                                            <a href="#" class="student-action-btn edit-btn">✏️</a>
-                                            <button class="student-action-btn suspend-btn">🚫</button>
-                                        </div>
-                                    </td>
-                            `;
-
-                            tBody.appendChild(tr);
-                        })
-                    }
+        function toggleStudentStatus(studentId, status) {
+            const url = ROOT + '/StudentController/toggleStudentStatus/' + studentId;
+            fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        status: status
+                    })
                 })
-        }
+                .then(res => res.text())
+                .then(data => {
+                    console.log(data);
+                })
 
-        function prevPageBtnListner() {
-            prevPageBtn.addEventListener('click', () => {
-                let activeBtn = document.querySelector('.pagination-btn.active');
-                let value = parseInt(activeBtn.value) - 10;
-                let newBtn = document.querySelector(`.pagination-btn[value="${value}"]`);
-
-                fetchStudentData(value);
-                paginationBtnChange(newBtn);
-            })
-        }
-
-        function nextPageBtnListner() {
-            nextPageBtn.addEventListener('click', () => {
-                let activeBtn = document.querySelector('.pagination-btn.active');
-                let value = parseInt(activeBtn.value) + 10;
-                let newBtn = document.querySelector(`.pagination-btn[value="${value}"]`);
-                fetchStudentData(value);
-                paginationBtnChange(newBtn);
-            })
-        }
-
-        function paginationBtnChange(newBtn) {
-            currentButton = document.querySelector('.pagination-btn.active');
-            currentButton.classList.remove('active');
-            newBtn.classList.add('active');
-            let value = parseInt(newBtn.value);
-
-            if (value === 0) {
-                prevPageBtn.disabled = true;
-            } else {
-                prevPageBtn.disabled = false;
-            }
-
-            if (newBtn.matches(":last-child")) {
-                nextPageBtn.disabled = true;
-            } else {
-                nextPageBtn.disabled = false;
-            }
         }
     </script>
 </body>

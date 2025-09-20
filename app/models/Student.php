@@ -11,7 +11,8 @@ class Student
         'password',
         'college_id',
         'reg_no',
-        'student_name'
+        'student_name',
+        'status'
     ];
 
     public function validate($data)

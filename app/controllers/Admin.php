@@ -144,28 +144,35 @@ class Admin extends Controller
         $data['college'] = $_SESSION['COLLEGE'];
         $college_id = $_SESSION['COLLEGE']->id;
 
-        $sql = "SELECT students.email as student_email,students.student_name,students.reg_no,
-        students.status,students.id,count(orders.id) AS 
-        total_orders FROM students 
-        left JOIN orders ON students.id = orders.student_id
-        WHERE students.college_id = {$college_id}
-        GROUP BY students.id ORDER BY students.id desc limit 10 offset 0";
+        // Build WHERE clause (no filters)
+        $where = "students.college_id = {$college_id}";
+
+        $sql = "SELECT students.email as student_email, students.student_name, students.reg_no,
+        students.status, students.id, count(orders.id) AS total_orders
+        FROM students
+        LEFT JOIN orders ON students.id = orders.student_id
+        WHERE {$where}
+        GROUP BY students.id
+        ORDER BY students.id desc
+        LIMIT 10 OFFSET 0";
+
         $data['student_total_orders'] = $student->query($sql);
-        $data['totalRows'] = count($student->where(['college_id' => $college_id]));
-        $totalPageNumbers = $data['totalRows'] / 10;
-        $data['lastValue'] = $data['totalRows'] / 10;
 
+        // Get total rows without filters
+        $countSql = "SELECT COUNT(DISTINCT students.id) as total
+        FROM students
+        LEFT JOIN orders ON students.id = orders.student_id
+        WHERE {$where}";
 
-        if ($data['totalRows'] % 10 != 0) {
-            $totalPageNumbers++;
-        }
+        $countResult = $student->query($countSql);
+        $data['totalRows'] = ceil($countResult[0]->total);
 
+        $totalPageNumbers = ceil($data['totalRows'] / 10);
         $data['totalPageNumbers'] = $totalPageNumbers;
-
-
 
         $this->view('admin/students', $data);
     }
+
 
     public function student_reports()
     {

@@ -15,24 +15,69 @@ class OrdersController extends Controller
 
     public function students()
     {
-
-        $offset = $_GET['offset'] ?? 0;
-
+        header('Content-Type: application/json');
+        $student = new Student;
         $college_id = $_SESSION['COLLEGE']->id;
-        $sql = "SELECT students.email as student_email,students.student_name,students.reg_no,
-        students.status,students.id,count(orders.id) AS 
-        total_orders FROM students 
-        left JOIN orders ON students.id = orders.student_id
-        WHERE students.college_id = {$college_id}
-        GROUP BY students.id ORDER BY students.id desc limit 10 offset {$offset}";
-        $student_total_orders = $this->query($sql);
-        if (empty($student_total_orders)) {
-            echo json_encode(['success' => false]);
+
+        // Get filter/sort values from GET parameters
+        $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0;
+        $search = isset($_GET['search']) ? trim($_GET['search']) : '';
+        $status = isset($_GET['status']) ? trim($_GET['status']) : '';
+        $sort = isset($_GET['sort']) ? trim($_GET['sort']) : 'students.id desc';
+
+        // Build WHERE clause
+        $where = "students.college_id = {$college_id}";
+        if ($search !== '') {
+            $search = addslashes($search);
+            $where .= " AND (students.student_name LIKE '%{$search}%' OR students.email LIKE '%{$search}%' OR students.reg_no LIKE '%{$search}%')";
+        }
+        if ($status !== '') {
+            $where .= " AND students.status = '{$status}'";
         }
 
-        $lastPageNumber = count($student_total_orders) / 10;
+        // Build ORDER BY clause
+        switch ($sort) {
+            case 'name':
+                $orderBy = "students.student_name asc";
+                break;
+            case 'recent':
+                $orderBy = "students.id desc";
+                break;
+            case 'orders':
+                $orderBy = "total_orders desc";
+                break;
+            default:
+                $orderBy = "students.id desc";
+        }
 
-        echo json_encode(['success' => true, 'orders' => $student_total_orders, 'lastPageNumber' => $lastPageNumber]);
+        $sql = "SELECT students.email as student_email, students.student_name, students.reg_no,
+        students.status, students.id, count(orders.id) AS total_orders
+        FROM students
+        LEFT JOIN orders ON students.id = orders.student_id
+        WHERE {$where}
+        GROUP BY students.id
+        ORDER BY {$orderBy}
+        LIMIT 10 OFFSET {$offset}";
+
+        $student_total_orders = $student->query($sql);
+
+        // For totalRows, apply the same filters except for pagination
+        $countSql = "SELECT COUNT(DISTINCT students.id) as total
+        FROM students
+        LEFT JOIN orders ON students.id = orders.student_id
+        WHERE {$where}";
+
+        $countResult = $student->query($countSql);
+        $totalRows = ceil($countResult[0]->total);
+
+        $totalPageNumbers = ceil($totalRows / 10);
+
+        echo json_encode([
+            'success' => true,
+            'orders' => $student_total_orders,
+            'totalRows' => $totalRows,
+            'totalPageNumbers' => $totalPageNumbers
+        ]);
     }
 
 
