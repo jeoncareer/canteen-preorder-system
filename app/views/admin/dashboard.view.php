@@ -67,6 +67,10 @@
             background: #06b6d4;
         }
 
+        .admin-stat-card.pending::before {
+            background: #f59e0b;
+        }
+
         .admin-stat-header {
             display: flex;
             justify-content: space-between;
@@ -109,6 +113,10 @@
             background: #06b6d4;
         }
 
+        .admin-stat-icon.pending {
+            background: #f59e0b;
+        }
+
         .admin-stat-value {
             font-size: 2.5rem;
             font-weight: 700;
@@ -139,7 +147,7 @@
 
         .admin-content-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 2rem;
             margin-bottom: 2rem;
         }
@@ -448,6 +456,19 @@
                     </p> -->
                 </div>
 
+                <div class="admin-stat-card pending">
+                    <div class="admin-stat-header">
+                        <div class="admin-stat-icon pending">
+                            ⏳
+                        </div>
+                    </div>
+                    <h2 class="admin-stat-value">12</h2>
+                    <p class="admin-stat-label">Pending Verifications</p>
+                    <p class="admin-stat-change negative">
+                        ⚠️ Requires attention
+                    </p>
+                </div>
+
                 <!-- <div class="admin-stat-card staff">
                     <div class="admin-stat-header">
                         <div class="admin-stat-icon staff">
@@ -517,11 +538,8 @@
                         <thead>
                             <tr>
                                 <th>Canteen Name</th>
-
-                                <!-- <th>Status</th> -->
                                 <th>Orders Today</th>
                                 <th>Revenue</th>
-                                <!-- <th>Actions</th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -529,24 +547,11 @@
                                 <?php foreach ($canteens as $canteen): ?>
                                     <tr>
                                         <td><strong><?= $canteen->canteen_name ?></strong></td>
-
-                                        <!-- <td><span class="status-badge status-active">Active</span></td> -->
                                         <td><?= $canteen->total_orders ?></td>
                                         <td>₹<?= $canteen->total_revenue ?? 0 ?></td>
-                                        <!-- <td>
-                                             <div class="admin-actions">
-                                                <a href="#" class="admin-action-btn view-btn">👁️ View</a>
-                                                <a href="#" class="admin-action-btn edit-btn">✏️ Edit</a>
-                                            </div> 
-                                        </td> -->
                                     </tr>
                                 <?php endforeach; ?>
-
                             <?php endif; ?>
-
-
-
-
                         </tbody>
                     </table>
 
@@ -555,72 +560,121 @@
                     </a>
                 </div>
 
-                <!-- Recent Students & Activity -->
-                <div>
-                    <!-- Recent Students -->
-                    <div class="admin-section">
-                        <h2 class="admin-section-title">
-                            👨‍🎓 Recent Student Registrations
-                        </h2>
+                <!-- Recent Students -->
+                <div class="admin-section">
+                    <h2 class="admin-section-title">
+                        👨‍🎓 Recent Student Registrations
+                    </h2>
 
-                        <table class="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>Student Name</th>
-                                    <th>Reg No</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (!empty($students)): ?>
-                                    <?php foreach ($students as $student): ?>
-                                        <tr>
-                                            <td><strong><?= $student->email ?></strong></td>
-                                            <td><?= $student->reg_no ?></td>
-                                            <td><span class="status-badge status-verified">Verified</span></td>
-                                            <td>
-                                                <div class="admin-actions">
-                                                    <a href="#" class="admin-action-btn view-btn">👁️</a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Reg No</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (!empty($students)): ?>
+                                <?php foreach ($students as $student): ?>
+                                    <tr>
+                                        <td><strong><?= $student->email ?></strong></td>
+                                        <td><?= $student->reg_no ?></td>
+                                        <td><span class="status-badge status-verified">Verified</span></td>
+                                        <td>
+                                            <div class="admin-actions">
+                                                <a href="#" class="admin-action-btn view-btn">👁️</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
 
+                    <a href="<?= ROOT ?>admin/students" class="view-all-link">
+                        View All Students →
+                    </a>
+                </div>
 
+                <!-- Pending Student Verifications -->
+                <div class="admin-section">
+                    <h2 class="admin-section-title">
+                        ⏳ Pending Student Verifications
+                    </h2>
 
-                            </tbody>
-                        </table>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Reg No</th>
+                                <th>Submitted</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Rahul Sharma</strong></td>
+                                <td>CS2021001</td>
+                                <td>2 days ago</td>
+                                <td>
+                                    <div class="admin-actions">
+                                        <button class="admin-action-btn view-btn">✅ Approve</button>
+                                        <button class="admin-action-btn delete-btn">❌ Reject</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Priya Patel</strong></td>
+                                <td>EC2021045</td>
+                                <td>1 day ago</td>
+                                <td>
+                                    <div class="admin-actions">
+                                        <button class="admin-action-btn view-btn">✅ Approve</button>
+                                        <button class="admin-action-btn delete-btn">❌ Reject</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Amit Kumar</strong></td>
+                                <td>ME2021078</td>
+                                <td>3 hours ago</td>
+                                <td>
+                                    <div class="admin-actions">
+                                        <button class="admin-action-btn view-btn">✅ Approve</button>
+                                        <button class="admin-action-btn delete-btn">❌ Reject</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Sneha Reddy</strong></td>
+                                <td>IT2021092</td>
+                                <td>5 hours ago</td>
+                                <td>
+                                    <div class="admin-actions">
+                                        <button class="admin-action-btn view-btn">✅ Approve</button>
+                                        <button class="admin-action-btn delete-btn">❌ Reject</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Vikash Singh</strong></td>
+                                <td>CE2021156</td>
+                                <td>1 hour ago</td>
+                                <td>
+                                    <div class="admin-actions">
+                                        <button class="admin-action-btn view-btn">✅ Approve</button>
+                                        <button class="admin-action-btn delete-btn">❌ Reject</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                        <a href="<?= ROOT ?>admin/students" class="view-all-link">
-                            View All Students →
-                        </a>
-                    </div>
-
-                    <!-- System Alerts -->
-                    <!-- <div class="admin-section" style="margin-top: 2rem;">
-                        <h2 class="admin-section-title">
-                            🚨 System Alerts
-                        </h2>
-
-                        <div style="space-y: 1rem;">
-                            <div style="padding: 1rem; background: #fef3c7; border-left: 4px solid #f59e0b; border-radius: 6px; margin-bottom: 1rem;">
-                                <div style="font-weight: 600; color: #92400e;">Library Cafe Offline</div>
-                                <div style="font-size: 0.9rem; color: #78716c;">Equipment maintenance in progress</div>
-                            </div>
-
-                            <div style="padding: 1rem; background: #dbeafe; border-left: 4px solid #3b82f6; border-radius: 6px; margin-bottom: 1rem;">
-                                <div style="font-weight: 600; color: #1e40af;">High Order Volume</div>
-                                <div style="font-size: 0.9rem; color: #475569;">Main Campus Canteen experiencing peak hours</div>
-                            </div>
-
-                            <div style="padding: 1rem; background: #d1fae5; border-left: 4px solid #10b981; border-radius: 6px;">
-                                <div style="font-weight: 600; color: #065f46;">System Update Complete</div>
-                                <div style="font-size: 0.9rem; color: #475569;">All systems running smoothly</div>
-                            </div>
-                        </div>
-                    </div> -->
+                    <a href="<?= ROOT ?>admin/students?filter=pending" class="view-all-link">
+                        View All Pending Verifications →
+                    </a>
                 </div>
             </div>
         </div>

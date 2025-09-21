@@ -34,4 +34,25 @@ class StudentController extends Controller
         $student =  $students->first(['id' => $id]);
         echo json_encode(['success' => true, 'student' => $student]);
     }
+
+
+    public function getStudentsCount($where = [])
+    {
+        if (!isset($_SESSION['COLLEGE'])) {
+            redirect('admin/login');
+        }
+
+        $students = new Student;
+        $college_id = $_SESSION['COLLEGE']->id;
+        $where['college_id'] = $college_id;
+
+        $studentsCount = $students->count($where);
+        $where['status'] = 'verified';
+        $verifiedCount = $students->count($where);
+        $where['status'] = 'pending';
+        $pendingCount = $students->count($where);
+        $where['status'] = 'suspended';
+        $suspendedCount = $students->count($where);
+        echo json_encode(['count' => $studentsCount, 'verified' => $verifiedCount, 'pending' => $pendingCount, 'suspended' => $suspendedCount]);
+    }
 }

@@ -135,6 +135,7 @@ class Admin extends Controller
         $data['college'] = $college;
         $data['canteens'] = $canteens;
         $data['canteens_count'] = $canteens_count;
+        show($data);
         $this->view('admin/canteens', $data);
     }
 
@@ -169,7 +170,7 @@ class Admin extends Controller
 
         $totalPageNumbers = ceil($data['totalRows'] / 10);
         $data['totalPageNumbers'] = $totalPageNumbers;
-
+        show($data);
         $this->view('admin/students', $data);
     }
 

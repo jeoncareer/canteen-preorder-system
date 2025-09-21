@@ -185,29 +185,42 @@ class Students extends Controller
 
         );
 
+        if (empty($results)) {
+            $data['orders'] = [];
+            $this->view('students/my_orders', $data);
+            return;
+        }
+
         $order = $orders->where(['student_id' => STUDENT_ID]);
         foreach ($order as $or) {
             $data['order'][$or->id] = ['total' => $or->total, 'status' => $or->status];
         }
 
+        if (empty($data['order'])) {
+            $data['orders'] = [];
+            $this->view('students/my_orders', $data);
+            return;
+        } else {
+
+            $list_of_orders = [];
+
+
+            foreach ($results as $result) {
+                $list_of_orders[$result->id][] = $result;
+            }
+            $data['orders'] = $list_of_orders;
+
+
+            $this->view('students/my_orders', $data);
+            return;
+        }
+
         //show($data['order']);
 
 
-        $list_of_orders = [];
-
-
-        foreach ($results as $result) {
-            $list_of_orders[$result->id][] = $result;
-        }
 
         //show($list_of_orders);
-
-
-
-        $data['orders'] = $list_of_orders;
-
-
-        $this->view('students/my_orders', $data);
+        $this->view('students/my_orders');
     }
 
     public function history()

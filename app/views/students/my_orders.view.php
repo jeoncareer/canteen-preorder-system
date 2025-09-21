@@ -43,44 +43,52 @@
 
             <div class="orders-section">
                 <div class="section-title">Current Orders</div>
-                <?php foreach ($orders as $order_id => $items): ?>
-                    <div class="order-card">
-                        <div class="order-header">
-                            <div>
-                                <div class="order-id">Order #<?= $order_id ?></div>
-                                <div class="order-time">Today, 11:30 AM</div>
-                            </div>
-                            <div class="order-status status-ready"><?= $order[$order_id]['status'] ?> </div>
-                        </div>
-
-                        <div class="order-items">
-                            <?php foreach ($items as $item): ?>
-                                <div class="order-item">
-                                    <div class="item-details">
-                                        <div class="item-name"><?= $item->name ?></div>
-                                        <div class="item-specs">Qty: <?= $item->quantity ?> </div>
-                                    </div>
-                                    <div class="item-price">₹<?= $item->price * $item->quantity ?></div>
+                <?php if (!empty($orders)): ?>
+                    <?php foreach ($orders as $order_id => $items): ?>
+                        <div class="order-card">
+                            <div class="order-header">
+                                <div>
+                                    <div class="order-id">Order #<?= $order_id ?></div>
+                                    <div class="order-time">Today, 11:30 AM</div>
                                 </div>
-                            <?php endforeach; ?>
-
-                        </div>
-
-                        <div class="order-footer">
-                            <div class="order-info">
-                                <!-- <div>Pickup: Counter 2 - Main Canteen</div> -->
-                                <div>Status: Ready for collection</div>
+                                <div class="order-status status-ready"><?= $order[$order_id]['status'] ?> </div>
                             </div>
-                            <div class="order-total">Total: ₹<?= $order[$order_id]['total'] ?></div>
-                            <div class="order-actions">
-                                <?php if ($order[$order_id]['status'] === 'ready'): ?>
-                                    <button class="btn btn-primary">✓ Pick Up</button>
-                                <?php endif; ?>
-                                <button data-modal-target="#order-details-modal" class="btn btn-secondary">View Details</button>
+
+                            <div class="order-items">
+                                <?php foreach ($items as $item): ?>
+                                    <div class="order-item">
+                                        <div class="item-details">
+                                            <div class="item-name"><?= $item->name ?></div>
+                                            <div class="item-specs">Qty: <?= $item->quantity ?> </div>
+                                        </div>
+                                        <div class="item-price">₹<?= $item->price * $item->quantity ?></div>
+                                    </div>
+                                <?php endforeach; ?>
+
+                            </div>
+
+                            <div class="order-footer">
+                                <div class="order-info">
+                                    <!-- <div>Pickup: Counter 2 - Main Canteen</div> -->
+                                    <div>Status: Ready for collection</div>
+                                </div>
+                                <div class="order-total">Total: ₹<?= $order[$order_id]['total'] ?></div>
+                                <div class="order-actions">
+                                    <?php if ($order[$order_id]['status'] === 'ready'): ?>
+                                        <button class="btn btn-primary">✓ Pick Up</button>
+                                    <?php endif; ?>
+                                    <button data-modal-target="#order-details-modal" class="btn btn-secondary">View Details</button>
+                                </div>
                             </div>
                         </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="no-orders">
+                        <div class="no-orders-icon">🛒</div>
+                        <div>You have no current orders</div>
+                        <div style="font-size: 14px; margin-top: 10px;">Browse the menu and place your first order!</div>
                     </div>
-                <?php endforeach; ?>
+                <?php endif; ?>
 
 
             </div>

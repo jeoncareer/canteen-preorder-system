@@ -112,8 +112,8 @@
             color: var(--warning-color);
         }
 
-        .summary-card.active .summary-value {
-            color: #8b5cf6;
+        .summary-card.suspended .summary-value {
+            color: #f33a0cff;
         }
 
         /* Filters Section */
@@ -547,9 +547,9 @@
                     <div class="summary-value">187</div>
                     <div class="summary-label">Pending</div>
                 </div>
-                <div class="summary-card active">
+                <div class="summary-card suspended">
                     <div class="summary-value">2,641</div>
-                    <div class="summary-label">Active Users</div>
+                    <div class="summary-label">Suspended Users</div>
                 </div>
             </div>
 
@@ -601,7 +601,7 @@
                     <tbody>
                         <?php if (!empty($student_total_orders)): ?>
                             <?php foreach ($student_total_orders as $student): ?>
-                                <tr>
+                                <tr data-student-id="<?= $student->id ?>">
                                     <td>
                                         <div class="student-info">
                                             <div class="student-avatar">ET</div>
@@ -639,7 +639,7 @@
                         <button class="pagination-btn nav-btn" id="prev-page-btn" disabled>← Previous</button>
                         <div class="page-numbers-container">
                             <div class="page-numbers" id="pageNumbers">
-                                <?php for ($i = 1; $i < $totalPageNumbers; $i++): ?>
+                                <?php for ($i = 1; $i <= $totalPageNumbers; $i++): ?>
                                     <?php if ($i == 1): ?>
                                         <button value="<?= ($i - 1) * 10 ?>" class="pagination-btn active"><?= $i ?></button>
                                     <?php else: ?>
@@ -717,8 +717,8 @@
                     Edit Profile
                 </button> -->
                 <button data-student-id="" data-status="" type="button" class="status-indicator btn btn-danger">
-                    <span class="btn-icon">🚫</span>
-                    Suspend Profile
+                    <span class="btn-icon"></span>
+
                 </button>
             </div>
         </div>
@@ -730,6 +730,8 @@
     <script src="<?= ROOT ?>assets/js/add-item.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+
+            summaryCardsUpdate();
             const pageNumbersContainer = document.querySelector('.page-numbers-container');
             const pageNumbers = document.getElementById('pageNumbers');
             const prevBtn = document.getElementById('prev-page-btn');
@@ -927,34 +929,8 @@
                             console.log(data);
                             if (data.student) {
                                 const student = data.student;
-                                document.getElementById('profile-id').textContent = student.id;
-                                document.getElementById('profile-name').textContent = student.student_name;
-                                document.getElementById('profile-email').textContent = student.email;
-                                document.getElementById('profile-phone').textContent = student.phone || 'N/A';
-                                document.getElementById('profile-department').textContent = student.department || 'N/A';
-                                document.getElementById('profile-year').textContent = student.year || 'N/A';
-                                const statusBadge = document.getElementById('profile-status');
-                                statusBadge.textContent = student.status;
-                                statusBadge.className = 'status-badge status-' + student.status;
-                                document.getElementById('profile-address').textContent = student.address || 'N/A';
-                                document.getElementById('profile-joined').textContent = new Date(student.created_at).toLocaleDateString();
-                                document.getElementById('profile-orders').textContent = data.total_orders || 0;
-                                let statusIndicatorBtn = modal.querySelector('.status-indicator');
-                                statusIndicatorBtn.dataset.studentId = student.id;
-                                statusIndicatorBtn.dataset.status = student.status;
-                                // Update button text and style based on status
-                                if (student.status === 'suspended') {
-                                    statusIndicatorBtn.textContent = '🚫 Reactivate Profile';
-                                    statusIndicatorBtn.classList.remove('btn-danger');
-                                    statusIndicatorBtn.classList.add('btn-success');
-                                } else {
-                                    statusIndicatorBtn.textContent = '🚫 Suspend Profile';
-                                    statusIndicatorBtn.classList.remove('btn-success');
-                                    statusIndicatorBtn.classList.add('btn-danger');
-                                }
-                                // Open modal
-                                modal.classList.add('active');
-                                document.getElementById('overlay').classList.add('active');
+                                console.log(data);
+                                setViewStudentProfileModalData(student, modal);
                             } else {
                                 alert('Student data not found.');
                             }
@@ -967,6 +943,43 @@
             })
         }
 
+        function setViewStudentProfileModalData(student, modal) {
+            document.getElementById('profile-id').textContent = student.id;
+            document.getElementById('profile-name').textContent = student.student_name;
+            document.getElementById('profile-email').textContent = student.email;
+            document.getElementById('profile-phone').textContent = student.phone || 'N/A';
+            document.getElementById('profile-department').textContent = student.department || 'N/A';
+            document.getElementById('profile-year').textContent = student.year || 'N/A';
+            const statusBadge = document.getElementById('profile-status');
+            statusBadge.textContent = student.status;
+            statusBadge.className = 'status-badge status-' + student.status;
+            document.getElementById('profile-address').textContent = student.address || 'N/A';
+            document.getElementById('profile-joined').textContent = new Date(student.created_at).toLocaleDateString();
+            document.getElementById('profile-orders').textContent = student.total_orders || 0;
+            let statusIndicatorBtn = modal.querySelector('.status-indicator');
+            statusIndicatorBtn.dataset.studentId = student.id;
+            statusIndicatorBtn.dataset.status = student.status;
+
+            // Update button text and style based on status
+
+            if (student.status === 'pending') {
+                statusIndicatorBtn.textContent = 'Verify Student';
+                statusIndicatorBtn.classList.remove('btn-danger', 'btn-success');
+                statusIndicatorBtn.classList.add('btn-success');
+            } else if (student.status === 'suspended') {
+                statusIndicatorBtn.textContent = '🚫 Reactivate Profile';
+                statusIndicatorBtn.classList.remove('btn-danger');
+                statusIndicatorBtn.classList.add('btn-success');
+            } else {
+                statusIndicatorBtn.textContent = '🚫 Suspend Profile';
+                statusIndicatorBtn.classList.remove('btn-success');
+                statusIndicatorBtn.classList.add('btn-danger');
+            }
+
+            // Open modal
+            modal.classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+        }
 
         let statusIndicatorBtn = document.querySelector('.status-indicator');
         statusIndicatorBtn.addEventListener('click', function() {
@@ -974,12 +987,18 @@
             let currentStatus = this.dataset.status;
 
             console.log("Toggling status for student ID:", studentId, "Current status:", currentStatus);
+
             let newStatus = '';
-            if (currentStatus === 'suspended') {
+            let studentTr = document.querySelector(`tr[data-student-id='${studentId}']`);
+
+            let profileStatusBadge = document.getElementById('profile-status');
+            if (currentStatus === 'suspended' || currentStatus === 'pending') {
                 // Reactivate
                 newStatus = 'verified';
                 this.textContent = '🚫 Suspend Profile';
                 this.dataset.status = 'verified';
+                changeStudentStatusInViewModal(newStatus)
+                changeStudentStatusInTable(studentTr, newStatus);
                 this.classList.remove('btn-success');
                 this.classList.add('btn-danger');
             } else {
@@ -987,12 +1006,15 @@
                 newStatus = 'suspended';
                 this.textContent = 'Reactivate Profile';
                 this.dataset.status = 'suspended';
+                changeStudentStatusInViewModal(newStatus)
+                changeStudentStatusInTable(studentTr, newStatus);
                 this.classList.remove('btn-danger');
                 this.classList.add('btn-success');
             }
             console.log("New status:", newStatus);
 
             toggleStudentStatus(studentId, newStatus);
+
         });
 
         function toggleStudentStatus(studentId, status) {
@@ -1008,9 +1030,50 @@
                 })
                 .then(res => res.text())
                 .then(data => {
-                    console.log(data);
+                    summaryCardsUpdate();
+                    return data.success === true;
                 })
+                .catch(err => {
+                    console.error('Error toggling student status:', err);
+                    alert('Error in Changing  student status.');
+                    return false;
+                });
 
+
+        }
+
+
+        function changeStudentStatusInViewModal(status) {
+            const statusBadge = document.getElementById('profile-status');
+            statusBadge.textContent = status;
+            statusBadge.className = 'status-badge';
+            statusBadge.classList.add('status-' + status);
+        }
+
+        function changeStudentStatusInTable(row, status) {
+            let statusBadge = row.querySelector('.status-badge');
+            statusBadge.textContent = status;
+
+            statusBadge.classList.remove('status-verified', 'status-pending', 'status-suspended');
+            statusBadge.classList.add('status-' + status);
+
+        }
+
+        function summaryCardsUpdate() {
+            let url = ROOT + '/StudentController/getStudentsCount';
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    document.querySelector('.summary-card.total .summary-value').textContent = data.count;
+                    //document.querySelector('.summary-card.active .summary-value').textContent = data.verifiedCount;
+                    document.querySelector('.summary-card.pending .summary-value').textContent = data.pending;
+                    document.querySelector('.summary-card.verified .summary-value').textContent = data.verified;
+                    document.querySelector('.summary-card.suspended .summary-value').textContent = data.suspended
+
+                })
+                .catch(err => {
+                    console.error('Error fetching students count:', err);
+                });
         }
     </script>
 </body>
