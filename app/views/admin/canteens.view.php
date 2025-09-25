@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/base.css">
     <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/canteen-common.css">
     <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/admin-canteen.css">
+    <script>
+        const ROOT = '<?= ROOT ?>';
+    </script>
     <style>
 
     </style>
@@ -36,56 +39,22 @@
                     </h1>
                     <div class="canteens-stats">
                         <div class="stat-item">
-                            <p class="stat-value">8</p>
+                            <p id="total-canteens-stat" class="stat-value">8</p>
                             <p class="stat-label">Total Canteens</p>
                         </div>
                         <div class="stat-item">
-                            <p class="stat-value">7</p>
+                            <p id="total-canteens-active-stat" class="stat-value">7</p>
                             <p class="stat-label">Active</p>
                         </div>
                         <div class="stat-item">
-                            <p class="stat-value">₹45,280</p>
+                            <p id="total-canteens-revenue-stat" class="stat-value">₹45,280</p>
                             <p class="stat-label">Today's Revenue</p>
                         </div>
                     </div>
                 </div>
-                <button class="add-canteen-btn">
-                    ➕ Add New Canteen
-                </button>
+
             </div>
 
-            <!-- Filters Section -->
-            <div class="filters-section">
-                <h3 class="filters-title">🔍 Filter Canteens</h3>
-                <div class="filters-grid">
-                    <div class="filter-group">
-                        <label class="filter-label">Status</label>
-                        <select class="filter-select">
-                            <option value="">All Status</option>
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                            <option value="maintenance">Maintenance</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label class="filter-label">Location</label>
-                        <select class="filter-select">
-                            <option value="">All Locations</option>
-                            <option value="main">Main Campus</option>
-                            <option value="library">Library Block</option>
-                            <option value="hostel">Hostel Area</option>
-                            <option value="sports">Sports Complex</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label class="filter-label">Search</label>
-                        <input type="text" class="filter-input" placeholder="Search canteens...">
-                    </div>
-                    <div class="filter-group">
-                        <button class="filter-btn">Apply Filters</button>
-                    </div>
-                </div>
-            </div>
 
             <!-- Canteens Grid -->
             <div class="canteens-grid">
@@ -116,7 +85,7 @@
                             <div class="canteen-actions">
                                 <div class="canteen-revenue">₹12,450 Today</div>
                                 <div class="action-buttons">
-                                    <a href="#" class="action-btn view-btn">👁️ View</a>
+                                    <a href="<?= ROOT ?>admin/canteenDetails/<?= $canteen->id ?>" class="action-btn view-btn">👁️ View</a>
 
                                     <button class="action-btn delete-btn">🗑️ Block</button>
                                 </div>
@@ -129,42 +98,63 @@
             </div>
         </div>
     </div>
-
+    <script src="<?= ROOT ?>assets/js/functions.js"></script>
     <script>
-        // Add some basic interactivity
-        document.addEventListener('DOMContentLoaded', function() {
-            // Filter functionality
-            const filterBtn = document.querySelector('.filter-btn');
-            const statusFilter = document.querySelector('.filter-select');
-            const searchInput = document.querySelector('.filter-input');
+        setTotalCanteens();
+        setTotalRevenue();
+        setTotalActiveCanteens();
 
-            if (filterBtn) {
-                filterBtn.addEventListener('click', function() {
-                    // Add filter logic here
-                    console.log('Filters applied');
-                });
-            }
+        function setTotalRevenue() {
+            let canteenTotalStat = document.getElementById('total-canteens-revenue-stat');
 
-            // Add canteen button
-            const addBtn = document.querySelector('.add-canteen-btn');
-            if (addBtn) {
-                addBtn.addEventListener('click', function() {
-                    // Add new canteen logic here
-                    console.log('Add new canteen clicked');
-                });
-            }
+            let url = ROOT + 'CollegeController/totalRevenue';
 
-            // Delete buttons
-            const deleteButtons = document.querySelectorAll('.delete-btn');
-            deleteButtons.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    if (confirm('Are you sure you want to delete this canteen?')) {
-                        // Delete logic here
-                        console.log('Canteen deleted');
-                    }
-                });
-            });
-        });
+            console.log(TODAY, MONTH, YEAR);
+            fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        units: {
+                            DAY: TODAY,
+                            MONTH: MONTH,
+                            YEAR: YEAR
+                        }
+                    })
+                })
+                .then(res => res.text())
+                .then(data => {
+                    data = JSON.parse(data);
+
+                    canteenTotalStat.innerText = '₹' + data.total_revenue;
+                })
+        }
+
+        function setTotalCanteens() {
+
+            let url = ROOT + 'CanteenController/totalCanteens';
+            fetch(url)
+                .then(res => res.text())
+                .then(data => {
+                    data = JSON.parse(data);
+                    let canteenTotalStat = document.getElementById('total-canteens-stat');
+                    canteenTotalStat.innerText = data.count;
+                })
+        }
+
+        function setTotalActiveCanteens() {
+
+            let url = ROOT + 'CanteenController/totalCanteens/active';
+            fetch(url)
+                .then(res => res.text())
+                .then(data => {
+                    data = JSON.parse(data);
+                    console.log(data);
+                    let canteenTotalActiveStat = document.getElementById('total-canteens-active-stat');
+                    canteenTotalActiveStat.innerText = data.count;
+                })
+        }
     </script>
 </body>
 

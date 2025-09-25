@@ -56,3 +56,9 @@ function timeAgoOrDate($datetime, $full = false, $threshold = '1 month')
 
     return $string ? implode(', ', $string) . ' ago' : 'just now';
 }
+
+function isValidPhoneNumber($phone)
+{
+    // Check if it's exactly 10 digits and contains only numbers
+    return preg_match('/^\d{10}$/', $phone) === 1;
+}

@@ -135,7 +135,7 @@ class Admin extends Controller
         $data['college'] = $college;
         $data['canteens'] = $canteens;
         $data['canteens_count'] = $canteens_count;
-        show($data);
+
         $this->view('admin/canteens', $data);
     }
 

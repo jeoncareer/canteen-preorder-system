@@ -345,27 +345,22 @@
                     <form method="POST" action="<?= ROOT ?>canteen/settings">
                         <div class="form-group">
                             <label for="canteenName">Canteen Name</label>
-                            <input type="text" id="canteenName" name="canteen_name" value="Main Campus Cafeteria" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="managerName">Manager Name</label>
-                            <input type="text" id="managerName" name="manager_name" value="John Smith" required>
+                            <input type="text" id="canteenName" name="canteen_name" value="<?= $canteen->canteen_name ?>" required>
                         </div>
 
                         <div class="form-group">
                             <label for="phoneNumber">Phone Number</label>
-                            <input type="tel" id="phoneNumber" name="phone_number" value="+1 (555) 123-4567" required>
+                            <input type="tel" id="phoneNumber" name="phone_number" value="<?= $canteen->phn_no ?>" required>
                         </div>
 
                         <div class="form-group">
                             <label for="email">Email Address</label>
-                            <input type="email" id="email" name="email" value="canteen@college.edu" required>
+                            <input type="email" id="email" name="email" value="<?= $canteen->email ?>" required>
                         </div>
 
                         <div class="form-group">
                             <label for="description">Description</label>
-                            <textarea id="description" name="description" placeholder="Brief description of your canteen...">Serving fresh and delicious meals to students and staff. We offer a variety of cuisines including Indian, Continental, and Chinese dishes.</textarea>
+                            <textarea id="description" name="description" placeholder="Brief description of your canteen..."><?= $canteen->description ?></textarea>
                         </div>
 
                         <div class="form-actions">
@@ -377,6 +372,50 @@
                     </form>
                 </div>
 
+                <!-- Manager Details -->
+                <div id="managerCard" class="settings-card">
+                    <h3>👨‍💼 Manager Details</h3>
+
+
+                    <div class="form-group">
+                        <label for="managerName">Manager Name</label>
+                        <input type="text" id="managerName" name="manager_name" value="<?= $manager->name ?? '' ?>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="managerEmail">Manager Email</label>
+                        <input type="email" id="managerEmail" name="manager_email" value="<?= $manager->email ?? '' ?>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="managerPhone">Manager Phone</label>
+                        <input type="tel" id="managerPhone" name="manager_phone" value="<?= $manager->phone ?? '' ?>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="experience">Experience (Years)</label>
+                        <input type="number" id="experience" name="experience" value="<?= $manager->experience ?? '' ?>" min="0" max="50" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="managerAddress">Manager Address</label>
+                        <textarea id="managerAddress" name="manager_address" placeholder="Enter manager's address..." required> <?= $manager->name ?? '' ?></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="employeeId">Employee ID</label>
+                        <input type="text" id="employeeId" name="employee_id" value="<?= $manager->id ?? '' ?>" required>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary">Cancel</button>
+                        <button type="submit" class="btn-primary">
+                            👨‍💼 Update Manager Details
+                        </button>
+                    </div>
+
+                </div>
+
                 <!-- Operating Hours -->
                 <div class="settings-card">
                     <h3>🕒 Operating Hours</h3>
@@ -386,31 +425,31 @@
                             <label>Operating Days</label>
                             <div class="days-selector">
                                 <div class="day-checkbox">
-                                    <input type="checkbox" id="monday" name="days[]" value="monday" checked>
+                                    <input type="checkbox" id="monday" name="days[]" value="monday" <?= in_array('monday', $canteen->working_days) ? 'checked' : '' ?>>
                                     <label for="monday">Mon</label>
                                 </div>
                                 <div class="day-checkbox">
-                                    <input type="checkbox" id="tuesday" name="days[]" value="tuesday" checked>
+                                    <input type="checkbox" id="tuesday" name="days[]" value="tuesday" <?= in_array('tuesday', $canteen->working_days) ? 'checked' : '' ?>>
                                     <label for="tuesday">Tue</label>
                                 </div>
                                 <div class="day-checkbox">
-                                    <input type="checkbox" id="wednesday" name="days[]" value="wednesday" checked>
+                                    <input type="checkbox" id="wednesday" name="days[]" value="wednesday" <?= in_array('wednesday', $canteen->working_days) ? 'checked' : '' ?>>
                                     <label for="wednesday">Wed</label>
                                 </div>
                                 <div class="day-checkbox">
-                                    <input type="checkbox" id="thursday" name="days[]" value="thursday" checked>
+                                    <input type="checkbox" id="thursday" name="days[]" value="thursday" <?= in_array('thursday', $canteen->working_days) ? 'checked' : '' ?>>
                                     <label for="thursday">Thu</label>
                                 </div>
                                 <div class="day-checkbox">
-                                    <input type="checkbox" id="friday" name="days[]" value="friday" checked>
+                                    <input type="checkbox" id="friday" name="days[]" value="friday" <?= in_array('friday', $canteen->working_days) ? 'checked' : '' ?>>
                                     <label for="friday">Fri</label>
                                 </div>
                                 <div class="day-checkbox">
-                                    <input type="checkbox" id="saturday" name="days[]" value="saturday">
+                                    <input type="checkbox" id="saturday" name="days[]" value="saturday" <?= in_array('saturday', $canteen->working_days) ? 'checked' : '' ?>>
                                     <label for="saturday">Sat</label>
                                 </div>
                                 <div class="day-checkbox">
-                                    <input type="checkbox" id="sunday" name="days[]" value="sunday">
+                                    <input type="checkbox" id="sunday" name="days[]" value="sunday" <?= in_array('sunday', $canteen->working_days) ? 'checked' : '' ?>>
                                     <label for="sunday">Sun</label>
                                 </div>
                             </div>
@@ -419,25 +458,19 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="openTime">Opening Time</label>
-                                <input type="time" id="openTime" name="open_time" value="08:00" required>
+                                <input type="time" id="openTime" name="open_time" value="<?= $canteen->open ?>" required>
                             </div>
                             <div class="form-group">
                                 <label for="closeTime">Closing Time</label>
-                                <input type="time" id="closeTime" name="close_time" value="20:00" required>
+                                <input type="time" id="closeTime" name="close_time" value="<?= $canteen->close ?>" required>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="breakTime">Break Time (Optional)</label>
-                            <div class="time-inputs">
-                                <input type="time" name="break_start" placeholder="Break Start" value="14:00">
-                                <input type="time" name="break_end" placeholder="Break End" value="15:00">
-                            </div>
-                        </div>
+
 
                         <div class="form-group">
                             <label for="specialHours">Special Hours/Notes</label>
-                            <textarea id="specialHours" name="special_hours" placeholder="Any special timing notes...">Closed on public holidays. Extended hours during exam periods.</textarea>
+                            <textarea id="specialHours" name="special_hours" placeholder="Any special timing notes..."><?= $canteen->special_hours ?></textarea>
                         </div>
 
                         <div class="form-actions">
@@ -509,7 +542,7 @@
             </div>
         </div>
     </div>
-
+    <script src=" <?= ROOT ?>assets/js/functions.js"></script>
     <script>
         function toggleCanteenStatus() {
             if (confirm('Are you sure you want to change the canteen status?')) {
@@ -580,6 +613,49 @@
                 alert('Closing time must be after opening time!');
                 this.value = '';
             }
+        });
+
+
+        const managerCard = document.getElementById('managerCard');
+
+        updateButton = managerCard.querySelector('button.btn-primary');
+
+        updateButton.addEventListener('click', function() {
+            // Simple validation
+            const name = document.getElementById('managerName').value.trim();
+            const email = document.getElementById('managerEmail').value.trim();
+            const phone = document.getElementById('managerPhone').value.trim();
+            const experience = document.getElementById('experience').value.trim();
+            const address = document.getElementById('managerAddress').value.trim();
+            const empId = document.getElementById('employeeId').value.trim();
+
+            console.log(this);
+            if (!name || !email || !phone || !experience || !address || !empId) {
+                alert('Please fill in all manager details.');
+                return;
+            }
+
+            // Basic email format check
+            const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+            if (!email.match(emailPattern)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            // Basic phone format check (simple digits only)
+            if (!isValidPhoneNumber(phone)) {
+                alert('Please enter a valid 10-digit phone number.');
+                return;
+            }
+
+            // Experience should be a positive number
+            if (isNaN(experience) || experience < 0) {
+                alert('Experience must be a valid number of years.');
+                return;
+            }
+
+            // If all validations pass, submit the form
+            managerCard.querySelector('form').submit();
         });
     </script>
 </body>
