@@ -126,15 +126,19 @@ class Admin extends Controller
     public function canteens()
     {
         $canteen = new Canteen_db;
-
+        $items = new Items;
 
         $data = [];
         $college = $_SESSION['COLLEGE'];
         $canteens = $canteen->where(['college_id' => $college->id]);
         $canteens_count = count($canteens);
+        foreach ($canteens as $row) {
+            $row->total_menu_items = $items->count(['canteen_id' => $row->id]);
+        }
         $data['college'] = $college;
         $data['canteens'] = $canteens;
         $data['canteens_count'] = $canteens_count;
+        show($canteens);
 
         $this->view('admin/canteens', $data);
     }
@@ -170,7 +174,7 @@ class Admin extends Controller
 
         $totalPageNumbers = ceil($data['totalRows'] / 10);
         $data['totalPageNumbers'] = $totalPageNumbers;
-        show($data);
+
         $this->view('admin/students', $data);
     }
 
@@ -207,51 +211,50 @@ class Admin extends Controller
         $order = new Orders;
         $itemTable = new Items;
         $student = new Student;
-        $order_items  = new Order_items;
+        $order_item  = new Order_items;
         $college = $_SESSION['COLLEGE'];
         $data['college'] = $college;
-        $canteen = $canteens->first(['id' => $canteen_id]);
-        $categories = $category->where(['canteen_id' => $canteen_id]);
-        $orders = $order->where(['canteen_id' => $canteen_id], [], 10);
 
+        //for orders section
+        $categories = $category->where(['canteen_id' => $canteen_id]);
         foreach ($categories as $row) {
-            $row->items = $itemTable->where(['category_id' => $row->id]);
+            $row->items = $itemTable->where(['canteen_id' => $canteen_id, 'category_id' => $row->id]);
         }
 
-        if ($orders) {
+        $data['total_menu_items'] = $itemTable->count(['canteen_id' => $canteen_id]);
 
-            foreach ($orders as $row) {
-                $row->student = $student->first(['id' => $row->student_id]);
-                $items = $order_items->where(['order_id' => $row->id]);
-                show($items);
 
-                foreach ($items as $item) {
-                    $tItems = $itemTable->first(['id' => $item->item_id]);
-                    $quantity = $item->quantity;
-                    $tItems->quantity = $quantity;
-                    $row->items[] = $tItems;
+
+        $data['categories'] = $categories;
+        //end
+
+        $orders = $order->where(['canteen_id' => $canteen_id], [], 10);
+        if (!empty($orders)) {
+
+            foreach ($orders as $ord) {
+                $items = '';
+                $ord->student = $student->first(['id' => $ord->student_id]);
+
+                $order_items = $order_item->where(['order_id' => $ord->id]);
+
+                foreach ($order_items as $ordit) {
+                    $item = $itemTable->first(['id' => $ordit->item_id]);
+                    $items .= ucfirst($item->name) . ' x' . $ordit->quantity . ',';
                 }
 
-                $abstractTime = timeAgoOrDate($row->time);
-                $row->abstract_time = $abstractTime;
+                $ord->items = trim($items, ',');
             }
+
+
+
             $data['orders'] = $orders;
         }
 
 
-        foreach ($orders as $order) {
-            $items_grouped = '';
-            foreach ($order->items as $item) {
-                $items_grouped .= $item->quantity . 'x ' . ucfirst($item->name) . ',';
-            }
+        $data['canteen_id'] = $canteen_id;
+        $data['canteen'] = $canteens->first(['id' => $canteen_id]);
+        show($data['canteen']);
 
-            $order->items_grouped = trim($items_grouped, ",");
-        }
-
-        show($orders);
-
-        $data['canteen'] = $canteen;
-        $data['categories'] = $categories;
 
 
 

@@ -30,8 +30,30 @@ trait Model
     }
 
 
-    public function where($data, $data_not = [], $limit = '', $custom = '')
+    public function where($data, $data_not = [], $limit = '', $custom = '', $order_by = '', $order_type = '')
     {
+        //remove unwanted data
+        if (!empty($this->allowedColumns)) {
+            foreach ($data as $key => $value) {
+                if (!in_array($key, $this->allowedColumns)) {
+                    unset($data[$key]);
+                }
+            }
+            foreach ($data_not as $key => $value) {
+                if (!in_array($key, $this->allowedColumns)) {
+                    unset($data_not[$key]);
+                }
+            }
+        }
+
+        if (!empty($order_by)) {
+            $this->order_column = $order_by;
+        }
+
+        if (!empty($order_type)) {
+            $this->order_type = $order_type;
+        }
+
         $keys = array_keys($data);
         $keys_not = array_keys($data_not);
         $query = "select * from $this->table where ";

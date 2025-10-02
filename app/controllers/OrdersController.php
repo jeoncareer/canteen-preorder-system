@@ -94,8 +94,11 @@ class OrdersController extends Controller
 
 
         $query = "select sum(total) as total, count(*) as total_orders  from canteen_orders_view where";
-        foreach ($where_keys as $key) {
-            $query .= " {$key} = :{$key} AND ";
+        if (!empty($where_keys)) {
+
+            foreach ($where_keys as $key) {
+                $query .= " {$key} = :{$key} AND ";
+            }
         }
 
 
@@ -106,14 +109,15 @@ class OrdersController extends Controller
             }
         }
 
+
         $query = trim($query, " AND ");
 
         $data = array_merge($where, $units);
-        $results = $this->query($query, $data);
+        $orders = $this->query($query, $data);
 
 
 
-        echo json_encode(['results' => $results, 'query' => $query]);
+        echo json_encode(['orders' => $orders]);
     }
 
 

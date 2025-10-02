@@ -10,6 +10,10 @@
     <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/student-general.css">
     <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/base.css">
     <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/canteen-common.css">
+    <script>
+        const ROOT = "<?= ROOT ?>";
+        const canteenId = "<?= $canteen_id ?>";
+    </script>
     <style>
         /* Canteen Details Specific Styles */
         .details-header {
@@ -134,7 +138,7 @@
 
         .details-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 2rem;
             margin-bottom: 2rem;
         }
@@ -606,28 +610,7 @@
 
         <!-- Main Content -->
         <div class="main-content">
-            <!-- Header Section -->
-            <div class="details-header">
-                <div class="header-content">
-                    <div class="canteen-info">
-                        <h1 class="canteen-title">
-                            🏢 Main Campus Canteen
-                        </h1>
-                        <p class="canteen-subtitle">
-                            📍 Main Campus Building, Ground Floor
-                        </p>
-                        <div class="status-badge status-active">Active</div>
-                    </div>
-                    <div class="header-actions">
-                        <a href="<?= ROOT ?>admin/canteens" class="action-btn back-btn">
-                            ← Back to Canteens
-                        </a>
-                        <button class="action-btn edit-btn">
-                            ✏️ Edit Canteen
-                        </button>
-                    </div>
-                </div>
-            </div>
+
 
             <!-- Stats Grid -->
             <div class="stats-grid">
@@ -643,14 +626,10 @@
                 </div>
                 <div class="stat-card items">
                     <div class="stat-icon">🍽️</div>
-                    <h3 class="stat-value">45</h3>
+                    <h3 class="stat-value"><?= $total_menu_items ?></h3>
                     <p class="stat-label">Menu Items</p>
                 </div>
-                <div class="stat-card rating">
-                    <div class="stat-icon">⭐</div>
-                    <h3 class="stat-value">4.8</h3>
-                    <p class="stat-label">Average Rating</p>
-                </div>
+
             </div>
 
             <!-- Details Grid -->
@@ -663,7 +642,7 @@
                     <div class="info-grid">
                         <div class="info-item">
                             <span class="info-label">🏢 Canteen Name</span>
-                            <span class="info-value">Main Campus Canteen</span>
+                            <span class="info-value"><?= $canteen->canteen_name ?></span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">📍 Location</span>
@@ -671,55 +650,24 @@
                         </div>
                         <div class="info-item">
                             <span class="info-label">🕒 Operating Hours</span>
-                            <span class="info-value">7:00 AM - 9:00 PM</span>
+                            <span class="info-value"><?= convertTime($canteen->open) ?>- <?= convertTime($canteen->close) ?></span>
                         </div>
-                        <div class="info-item">
+                        <!-- <div class="info-item">
                             <span class="info-label">👥 Seating Capacity</span>
                             <span class="info-value">120 seats</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">📅 Established</span>
                             <span class="info-value">January 2020</span>
-                        </div>
+                        </div> -->
                         <div class="info-item">
                             <span class="info-label">🔄 Status</span>
-                            <span class="info-value">Active</span>
+                            <span class="info-value"><?= ucfirst($canteen->status) ?></span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Manager & Contact Details -->
-                <div class="details-section">
-                    <h2 class="section-title">
-                        👨‍💼 Manager & Contact Details
-                    </h2>
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <span class="info-label">👤 Manager Name</span>
-                            <span class="info-value">Rajesh Kumar</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">📧 Email</span>
-                            <span class="info-value">rajesh.kumar@college.edu</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">📱 Phone</span>
-                            <span class="info-value">+91 98765 43210</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">💼 Experience</span>
-                            <span class="info-value">8 years</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">🏠 Address</span>
-                            <span class="info-value">123 College Street, City</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">📋 Employee ID</span>
-                            <span class="info-value">EMP001</span>
-                        </div>
-                    </div>
-                </div>
+
             </div>
 
             <!-- Tabs Section -->
@@ -732,279 +680,33 @@
 
                 <!-- Menu Tab -->
                 <div class="tab-content active" id="menu">
-                    <!-- Main Course Category -->
-                    <div class="category-section">
-                        <h3 class="category-title">🍛 Main Course</h3>
-                        <div class="menu-grid">
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Chicken Biryani</h4>
-                                    <span class="menu-item-price">₹180</span>
-                                </div>
-                                <p class="menu-item-desc">Aromatic basmati rice with tender chicken pieces and traditional spices</p>
-                            </div>
+                    <?php if (!empty($categories) || isset($categories)): ?>
+                        <?php foreach ($categories as $cat): ?>
+                            <div class="category-section">
+                                <h3 class="category-title"><?= ucfirst($cat->name) ?></h3>
+                                <div class="menu-grid">
+                                    <?php if (!empty($cat->items)):  ?>
+                                        <?php foreach ($cat->items as $item): ?>
+                                            <div class="menu-item">
+                                                <div class="menu-item-header">
+                                                    <h4 class="menu-item-name"><?= ucfirst($item->name) ?></h4>
+                                                    <span class="menu-item-price">₹<?= ucfirst($item->price) ?></span>
+                                                </div>
+                                                <p class="menu-item-desc"><?= $item->description ?></p>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <h2>No Items</h2>
+                                    <?php endif; ?>
 
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Mutton Curry</h4>
-                                    <span class="menu-item-price">₹220</span>
-                                </div>
-                                <p class="menu-item-desc">Tender mutton pieces cooked in rich spicy gravy</p>
-                            </div>
 
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Fish Fry</h4>
-                                    <span class="menu-item-price">₹160</span>
                                 </div>
-                                <p class="menu-item-desc">Fresh fish marinated with spices and deep fried to perfection</p>
                             </div>
-                        </div>
-                    </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
 
-                    <!-- Vegetarian Category -->
-                    <div class="category-section">
-                        <h3 class="category-title">🥬 Vegetarian</h3>
-                        <div class="menu-grid">
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Paneer Butter Masala</h4>
-                                    <span class="menu-item-price">₹150</span>
-                                </div>
-                                <p class="menu-item-desc">Cottage cheese cubes in rich tomato and butter gravy</p>
-                            </div>
 
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Dal Tadka</h4>
-                                    <span class="menu-item-price">₹80</span>
-                                </div>
-                                <p class="menu-item-desc">Yellow lentils tempered with cumin, garlic and spices</p>
-                            </div>
 
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Aloo Gobi</h4>
-                                    <span class="menu-item-price">₹90</span>
-                                </div>
-                                <p class="menu-item-desc">Potato and cauliflower curry with aromatic spices</p>
-                            </div>
-
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Veg Biryani</h4>
-                                    <span class="menu-item-price">₹140</span>
-                                </div>
-                                <p class="menu-item-desc">Fragrant basmati rice with mixed vegetables and spices</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- South Indian Category -->
-                    <div class="category-section">
-                        <h3 class="category-title">🥥 South Indian</h3>
-                        <div class="menu-grid">
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Masala Dosa</h4>
-                                    <span class="menu-item-price">₹80</span>
-                                </div>
-                                <p class="menu-item-desc">Crispy rice crepe filled with spiced potato curry, served with chutney</p>
-                            </div>
-
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Idli Sambar</h4>
-                                    <span class="menu-item-price">₹60</span>
-                                </div>
-                                <p class="menu-item-desc">Steamed rice cakes served with lentil curry and coconut chutney</p>
-                            </div>
-
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Uttapam</h4>
-                                    <span class="menu-item-price">₹70</span>
-                                </div>
-                                <p class="menu-item-desc">Thick pancake topped with onions, tomatoes and green chilies</p>
-                            </div>
-
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Rava Upma</h4>
-                                    <span class="menu-item-price">₹50</span>
-                                </div>
-                                <p class="menu-item-desc">Semolina cooked with vegetables and South Indian spices</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- North Indian Category -->
-                    <div class="category-section">
-                        <h3 class="category-title">🫓 North Indian</h3>
-                        <div class="menu-grid">
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Chole Bhature</h4>
-                                    <span class="menu-item-price">₹120</span>
-                                </div>
-                                <p class="menu-item-desc">Spicy chickpea curry served with fluffy fried bread</p>
-                            </div>
-
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Rajma Rice</h4>
-                                    <span class="menu-item-price">₹100</span>
-                                </div>
-                                <p class="menu-item-desc">Red kidney beans curry served with steamed basmati rice</p>
-                            </div>
-
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Butter Naan</h4>
-                                    <span class="menu-item-price">₹40</span>
-                                </div>
-                                <p class="menu-item-desc">Soft leavened bread brushed with butter</p>
-                            </div>
-
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Tandoori Roti</h4>
-                                    <span class="menu-item-price">₹25</span>
-                                </div>
-                                <p class="menu-item-desc">Whole wheat bread cooked in tandoor oven</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Snacks Category -->
-                    <div class="category-section">
-                        <h3 class="category-title">🍟 Snacks</h3>
-                        <div class="menu-grid">
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Samosa</h4>
-                                    <span class="menu-item-price">₹25</span>
-                                </div>
-                                <p class="menu-item-desc">Crispy pastry filled with spiced potatoes and peas</p>
-                            </div>
-
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Pakora</h4>
-                                    <span class="menu-item-price">₹30</span>
-                                </div>
-                                <p class="menu-item-desc">Mixed vegetable fritters in chickpea flour batter</p>
-                            </div>
-
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Sandwich</h4>
-                                    <span class="menu-item-price">₹45</span>
-                                </div>
-                                <p class="menu-item-desc">Grilled sandwich with vegetables and cheese</p>
-                            </div>
-
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Pav Bhaji</h4>
-                                    <span class="menu-item-price">₹80</span>
-                                </div>
-                                <p class="menu-item-desc">Spiced vegetable curry served with buttered bread rolls</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Beverages Category -->
-                    <div class="category-section">
-                        <h3 class="category-title">🥤 Beverages</h3>
-                        <div class="menu-grid">
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Mango Lassi</h4>
-                                    <span class="menu-item-price">₹60</span>
-                                </div>
-                                <p class="menu-item-desc">Refreshing yogurt drink blended with sweet mango pulp</p>
-                            </div>
-
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Masala Chai</h4>
-                                    <span class="menu-item-price">₹20</span>
-                                </div>
-                                <p class="menu-item-desc">Traditional Indian tea brewed with aromatic spices</p>
-                            </div>
-
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Fresh Lime Soda</h4>
-                                    <span class="menu-item-price">₹35</span>
-                                </div>
-                                <p class="menu-item-desc">Refreshing lime juice with soda water and mint</p>
-                            </div>
-
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Filter Coffee</h4>
-                                    <span class="menu-item-price">₹30</span>
-                                </div>
-                                <p class="menu-item-desc">South Indian style strong coffee with milk and sugar</p>
-                            </div>
-
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Buttermilk</h4>
-                                    <span class="menu-item-price">₹25</span>
-                                </div>
-                                <p class="menu-item-desc">Spiced yogurt drink with curry leaves and ginger</p>
-                            </div>
-
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Fresh Fruit Juice</h4>
-                                    <span class="menu-item-price">₹50</span>
-                                </div>
-                                <p class="menu-item-desc">Seasonal fresh fruit juice (Orange/Apple/Pomegranate)</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Desserts Category -->
-                    <div class="category-section">
-                        <h3 class="category-title">🍰 Desserts</h3>
-                        <div class="menu-grid">
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Gulab Jamun</h4>
-                                    <span class="menu-item-price">₹40</span>
-                                </div>
-                                <p class="menu-item-desc">Soft milk dumplings soaked in rose-flavored sugar syrup</p>
-                            </div>
-
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Rasmalai</h4>
-                                    <span class="menu-item-price">₹50</span>
-                                </div>
-                                <p class="menu-item-desc">Cottage cheese dumplings in sweetened milk with cardamom</p>
-                            </div>
-
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Ice Cream</h4>
-                                    <span class="menu-item-price">₹35</span>
-                                </div>
-                                <p class="menu-item-desc">Vanilla, chocolate, or strawberry flavored ice cream</p>
-                            </div>
-
-                            <div class="menu-item">
-                                <div class="menu-item-header">
-                                    <h4 class="menu-item-name">Kheer</h4>
-                                    <span class="menu-item-price">₹45</span>
-                                </div>
-                                <p class="menu-item-desc">Rice pudding cooked in milk with nuts and cardamom</p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Orders Tab -->
@@ -1021,46 +723,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><strong>#ORD001</strong></td>
-                                <td>Rahul Sharma</td>
-                                <td>2x Chicken Biryani, 1x Lassi</td>
-                                <td><strong>₹420</strong></td>
-                                <td><span class="order-status status-completed">Completed</span></td>
-                                <td>2 hours ago</td>
-                            </tr>
-                            <tr>
-                                <td><strong>#ORD002</strong></td>
-                                <td>Priya Patel</td>
-                                <td>1x Masala Dosa, 1x Coffee</td>
-                                <td><strong>₹110</strong></td>
-                                <td><span class="order-status status-pending">Pending</span></td>
-                                <td>1 hour ago</td>
-                            </tr>
-                            <tr>
-                                <td><strong>#ORD003</strong></td>
-                                <td>Amit Kumar</td>
-                                <td>3x Samosa, 1x Tea</td>
-                                <td><strong>₹95</strong></td>
-                                <td><span class="order-status status-completed">Completed</span></td>
-                                <td>3 hours ago</td>
-                            </tr>
-                            <tr>
-                                <td><strong>#ORD004</strong></td>
-                                <td>Sneha Reddy</td>
-                                <td>1x Paneer Butter Masala, 2x Roti</td>
-                                <td><strong>₹180</strong></td>
-                                <td><span class="order-status status-cancelled">Cancelled</span></td>
-                                <td>4 hours ago</td>
-                            </tr>
-                            <tr>
-                                <td><strong>#ORD005</strong></td>
-                                <td>Vikash Singh</td>
-                                <td>1x Chole Bhature, 1x Lassi</td>
-                                <td><strong>₹180</strong></td>
-                                <td><span class="order-status status-completed">Completed</span></td>
-                                <td>5 hours ago</td>
-                            </tr>
+                            <?php if (isset($orders)): ?>
+                                <?php foreach ($orders as $or): ?>
+                                    <tr>
+                                        <td><strong>#ORD<?= $or->id ?></strong></td>
+                                        <td><?= ucfirst($or->student->student_name) ?></td>
+                                        <td><?= $or->items ?></td>
+                                        <td><strong>₹<?= $or->total ?></strong></td>
+                                        <td><span class="order-status status-completed">Completed</span></td>
+                                        <td><?= timeAgoOrDate($or->time) ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+
+
                         </tbody>
                     </table>
                 </div>
@@ -1087,13 +763,13 @@
                                     <div class="stat-icon">📋</div>
                                     <h3 class="stat-value">156</h3>
                                     <p class="stat-label">Orders Today</p>
-                                    <p class="stat-change positive">↗ +12% from yesterday</p>
+
                                 </div>
                                 <div class="stat-card revenue">
                                     <div class="stat-icon">💰</div>
                                     <h3 class="stat-value">₹12,450</h3>
                                     <p class="stat-label">Revenue Today</p>
-                                    <p class="stat-change positive">↗ +8% from yesterday</p>
+
                                 </div>
                             </div>
                         </div>
@@ -1105,13 +781,13 @@
                                     <div class="stat-icon">📋</div>
                                     <h3 class="stat-value">892</h3>
                                     <p class="stat-label">Orders This Week</p>
-                                    <p class="stat-change positive">↗ +15% from last week</p>
+
                                 </div>
                                 <div class="stat-card revenue">
                                     <div class="stat-icon">💰</div>
                                     <h3 class="stat-value">₹78,340</h3>
                                     <p class="stat-label">Revenue This Week</p>
-                                    <p class="stat-change positive">↗ +18% from last week</p>
+
                                 </div>
                             </div>
                         </div>
@@ -1123,13 +799,13 @@
                                     <div class="stat-icon">📋</div>
                                     <h3 class="stat-value">3,245</h3>
                                     <p class="stat-label">Orders This Month</p>
-                                    <p class="stat-change positive">↗ +22% from last month</p>
+
                                 </div>
                                 <div class="stat-card revenue">
                                     <div class="stat-icon">💰</div>
                                     <h3 class="stat-value">₹2,85,680</h3>
                                     <p class="stat-label">Revenue This Month</p>
-                                    <p class="stat-change positive">↗ +25% from last month</p>
+
                                 </div>
                             </div>
                         </div>
@@ -1141,45 +817,26 @@
                                     <div class="stat-icon">📋</div>
                                     <h3 class="stat-value">28,567</h3>
                                     <p class="stat-label">Orders This Year</p>
-                                    <p class="stat-change positive">↗ +35% from last year</p>
+
                                 </div>
                                 <div class="stat-card revenue">
                                     <div class="stat-icon">💰</div>
                                     <h3 class="stat-value">₹24,56,890</h3>
                                     <p class="stat-label">Revenue This Year</p>
-                                    <p class="stat-change positive">↗ +42% from last year</p>
+
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Additional Summary Stats -->
-                    <div class="summary-stats">
-                        <h4 class="summary-title">📈 Performance Summary</h4>
-                        <div class="summary-grid">
-                            <div class="summary-item">
-                                <span class="summary-label">🏆 Best Day</span>
-                                <span class="summary-value">Monday (₹15,680)</span>
-                            </div>
-                            <div class="summary-item">
-                                <span class="summary-label">🕐 Peak Hours</span>
-                                <span class="summary-value">12:00 PM - 2:00 PM</span>
-                            </div>
-                            <div class="summary-item">
-                                <span class="summary-label">🍽️ Most Popular Item</span>
-                                <span class="summary-value">Chicken Biryani</span>
-                            </div>
-                            <div class="summary-item">
-                                <span class="summary-label">👥 Total Customers</span>
-                                <span class="summary-value">1,245 unique</span>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
     </div>
+    <script src="<?= ROOT ?>assets/js/functions.js">
 
+    </script>
     <script>
         // Tab functionality
         document.addEventListener('DOMContentLoaded', function() {
@@ -1225,6 +882,10 @@
                     if (targetElement) {
                         targetElement.style.display = 'block';
                     }
+
+
+
+
                 });
             });
 
@@ -1237,6 +898,77 @@
                 });
             }
         });
+
+
+
+
+
+
+
+        const todayStats = document.getElementById('today-stats');
+        const weekStats = document.getElementById('week-stats');
+        const monthStats = document.getElementById('month-stats');
+        const yearStats = document.getElementById('year-stats');
+
+        let where = {
+            canteen_id: canteenId
+        }
+
+        let units = {
+            DAY: TODAY,
+            MONTH: MONTH,
+            YEAR: YEAR
+        }
+        setAnalytics(units, where).then(data => {
+            todayStats.querySelector('.stat-card.orders .stat-value').textContent = data.orders[0].total_orders;
+            todayStats.querySelector('.stat-card.revenue .stat-value').textContent = '₹' + (data.orders[0].total ?? 0);
+        })
+
+        units = {
+
+            WEEK: WEEK
+        }
+
+        setAnalytics(units, where).then(data => {
+            weekStats.querySelector('.stat-card.orders .stat-value').textContent = data.orders[0].total_orders;
+            weekStats.querySelector('.stat-card.revenue .stat-value').textContent = '₹' + (data.orders[0].total ?? 0);
+        })
+
+        units = {
+
+            MONTH: MONTH,
+            YEAR: YEAR
+        }
+
+        setAnalytics(units, where).then(data => {
+            monthStats.querySelector('.stat-card.orders .stat-value').textContent = data.orders[0].total_orders;
+            monthStats.querySelector('.stat-card.revenue .stat-value').textContent = '₹' + (data.orders[0].total ?? 0);
+        })
+
+        units = {
+
+
+            YEAR: YEAR
+        }
+
+        setAnalytics(units, where).then(data => {
+            yearStats.querySelector('.stat-card.orders .stat-value').textContent = data.orders[0].total_orders;
+            yearStats.querySelector('.stat-card.revenue .stat-value').textContent = '₹' + (data.orders[0].total ?? 0);
+        })
+
+
+        let statsGrid = document.querySelector('.stats-grid');
+
+        units = {
+            DAY: TODAY,
+            MONTH: MONTH,
+            YEAR: YEAR
+        };
+
+        setAnalytics(units, where).then(data => {
+            statsGrid.querySelector('.stat-card.orders .stat-value').textContent = data.orders[0].total_orders;
+            statsGrid.querySelector('.stat-card.revenue .stat-value').textContent = '₹' + (data.orders[0].total ?? 0);
+        })
     </script>
 </body>
 

@@ -78,7 +78,7 @@
                                     <p class="canteen-stat-label">Orders Today</p>
                                 </div>
                                 <div class="canteen-stat">
-                                    <p class="canteen-stat-value">45</p>
+                                    <p class="canteen-stat-value"><?= $canteen->total_menu_items ?></p>
                                     <p class="canteen-stat-label">Menu Items</p>
                                 </div>
                             </div>

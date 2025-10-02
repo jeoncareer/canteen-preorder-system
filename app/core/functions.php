@@ -17,7 +17,7 @@ function redirect($path)
 function convertTime($time)
 {
 
-    return date("g:i A", strtotime($time)); // 8:00 PM
+    return date("g:i A", strtotime($time));
 }
 
 function timeAgoOrDate($datetime, $full = false, $threshold = '1 month')
@@ -30,7 +30,7 @@ function timeAgoOrDate($datetime, $full = false, $threshold = '1 month')
     $thresholdDate = (new DateTime)->sub(DateInterval::createFromDateString($threshold));
     if ($ago < $thresholdDate) {
         // Show real date
-        return $ago->format('j F Y'); // e.g. "2 January 2025"
+        return $ago->format('j F Y, g:i A'); // e.g. "2 January 2025"
     }
 
     // Manually calculate weeks
@@ -61,4 +61,18 @@ function isValidPhoneNumber($phone)
 {
     // Check if it's exactly 10 digits and contains only numbers
     return preg_match('/^\d{10}$/', $phone) === 1;
+}
+
+function isValidEmail($email)
+{
+    // Use PHP's built-in filter
+    return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+}
+
+function formatLabel($string)
+{
+    // Replace underscores with spaces
+    $string = str_replace('_', ' ', $string);
+    // Capitalize each word
+    return ucwords($string);
 }

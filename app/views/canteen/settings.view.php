@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/sidebar.css">
     <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/student-general.css">
     <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/canteen-common.css">
+    <script>
+        const ROOT = "<?= ROOT ?>";
+    </script>
     <style>
         /* Settings Page Specific Styles */
         .settings-header {
@@ -263,6 +266,33 @@
             margin: 0;
         }
 
+        /* Error Message Styles */
+        .error-message {
+            color: #dc3545;
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+            display: none;
+            font-weight: 500;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .form-group input.error,
+        .form-group textarea.error,
+        .form-group select.error {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+        }
+
+        .form-group input.error:focus,
+        .form-group textarea.error:focus,
+        .form-group select.error:focus {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2);
+        }
+
         @media (max-width: 768px) {
             .settings-container {
                 grid-template-columns: 1fr;
@@ -339,37 +369,43 @@
             <!-- Settings Forms -->
             <div class="settings-container">
                 <!-- Basic Information -->
-                <div class="settings-card">
+                <div id="canteenSettings" class="settings-card">
                     <h3>🏪 Basic Information</h3>
 
-                    <form method="POST" action="<?= ROOT ?>canteen/settings">
-                        <div class="form-group">
-                            <label for="canteenName">Canteen Name</label>
-                            <input type="text" id="canteenName" name="canteen_name" value="<?= $canteen->canteen_name ?>" required>
-                        </div>
 
-                        <div class="form-group">
-                            <label for="phoneNumber">Phone Number</label>
-                            <input type="tel" id="phoneNumber" name="phone_number" value="<?= $canteen->phn_no ?>" required>
-                        </div>
+                    <div class="form-group">
+                        <label for="canteenName">Canteen Name</label>
+                        <input type="text" id="canteenName" name="canteen_name" value="<?= $canteen->canteen_name ?>" required>
+                        <div class="error-message" id="canteenName-error"></div>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" name="email" value="<?= $canteen->email ?>" required>
-                        </div>
+                    <div class="form-group">
+                        <label for="phoneNumber">Phone Number</label>
+                        <input type="tel" id="phoneNumber" name="phone_number" value="<?= $canteen->phn_no ?>" required>
+                        <div class="error-message" id="phoneNumber-error"></div>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="description">Description</label>
-                            <textarea id="description" name="description" placeholder="Brief description of your canteen..."><?= $canteen->description ?></textarea>
-                        </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" value="<?= $canteen->email ?>" required>
+                        <div class="error-message" id="email-error"></div>
+                    </div>
 
-                        <div class="form-actions">
-                            <button type="button" class="btn-secondary">Cancel</button>
-                            <button type="submit" class="btn-primary">
-                                💾 Save Changes
-                            </button>
-                        </div>
-                    </form>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" name="description" placeholder="Brief description of your canteen..."></textarea>
+                        <div class="error-message" id="description-error"></div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary">Cancel</button>
+                        <button type="submit" class="btn-primary">
+                            💾 Save Changes
+                        </button>
+
+
+                    </div>
+
                 </div>
 
                 <!-- Manager Details -->
@@ -379,32 +415,38 @@
 
                     <div class="form-group">
                         <label for="managerName">Manager Name</label>
-                        <input type="text" id="managerName" name="manager_name" value="<?= $manager->name ?? '' ?>" required>
+                        <input type="text" id="managerName" name="manager_name" value="<?= $manager->name ?? 'jeon' ?>" required>
+                        <div class="error-message" id="managerName-error">testing</div>
                     </div>
 
                     <div class="form-group">
                         <label for="managerEmail">Manager Email</label>
-                        <input type="email" id="managerEmail" name="manager_email" value="<?= $manager->email ?? '' ?>" required>
+                        <input type="email" id="managerEmail" name="manager_email" value="<?= $manager->email ?? 'jeon@gmail.com' ?>" required>
+                        <div class="error-message" id="managerEmail-error"></div>
                     </div>
 
                     <div class="form-group">
                         <label for="managerPhone">Manager Phone</label>
-                        <input type="tel" id="managerPhone" name="manager_phone" value="<?= $manager->phone ?? '' ?>" required>
+                        <input type="tel" id="managerPhone" name="manager_phone" value="<?= $manager->phone ?? '1234567890' ?>" required>
+                        <div class="error-message" id="managerPhone-error"></div>
                     </div>
 
                     <div class="form-group">
                         <label for="experience">Experience (Years)</label>
-                        <input type="number" id="experience" name="experience" value="<?= $manager->experience ?? '' ?>" min="0" max="50" required>
+                        <input type="number" id="experience" name="experience" value="<?= $manager->experience ?? 1 ?>" min="0" max="50" required>
+                        <div class="error-message" id="experience-error"></div>
                     </div>
 
                     <div class="form-group">
                         <label for="managerAddress">Manager Address</label>
-                        <textarea id="managerAddress" name="manager_address" placeholder="Enter manager's address..." required> <?= $manager->name ?? '' ?></textarea>
+                        <textarea id="managerAddress" name="manager_address" placeholder="Enter manager's address..." required> <?= $manager->address ?? 'jeon' ?></textarea>
+                        <div class="error-message" id="managerAddress-error"></div>
                     </div>
 
                     <div class="form-group">
                         <label for="employeeId">Employee ID</label>
-                        <input type="text" id="employeeId" name="employee_id" value="<?= $manager->id ?? '' ?>" required>
+                        <input type="text" id="employeeId" name="employee_id" value="<?= $manager->id ?? 6 ?>" required>
+                        <div class="error-message" id="employeeId-error"></div>
                     </div>
 
                     <div class="form-actions">
@@ -412,6 +454,7 @@
                         <button type="submit" class="btn-primary">
                             👨‍💼 Update Manager Details
                         </button>
+                        <div class="error-message" id="employeeId-error"></div>
                     </div>
 
                 </div>
@@ -459,18 +502,19 @@
                             <div class="form-group">
                                 <label for="openTime">Opening Time</label>
                                 <input type="time" id="openTime" name="open_time" value="<?= $canteen->open ?>" required>
+                                <div class="error-message" id="openTime-error"></div>
                             </div>
                             <div class="form-group">
                                 <label for="closeTime">Closing Time</label>
                                 <input type="time" id="closeTime" name="close_time" value="<?= $canteen->close ?>" required>
+                                <div class="error-message" id="closeTime-error"></div>
                             </div>
                         </div>
-
-
 
                         <div class="form-group">
                             <label for="specialHours">Special Hours/Notes</label>
                             <textarea id="specialHours" name="special_hours" placeholder="Any special timing notes..."><?= $canteen->special_hours ?></textarea>
+                            <div class="error-message" id="specialHours-error"></div>
                         </div>
 
                         <div class="form-actions">
@@ -492,10 +536,12 @@
                         <div class="form-group">
                             <label for="maxOrders">Max Orders Per Hour</label>
                             <input type="number" id="maxOrders" name="max_orders" value="50" min="1">
+                            <div class="error-message" id="maxOrders-error"></div>
                         </div>
                         <div class="form-group">
                             <label for="prepTime">Average Prep Time (minutes)</label>
                             <input type="number" id="prepTime" name="prep_time" value="15" min="1">
+                            <div class="error-message" id="prepTime-error"></div>
                         </div>
                     </div>
 
@@ -503,10 +549,12 @@
                         <div class="form-group">
                             <label for="minOrder">Minimum Order Amount</label>
                             <input type="number" id="minOrder" name="min_order" value="50" min="0" step="0.01">
+                            <div class="error-message" id="minOrder-error"></div>
                         </div>
                         <div class="form-group">
                             <label for="deliveryCharge">Delivery Charge</label>
                             <input type="number" id="deliveryCharge" name="delivery_charge" value="10" min="0" step="0.01">
+                            <div class="error-message" id="deliveryCharge-error"></div>
                         </div>
                     </div>
 
@@ -617,46 +665,132 @@
 
 
         const managerCard = document.getElementById('managerCard');
+        const canteenSettings = document.getElementById('canteenSettings');
 
-        updateButton = managerCard.querySelector('button.btn-primary');
+        let updateButton = managerCard.querySelector('button.btn-primary');
+        //let saveChangesButton = document.getElementById('canteenSettings');
+        let saveChangesButton = canteenSettings.querySelector('button.btn-primary')
+
 
         updateButton.addEventListener('click', function() {
             // Simple validation
-            const name = document.getElementById('managerName').value.trim();
-            const email = document.getElementById('managerEmail').value.trim();
-            const phone = document.getElementById('managerPhone').value.trim();
-            const experience = document.getElementById('experience').value.trim();
-            const address = document.getElementById('managerAddress').value.trim();
-            const empId = document.getElementById('employeeId').value.trim();
+            const name = document.getElementById('managerName');
+            const email = document.getElementById('managerEmail');
+            const phone = document.getElementById('managerPhone');
+            const experience = document.getElementById('experience');
+            const address = document.getElementById('managerAddress');
+            const empId = document.getElementById('employeeId');
+            let inputs = managerCard.querySelectorAll('input, textarea');
 
-            console.log(this);
-            if (!name || !email || !phone || !experience || !address || !empId) {
-                alert('Please fill in all manager details.');
-                return;
+
+            inputs.forEach(input => {
+                if (input.value.trim() === '') {
+                    setErrorMessage(input, 'This field is required');
+                } else {
+                    removeErrorMessage(input);
+                }
+
+            });
+
+
+
+            if (!isValidEmail(email.value.trim()) && email.value.trim()) {
+                removeErrorMessage(email);
+                setErrorMessage(email, 'Please enter email in correct format');
             }
 
-            // Basic email format check
-            const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
-            if (!email.match(emailPattern)) {
-                alert('Please enter a valid email address.');
-                return;
+            if (!isValidPhoneNumber(phone.value.trim()) && phone.value.trim()) {
+                removeErrorMessage(phone);
+                setErrorMessage(phone, 'Please enter phone in correct format');
             }
-
-            // Basic phone format check (simple digits only)
-            if (!isValidPhoneNumber(phone)) {
-                alert('Please enter a valid 10-digit phone number.');
-                return;
-            }
-
-            // Experience should be a positive number
-            if (isNaN(experience) || experience < 0) {
-                alert('Experience must be a valid number of years.');
-                return;
-            }
-
             // If all validations pass, submit the form
-            managerCard.querySelector('form').submit();
+            let url = ROOT + 'CanteenController/changeCanteenDate';
+            fetch(url,{
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    name:name,
+                    email:email,
+                    phone:phone,
+                    experience:experience,
+                    address:address,
+                    
+                })
+            })
+
+
         });
+
+
+
+
+        saveChangesButton.addEventListener('click', e => {
+            let inputs = canteenSettings.querySelectorAll('input, textarea');
+
+            inputs.forEach(input => {
+                if (input.value.trim() === '') {
+                    setErrorMessage(input, 'This field is required');
+                } else {
+                    removeErrorMessage(input);
+                }
+
+            });
+
+            let phoneNumber = document.getElementById('phoneNumber');
+            let email = document.getElementById('email');
+
+            if (!isValidEmail(email.value.trim()) && email.value.trim()) {
+                removeErrorMessage(email);
+                setErrorMessage(email, 'Please enter email in correct format');
+            }
+
+            if (!isValidPhoneNumber(phoneNumber.value.trim()) && phoneNumber.value.trim()) {
+                removeErrorMessage(phoneNumber);
+                setErrorMessage(phoneNumber, 'Please enter phone in correct format');
+            }
+
+
+
+
+
+        })
+
+
+        function clearFormInput(inputs) {
+            inputs.forEach(input => {
+                let errorDiv = input.parentElement.querySelector('.error-message');
+
+                errorDiv.textContent = '';
+                errorDiv.classList.remove('show');
+                input.classList.remove('error');
+            });
+        }
+
+
+        function setErrorMessage(input, message) {
+            let inputId = input.id;
+            let errorDiv = document.getElementById(inputId + '-error');
+            if (!errorDiv) return;
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+            document.getElementById(inputId).classList.add('error');
+            if (!input.classList.contains('error')) {
+                input.classList.add('error');
+            }
+        }
+
+        function removeErrorMessage(input) {
+            let inputId = input.id;
+            let errorDiv = document.getElementById(inputId + '-error');
+            errorDiv.textContent = '';
+            errorDiv.classList.remove('show');
+            document.getElementById(inputId).classList.remove('error');
+            if (input.classList.contains('error')) {
+                input.classList.remove('error');
+            }
+        }
     </script>
 </body>
 

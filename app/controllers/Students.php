@@ -263,19 +263,26 @@ class Students extends Controller
         if (empty($_SESSION['STUDENT'])) {
             redirect('students/login');
         }
-
+        $data = [];
         $col = new College;
+        $conversation = new Conversations;
+        $messages = new Messages;
 
         $student = $_SESSION['STUDENT'];
         $college = $col->where(['id' => $student->college_id]);
-        show($student);
-        show($college);
 
 
+        $conversations = $conversation->where(['student_id' => STUDENT_ID]);
 
+        if ($conversations) {
 
+            foreach ($conversations as $row) {
+                $row->messages = $messages->where(['conversation_id' => $row->id], [], '', '', 'created_at', 'asc');
+            }
+            $data['conversations'] = $conversations;
+        }
+        show($data);
 
-        $data['success'] = "Your report has been submitted successfully. We'll get back to you soon.";
 
 
         $this->view('students/contact_admin', $data);
@@ -323,5 +330,10 @@ class Students extends Controller
                 }
             }
         }
+    }
+
+    public function profile()
+    {
+        $this->view("students/profile");
     }
 }

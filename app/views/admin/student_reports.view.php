@@ -535,6 +535,118 @@
             text-transform: uppercase;
         }
 
+        /* Message Thread Styles */
+        .message-thread {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .message-item {
+            border-radius: 12px;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .student-message {
+            background: #f8fafc;
+            border-left: 4px solid #4a90e2;
+            margin-right: 2rem;
+        }
+
+        .admin-message {
+            background: #f0f9ff;
+            border-left: 4px solid #10b981;
+            margin-left: 2rem;
+            border: 1px solid #e0f2fe;
+        }
+
+        .message-header {
+            margin-bottom: 1rem;
+        }
+
+        .message-from {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .admin-avatar {
+            background: #10b981;
+            color: white;
+        }
+
+        .message-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .message-details strong {
+            font-size: 0.95rem;
+            color: #1f2937;
+        }
+
+        .message-time {
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+
+        .admin-badge {
+            background: #10b981;
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .admin-badge.resolved {
+            background: #059669;
+        }
+
+        .message-content {
+            line-height: 1.6;
+            color: #374151;
+        }
+
+        .message-content p {
+            margin-bottom: 1rem;
+        }
+
+        .message-content ul,
+        .message-content ol {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .message-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .resolution-summary {
+            background: #ecfdf5;
+            border: 1px solid #d1fae5;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .reports-container {
@@ -547,6 +659,20 @@
 
             .reports-stats {
                 grid-template-columns: repeat(2, 1fr);
+            }
+
+            .student-message {
+                margin-right: 0.5rem;
+            }
+
+            .admin-message {
+                margin-left: 0.5rem;
+            }
+
+            .message-avatar {
+                width: 32px;
+                height: 32px;
+                font-size: 12px;
             }
         }
     </style>
@@ -738,41 +864,183 @@
                             </div>
                         </div>
 
+                        <!-- Original Student Message -->
                         <div class="email-body">
-                            <p><strong>Subject:</strong> Food Poisoning Complaint</p>
+                            <div class="message-thread">
+                                <!-- Student Message -->
+                                <div class="message-item student-message">
+                                    <div class="message-header">
+                                        <div class="message-from">
+                                            <div class="message-avatar student-avatar">ET</div>
+                                            <div class="message-details">
+                                                <strong>Emma Thompson</strong>
+                                                <span class="message-time">March 15, 2024 - 2:30 PM</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="message-content">
+                                        <p><strong>Subject:</strong> Food Poisoning Complaint</p>
 
-                            <p>Dear Admin,</p>
+                                        <p>Dear Admin,</p>
 
-                            <p>I am writing to report a serious food safety issue that occurred yesterday at the main cafeteria. I ordered the chicken curry meal around 1:00 PM and consumed it immediately.</p>
+                                        <p>I am writing to report a serious food safety issue that occurred yesterday at the main cafeteria. I ordered the chicken curry meal around 1:00 PM and consumed it immediately.</p>
 
-                            <p>Within 2-3 hours of eating, I started experiencing severe symptoms including:</p>
-                            <ul>
-                                <li>Nausea and vomiting</li>
-                                <li>Stomach cramps</li>
-                                <li>Diarrhea</li>
-                                <li>Fever</li>
-                            </ul>
+                                        <p>Within 2-3 hours of eating, I started experiencing severe symptoms including:</p>
+                                        <ul>
+                                            <li>Nausea and vomiting</li>
+                                            <li>Stomach cramps</li>
+                                            <li>Diarrhea</li>
+                                            <li>Fever</li>
+                                        </ul>
 
-                            <p>I had to visit the college medical center and was diagnosed with food poisoning. The doctor confirmed that it was likely caused by contaminated food.</p>
+                                        <p>I had to visit the college medical center and was diagnosed with food poisoning. The doctor confirmed that it was likely caused by contaminated food.</p>
 
-                            <p>What's more concerning is that I've spoken to at least 4 other students who ate from the same cafeteria yesterday and experienced similar symptoms. This suggests a serious food safety issue that needs immediate attention.</p>
+                                        <p>What's more concerning is that I've spoken to at least 4 other students who ate from the same cafeteria yesterday and experienced similar symptoms. This suggests a serious food safety issue that needs immediate attention.</p>
 
-                            <p>I request you to:</p>
-                            <ol>
-                                <li>Investigate the food preparation and storage practices at the main cafeteria</li>
-                                <li>Check if other students have reported similar issues</li>
-                                <li>Take necessary action to prevent this from happening again</li>
-                                <li>Consider temporary closure of the cafeteria until the issue is resolved</li>
-                            </ol>
+                                        <p>I request you to:</p>
+                                        <ol>
+                                            <li>Investigate the food preparation and storage practices at the main cafeteria</li>
+                                            <li>Check if other students have reported similar issues</li>
+                                            <li>Take necessary action to prevent this from happening again</li>
+                                            <li>Consider temporary closure of the cafeteria until the issue is resolved</li>
+                                        </ol>
 
-                            <p>I have attached my medical report for your reference. Please take this matter seriously as it affects the health and safety of all students.</p>
+                                        <p>I have attached my medical report for your reference. Please take this matter seriously as it affects the health and safety of all students.</p>
 
-                            <p>I look forward to your prompt response and action on this matter.</p>
+                                        <p>I look forward to your prompt response and action on this matter.</p>
 
-                            <p>Best regards,<br>
-                                Emma Thompson<br>
-                                Student ID: CS2021001<br>
-                                Phone: +1 (555) 123-4567</p>
+                                        <p>Best regards,<br>
+                                            Emma Thompson<br>
+                                            Student ID: CS2021001<br>
+                                            Phone: +1 (555) 123-4567</p>
+                                    </div>
+                                </div>
+
+                                <!-- Admin Reply 1 -->
+                                <div class="message-item admin-message">
+                                    <div class="message-header">
+                                        <div class="message-from">
+                                            <div class="message-avatar admin-avatar">AD</div>
+                                            <div class="message-details">
+                                                <strong>College Administration</strong>
+                                                <span class="message-time">March 15, 2024 - 4:15 PM</span>
+                                                <span class="admin-badge">Admin Reply</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="message-content">
+                                        <p>Dear Emma,</p>
+
+                                        <p>Thank you for bringing this serious matter to our immediate attention. We sincerely apologize for the health issues you experienced and take full responsibility for this incident.</p>
+
+                                        <p><strong>Immediate Actions Taken:</strong></p>
+                                        <ul>
+                                            <li>✅ Main cafeteria has been temporarily closed for investigation</li>
+                                            <li>✅ All chicken curry batches from March 14th have been disposed of</li>
+                                            <li>✅ Kitchen staff and food preparation areas are being thoroughly sanitized</li>
+                                            <li>✅ We are contacting all students who may have been affected</li>
+                                        </ul>
+
+                                        <p><strong>Investigation Status:</strong> Our food safety team is conducting a comprehensive review of:</p>
+                                        <ul>
+                                            <li>Food storage temperatures and procedures</li>
+                                            <li>Kitchen hygiene protocols</li>
+                                            <li>Staff training records</li>
+                                            <li>Supplier quality certifications</li>
+                                        </ul>
+
+                                        <p>We will cover any medical expenses related to this incident. Please submit your medical bills to the administration office.</p>
+
+                                        <p>We expect to complete our investigation within 48 hours and will keep you updated on our findings and corrective measures.</p>
+
+                                        <p>Once again, we deeply apologize for this incident and appreciate your patience as we work to resolve this matter.</p>
+
+                                        <p>Best regards,<br>
+                                            Dr. Sarah Johnson<br>
+                                            Dean of Student Affairs<br>
+                                            Phone: +1 (555) 987-6543<br>
+                                            Email: admin@college.edu</p>
+                                    </div>
+                                </div>
+
+                                <!-- Student Follow-up -->
+                                <div class="message-item student-message">
+                                    <div class="message-header">
+                                        <div class="message-from">
+                                            <div class="message-avatar student-avatar">ET</div>
+                                            <div class="message-details">
+                                                <strong>Emma Thompson</strong>
+                                                <span class="message-time">March 16, 2024 - 10:30 AM</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="message-content">
+                                        <p>Dear Dr. Johnson,</p>
+
+                                        <p>Thank you for your prompt response and the immediate actions taken. I appreciate the seriousness with which you've handled this matter.</p>
+
+                                        <p>I'm feeling much better now, and I've submitted my medical bills to the administration office as requested.</p>
+
+                                        <p>I wanted to update you that two more students (David Chen - CS2021045 and Lisa Park - CS2021078) have also reported similar symptoms after eating from the main cafeteria on March 14th.</p>
+
+                                        <p>I look forward to hearing about the investigation results and the measures being implemented to prevent future incidents.</p>
+
+                                        <p>Thank you again for your quick action.</p>
+
+                                        <p>Best regards,<br>
+                                            Emma Thompson</p>
+                                    </div>
+                                </div>
+
+                                <!-- Final Admin Reply -->
+                                <div class="message-item admin-message">
+                                    <div class="message-header">
+                                        <div class="message-from">
+                                            <div class="message-avatar admin-avatar">AD</div>
+                                            <div class="message-details">
+                                                <strong>College Administration</strong>
+                                                <span class="message-time">March 17, 2024 - 2:00 PM</span>
+                                                <span class="admin-badge resolved">Case Resolved</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="message-content">
+                                        <p>Dear Emma,</p>
+
+                                        <p>Thank you for the additional information and for your patience during our investigation.</p>
+
+                                        <p><strong>Investigation Results:</strong></p>
+                                        <p>We identified the root cause as a refrigeration malfunction that occurred on March 13th evening, which compromised the chicken storage temperature. The issue went undetected until your report.</p>
+
+                                        <p><strong>Corrective Measures Implemented:</strong></p>
+                                        <ul>
+                                            <li>✅ All refrigeration units have been serviced and equipped with temperature monitoring alarms</li>
+                                            <li>✅ Enhanced food safety training completed for all kitchen staff</li>
+                                            <li>✅ New food safety protocols implemented with hourly temperature checks</li>
+                                            <li>✅ Third-party food safety audit scheduled monthly</li>
+                                            <li>✅ Student feedback system improved for faster reporting</li>
+                                        </ul>
+
+                                        <p><strong>Medical Expenses:</strong> All medical bills for affected students have been processed and reimbursed.</p>
+
+                                        <p>The main cafeteria has reopened with enhanced safety measures. We've also reached out to David Chen and Lisa Park to ensure they receive proper care.</p>
+
+                                        <p>We truly appreciate your responsible reporting, which helped us prevent a larger health crisis. As a token of our appreciation, we're providing you with a $100 dining credit.</p>
+
+                                        <p>Please don't hesitate to contact us if you have any further concerns.</p>
+
+                                        <p>Best regards,<br>
+                                            Dr. Sarah Johnson<br>
+                                            Dean of Student Affairs</p>
+
+                                        <div class="resolution-summary">
+                                            <strong>Case Status:</strong> ✅ Resolved<br>
+                                            <strong>Resolution Date:</strong> March 17, 2024<br>
+                                            <strong>Follow-up Required:</strong> None
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Reply Section -->
