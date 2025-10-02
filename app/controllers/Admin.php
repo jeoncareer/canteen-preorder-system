@@ -181,8 +181,27 @@ class Admin extends Controller
 
     public function student_reports()
     {
-        $data['college'] = $_SESSION['COLLEGE'];
-        $data['page'] = 'student_reports';
+        $conversation = new Conversations;
+        $messages = new Messages;
+        $student = new Student;
+        $college = $_SESSION['COLLEGE'];
+        $data = json_decode(file_get_contents("php://input"), true);
+        $college_id = $_SESSION['COLLEGE']->id;
+        $data = [];
+
+        $conversations = $conversation->where(['college_id' => $college_id]);
+        if ($conversations) {
+
+            foreach ($conversations as $row) {
+                $row->messages = $messages->where(['conversation_id' => $row->id], [], '', '', 'created_at', 'asc');
+                $row->student = $student->first(['id' => $row->student_id]);
+            }
+            $data['conversations'] = $conversations;
+        }
+
+        $data['college'] = $college;
+
+        show($data);
         $this->view('admin/student_reports', $data);
     }
 

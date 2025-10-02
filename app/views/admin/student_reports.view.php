@@ -676,6 +676,10 @@
             }
         }
     </style>
+
+    <script>
+        let ROOT = "<?= ROOT ?>";
+    </script>
 </head>
 
 <body>
@@ -731,94 +735,31 @@
 
                     <div class="reports-list">
                         <!-- Report Item 1 -->
-                        <div class="report-item unread active" onclick="selectReport(1)">
-                            <div class="report-header">
-                                <div class="student-name">
-                                    <span class="priority-indicator priority-urgent"></span>
-                                    Emma Thompson
-                                </div>
-                                <div class="report-time">2 min ago</div>
-                            </div>
-                            <div class="report-subject">Food Poisoning Complaint</div>
-                            <div class="report-preview">
-                                I experienced severe food poisoning after eating the chicken curry from the main cafeteria yesterday. Several other students also reported similar symptoms...
-                            </div>
-                        </div>
 
-                        <!-- Report Item 2 -->
-                        <div class="report-item unread" onclick="selectReport(2)">
-                            <div class="report-header">
-                                <div class="student-name">
-                                    <span class="priority-indicator priority-high"></span>
-                                    David Kumar
+                        <?php if (isset($conversations)): ?>
+                            <?php foreach ($conversations as $conversation): ?>
+                                <div class="report-item unread active" onclick="selectReport(1)">
+                                    <div class="report-header">
+                                        <div class="student-name">
+                                            <span class="priority-indicator priority-urgent"></span>
+                                            Emma Thompson
+                                        </div>
+                                        <div class="report-time">2 min ago</div>
+                                    </div>
+                                    <div class="report-subject">Food Poisoning Complaint</div>
+                                    <div class="report-preview">
+                                        I experienced severe food poisoning after eating the chicken curry from the main cafeteria yesterday. Several other students also reported similar symptoms...
+                                    </div>
                                 </div>
-                                <div class="report-time">15 min ago</div>
-                            </div>
-                            <div class="report-subject">Order Payment Issue</div>
-                            <div class="report-preview">
-                                My payment was deducted but the order was not placed. Transaction ID: TXN123456789. Please help me resolve this issue...
-                            </div>
-                        </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
 
-                        <!-- Report Item 3 -->
-                        <div class="report-item" onclick="selectReport(3)">
-                            <div class="report-header">
-                                <div class="student-name">
-                                    <span class="priority-indicator priority-medium"></span>
-                                    Lisa Chen
-                                </div>
-                                <div class="report-time">1 hour ago</div>
-                            </div>
-                            <div class="report-subject">Suggestion for Menu</div>
-                            <div class="report-preview">
-                                Could you please add more vegetarian options to the menu? Many students are requesting healthier food choices...
-                            </div>
-                        </div>
 
-                        <!-- Report Item 4 -->
-                        <div class="report-item" onclick="selectReport(4)">
-                            <div class="report-header">
-                                <div class="student-name">
-                                    <span class="priority-indicator priority-high"></span>
-                                    Robert Singh
-                                </div>
-                                <div class="report-time">2 hours ago</div>
-                            </div>
-                            <div class="report-subject">App Technical Issue</div>
-                            <div class="report-preview">
-                                The mobile app keeps crashing when I try to place an order. This has been happening for the past 3 days...
-                            </div>
-                        </div>
 
-                        <!-- Report Item 5 -->
-                        <div class="report-item unread" onclick="selectReport(5)">
-                            <div class="report-header">
-                                <div class="student-name">
-                                    <span class="priority-indicator priority-medium"></span>
-                                    Maria Garcia
-                                </div>
-                                <div class="report-time">3 hours ago</div>
-                            </div>
-                            <div class="report-subject">Canteen Service Feedback</div>
-                            <div class="report-preview">
-                                The staff at the library canteen were very rude today. I would like to report this incident...
-                            </div>
-                        </div>
 
-                        <!-- Report Item 6 -->
-                        <div class="report-item" onclick="selectReport(6)">
-                            <div class="report-header">
-                                <div class="student-name">
-                                    <span class="priority-indicator priority-low"></span>
-                                    Alex Johnson
-                                </div>
-                                <div class="report-time">1 day ago</div>
-                            </div>
-                            <div class="report-subject">Extended Hours Request</div>
-                            <div class="report-preview">
-                                During exam periods, could the canteen stay open later? Many students study late and need food options...
-                            </div>
-                        </div>
+
+
+
                     </div>
                 </div>
 
