@@ -85,4 +85,14 @@ class AdminMessagesController extends Controller
 
         echo json_encode(['message' => "success"]);
     }
+
+    public function getMessageStats($college_id = '')
+    {
+        $conversations = new Conversations;
+
+        $total_conversations = $conversations->count(['college_id' => $college_id]);
+        $open_conversations = $conversations->count(['college_id' => $college_id, 'status' => 'open']);
+        $closed_conversations = $conversations->count(['college_id' => $college_id, 'status' => 'resolved']);
+        echo json_encode(['total_conversations' => $total_conversations, 'open_conversations' => $open_conversations, 'closed_conversations' => $closed_conversations]);
+    }
 }

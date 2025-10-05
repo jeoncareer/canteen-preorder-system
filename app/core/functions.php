@@ -76,3 +76,20 @@ function formatLabel($string)
     // Capitalize each word
     return ucwords($string);
 }
+
+function getInitials($name)
+{
+    // Split the string by spaces, underscores, or hyphens
+    $parts = preg_split('/[\s_-]+/', trim($name));
+
+    // Filter out empty values
+    $parts = array_filter($parts);
+
+    // Take the first character of each part, uppercase it, and join
+    $initials = '';
+    foreach ($parts as $word) {
+        $initials .= strtoupper($word[0]);
+    }
+
+    return $initials;
+}

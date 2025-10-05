@@ -686,6 +686,7 @@
 
     <script>
         let ROOT = "<?= ROOT ?>";
+        let college_id = "<?= $_SESSION['COLLEGE']->id ?>";
     </script>
 </head>
 
@@ -709,14 +710,11 @@
 
             <!-- Statistics -->
             <div class="reports-stats">
-                <div class="stat-card unread">
+                <div class="stat-card open">
                     <div class="stat-number">12</div>
-                    <div class="stat-label">Unread</div>
+                    <div class="stat-label">Open</div>
                 </div>
-                <div class="stat-card urgent">
-                    <div class="stat-number">3</div>
-                    <div class="stat-label">Urgent</div>
-                </div>
+
                 <div class="stat-card resolved">
                     <div class="stat-number">45</div>
                     <div class="stat-label">Resolved</div>
@@ -864,6 +862,7 @@ College Administration</textarea>
     </div>
     <script src="<?= ROOT ?>assets/js/functions.js"></script>
     <script>
+        updateReportStats();
         let currentConversationId = null;
         const emailHeader = document.querySelector('.email-header');
         const contentHeader = document.querySelector('.content-header');
@@ -948,6 +947,8 @@ College Administration</textarea>
                     document.querySelector('.email-meta .meta-item .status').textContent = status;
                 })
 
+            updateReportStats();
+
         })
 
 
@@ -992,6 +993,17 @@ College Administration</textarea>
             emailHeader.querySelector('.email-meta .meta-item .status').textContent = conversation.status;
         }
 
+        function updateReportStats() {
+
+            fetch(ROOT + 'AdminMessagesController/getMessageStats/' + college_id)
+                .then(res => res.json())
+                .then(data => {
+                    document.querySelector('.stat-card.open .stat-number').textContent = data.open_conversations;
+                    document.querySelector('.stat-card.total .stat-number').textContent = data.total_conversations;
+                    document.querySelector('.stat-card.resolved .stat-number').textContent = data.closed_conversations;
+                })
+        }
+
 
 
 
@@ -1023,6 +1035,8 @@ College Administration</textarea>
             // Filter logic would go here
             console.log('Filtering by:', filter);
         }
+
+
 
         // Action buttons
         document.querySelector('.btn-reply').addEventListener('click', function() {

@@ -201,7 +201,7 @@ class Admin extends Controller
 
         $data['college'] = $college;
 
-        show($data);
+
         $this->view('admin/student_reports', $data);
     }
 
@@ -214,13 +214,52 @@ class Admin extends Controller
 
     public function orders()
     {
+        $data = [];
+        $canteen = new Canteen_db;
+        $order = new Orders;
+        $student = new Student;
+        $order_item = new Order_items;
+        $item = new Items;
         $data['college'] = $_SESSION['COLLEGE'];
-        $data['page'] = 'orders';
+        $college_id = $_SESSION['COLLEGE']->id;
+        $canteens = $canteen->where(['college_id' => $college_id]);
+        $canteens_ids = array();
+        $canteens_names = [];
+        foreach ($canteens as $cant) {
+            $canteens_ids[] = $cant->id;
+            $canteens_names[$cant->id] = $cant->canteen_name;
+        }
+
+        $data['canteens'] = $canteens_names;
+
+
+
+        $orders = $order->whereIn('canteen_id', $canteens_ids, [], [], 10, '', 'time', 'desc');
+        if ($orders) {
+
+            foreach ($orders as $ord) {
+                $items = '';
+                $ord->student = $student->first(['id' => $ord->student_id]);
+                $ord->canteen = $canteen->first(['id' => $ord->canteen_id]);
+
+                $order_items = $order_item->where(['order_id' => $ord->id]);
+
+                foreach ($order_items as $ordit) {
+                    $item_row = $item->first(['id' => $ordit->item_id]);
+                    $items .= ucfirst($item_row->name) . ' x' . $ordit->quantity . ',';
+                }
+
+                $ord->items = trim($items, ',');
+            }
+            $data['orders'] = $orders;
+
+            show($orders);
+        }
+
         $this->view('admin/orders', $data);
     }
 
     public function canteenDetails($canteen_id = '')
-
     {
         if (empty($canteen_id)) {
             redirect('admin/canteens');

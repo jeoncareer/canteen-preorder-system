@@ -560,6 +560,9 @@
             }
         }
     </style>
+    <script>
+        let ROOT = '<?= ROOT ?>';
+    </script>
 </head>
 
 <body>
@@ -639,10 +642,9 @@
                         <label>Canteen</label>
                         <select class="filter-select">
                             <option value="">All Canteens</option>
-                            <option value="main">Main Cafeteria</option>
-                            <option value="library">Library Canteen</option>
-                            <option value="hostel">Hostel Canteen</option>
-                            <option value="sports">Sports Complex</option>
+                            <?php foreach ($canteens as $id => $name): ?>
+                                <option value="<?= $id ?>"><?= $name ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="filter-group">
@@ -658,22 +660,10 @@
                     </div>
                     <div class="filter-group">
                         <label>Date Range</label>
-                        <input type="date" class="filter-input" value="2024-03-15">
+                        <input type="date" class="filter-input" value="2025-10-06">
                     </div>
-                    <div class="filter-group">
-                        <label>Amount Range</label>
-                        <select class="filter-select">
-                            <option value="">All Amounts</option>
-                            <option value="0-100">₹0 - ₹100</option>
-                            <option value="100-300">₹100 - ₹300</option>
-                            <option value="300-500">₹300 - ₹500</option>
-                            <option value="500+">₹500+</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>&nbsp;</label>
-                        <button class="filter-btn">Apply Filters</button>
-                    </div>
+
+
                 </div>
             </div>
 
@@ -688,179 +678,52 @@
                             <th>Items</th>
                             <th>Amount</th>
                             <th>Status</th>
-                            <th>Actions</th>
+
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <div class="order-info">
-                                    <div class="order-id">#ORD-2024-001</div>
-                                    <div class="order-time">Today, 2:30 PM</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="student-info">
-                                    <div class="student-avatar">ET</div>
-                                    <div class="student-details">
-                                        <div class="student-name">Emma Thompson</div>
-                                        <div class="student-id">CS2021001</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><span class="canteen-tag canteen-main">Main Cafeteria</span></td>
-                            <td>
-                                <div class="order-items">
-                                    <span class="item-count">3 items:</span><br>
-                                    Chicken Biryani, Coke, Salad
-                                </div>
-                            </td>
-                            <td>
-                                <div class="amount">₹285</div>
-                            </td>
-                            <td><span class="status-badge status-preparing">Preparing</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn-view" onclick="viewOrder(1)">View</button>
-                                    <button class="btn-update" onclick="updateStatus(1)">Update</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="order-info">
-                                    <div class="order-id">#ORD-2024-002</div>
-                                    <div class="order-time">Today, 1:45 PM</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="student-info">
-                                    <div class="student-avatar">DK</div>
-                                    <div class="student-details">
-                                        <div class="student-name">David Kumar</div>
-                                        <div class="student-id">ME2022015</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><span class="canteen-tag canteen-library">Library Canteen</span></td>
-                            <td>
-                                <div class="order-items">
-                                    <span class="item-count">2 items:</span><br>
-                                    Sandwich, Coffee
-                                </div>
-                            </td>
-                            <td>
-                                <div class="amount">₹120</div>
-                            </td>
-                            <td><span class="status-badge status-ready">Ready</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn-view" onclick="viewOrder(2)">View</button>
-                                    <button class="btn-update" onclick="updateStatus(2)">Update</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="order-info">
-                                    <div class="order-id">#ORD-2024-003</div>
-                                    <div class="order-time">Today, 1:20 PM</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="student-info">
-                                    <div class="student-avatar">LC</div>
-                                    <div class="student-details">
-                                        <div class="student-name">Lisa Chen</div>
-                                        <div class="student-id">BA2020087</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><span class="canteen-tag canteen-hostel">Hostel Canteen</span></td>
-                            <td>
-                                <div class="order-items">
-                                    <span class="item-count">4 items:</span><br>
-                                    Pizza, Pasta, Garlic Bread, Juice
-                                </div>
-                            </td>
-                            <td>
-                                <div class="amount">₹450</div>
-                            </td>
-                            <td><span class="status-badge status-completed">Completed</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn-view" onclick="viewOrder(3)">View</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="order-info">
-                                    <div class="order-id">#ORD-2024-004</div>
-                                    <div class="order-time">Today, 12:55 PM</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="student-info">
-                                    <div class="student-avatar">RS</div>
-                                    <div class="student-details">
-                                        <div class="student-name">Robert Singh</div>
-                                        <div class="student-id">EE2021045</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><span class="canteen-tag canteen-sports">Sports Complex</span></td>
-                            <td>
-                                <div class="order-items">
-                                    <span class="item-count">2 items:</span><br>
-                                    Energy Drink, Protein Bar
-                                </div>
-                            </td>
-                            <td>
-                                <div class="amount">₹180</div>
-                            </td>
-                            <td><span class="status-badge status-pending">Pending</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn-view" onclick="viewOrder(4)">View</button>
-                                    <button class="btn-update" onclick="updateStatus(4)">Update</button>
-                                    <button class="btn-cancel" onclick="cancelOrder(4)">Cancel</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="order-info">
-                                    <div class="order-id">#ORD-2024-005</div>
-                                    <div class="order-time">Today, 12:30 PM</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="student-info">
-                                    <div class="student-avatar">MG</div>
-                                    <div class="student-details">
-                                        <div class="student-name">Maria Garcia</div>
-                                        <div class="student-id">CE2023012</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><span class="canteen-tag canteen-main">Main Cafeteria</span></td>
-                            <td>
-                                <div class="order-items">
-                                    <span class="item-count">1 item:</span><br>
-                                    Vegetable Thali
-                                </div>
-                            </td>
-                            <td>
-                                <div class="amount">₹95</div>
-                            </td>
-                            <td><span class="status-badge status-cancelled">Cancelled</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn-view" onclick="viewOrder(5)">View</button>
-                                </div>
-                            </td>
-                        </tr>
+                        <?php if (isset($orders) && !empty($orders)): ?>
+                            <?php foreach ($orders as $order): ?>
+                                <tr>
+                                    <td>
+                                        <div class="order-info">
+                                            <div class="order-id">#<?= $order->id ?></div>
+                                            <div class="order-time"><?= timeAgoOrDate($order->time) ?></div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="student-info">
+                                            <div class="student-avatar"><?= getInitials($order->student->student_name) ?></div>
+                                            <div class="student-details">
+                                                <div class="student-name"><?= ucwords($order->student->student_name) ?></div>
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="canteen-tag canteen-main"><?= ucwords($order->canteen->canteen_name) ?></span></td>
+                                    <td>
+                                        <div class="order-items">
+
+                                            <?= $order->items ?>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="amount">₹<?= $order->total ?></div>
+                                    </td>
+                                    <td><span class="status-badge status-preparing"><?= ucwords($order->status) ?></span></td>
+
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 20px; color: #666;">
+                                    No orders found.
+                                </td>
+                            </tr>
+                        <?php endif; ?>
+
+
+
                     </tbody>
                 </table>
             </div>
@@ -951,7 +814,9 @@
             </div>
         </div>
     </div>
+    <script src="<?= ROOT ?>assets/js/functions.js">
 
+    </script>
     <script>
         function viewOrder(id) {
             document.getElementById('orderModal').style.display = 'block';
@@ -998,10 +863,148 @@
             }
         }
 
-        // Filter functionality
-        document.querySelector('.filter-btn').addEventListener('click', function() {
-            alert('Applying filters...');
-        });
+        // Apply Filters Function
+        function applyFilters() {
+            // Get all filter values
+            const allFilters = {
+                search: document.querySelector('.filter-input[placeholder*="Order ID"]').value.trim(),
+                canteen: document.querySelector('.filter-select').value,
+                status: document.querySelectorAll('.filter-select')[1].value,
+                date: document.querySelector('.filter-input[type="date"]').value,
+
+            };
+
+            // Filter out empty/null values
+            const activeFilters = Object.fromEntries(
+                Object.entries(allFilters).filter(([key, value]) => value && value !== '')
+            );
+
+            // Always include page number (even if it's 1)
+            activeFilters.page = getCurrentPage();
+
+
+
+            // Here you can add your filtering logic
+            // Example: send AJAX request to server with activeFilters
+
+            return activeFilters;
+        }
+
+        // Helper function to get current page number
+        function getCurrentPage() {
+            // Get from active pagination button
+            const activePage = document.querySelector('.page-btn.active:not(.nav-btn)')?.textContent;
+            return activePage || 1;
+        }
+
+        // Auto-filter setup
+        function setupAutoFilters() {
+            function triggerFilters(e) {
+                e.preventDefault();
+                const filters = applyFilters();
+                let url = ROOT + '/OrdersController/orders';
+                fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            filters: filters
+                        })
+                    }) // 👈 Missing closing parenthesis was here
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log("from filter ");
+                        if (data.success) {
+                            // Update the table with new data
+                            // For simplicity, we will just log the data here
+                            console.log(data.orders);
+                            let tbody = document.querySelector('.orders-table tbody');
+                            tbody.innerHTML = ''; // Clear existing rows
+                            data.orders.forEach(order => appendOrders(order));
+                            // You would typically update the DOM to reflect the new orders
+                        } else {
+                            //show error in the html
+                            let tbody = document.querySelector('.orders-table tbody');
+                            tbody.innerHTML = '<tr><td colspan="5">No orders found</td></tr>';
+                        }
+                    })
+            }
+
+            // Debounced version for search input
+            let searchTimeout;
+
+            function debouncedFilter(e) {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => triggerFilters(e), 500);
+            }
+
+            // Event delegation for all filter elements
+            document.addEventListener('change', function(e) {
+                if (e.target.matches('.filter-select, .filter-input[type="date"]')) {
+                    triggerFilters(e);
+                }
+            });
+
+            // Special handling for search input (debounced)
+            document.addEventListener('input', function(e) {
+                if (e.target.matches('.filter-input[placeholder*="Order ID"]')) {
+                    debouncedFilter(e);
+                }
+            });
+
+            // Handle pagination clicks
+            document.addEventListener('click', function(e) {
+                if (e.target.matches('.page-btn:not(.nav-btn), #prevBtn, #nextBtn')) {
+                    // Small delay to let pagination update first
+                    setTimeout(() => triggerFilters(e), 100);
+                }
+            });
+        }
+
+        // Initialize auto-filters
+        setupAutoFilters();
+
+        // Filter button functionality (if button exists)
+        const filterBtn = document.querySelector('.filter-btn');
+        if (filterBtn) {
+            filterBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const filters = applyFilters();
+            });
+        }
+
+        function appendOrders(order) {
+            const tbody = document.querySelector('.orders-table tbody');
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>
+                    <div class="order-info">
+                        <div class="order-id">#${order.id}</div>
+                        <div class="order-time">${timeAgoOrDate(order.time)}</div>
+                    </div>
+                </td>
+                <td>
+                    <div class="student-info">  
+                        <div class="student-avatar">${getInitials(order.student.student_name)}</div>
+                        <div class="student-details">
+                            <div class="student-name">${formatLabel(order.student.student_name)}</div>
+                        </div>
+                    </div>
+                </td>
+                <td><span class="canteen-tag canteen-main">${formatLabel(order.canteen.canteen_name)}</span></td>
+                <td>
+                    <div class="order-items">
+                        ${order.items}
+                    </div>
+                </td>
+                <td>
+                    <div class="amount">₹${order.total}</div>
+                </td>
+                <td><span class="status-badge status-${order.status}">${order.status}</span></td>
+            `;
+            tbody.appendChild(tr);
+        }
     </script>
 </body>
 
@@ -1123,4 +1126,54 @@
         // Initialize pagination state
         updatePaginationState();
     });
+
+
+
+
+    document.querySelector('.filter-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        const filters = applyFilters();
+
+
+
+    });
+
+    function applyFilters() {
+        // Get all filter values
+        const allFilters = {
+            search: document.querySelector('.filter-input[placeholder*="Order ID"]').value.trim(),
+            canteen: document.querySelector('.filter-select').value,
+            status: document.querySelectorAll('.filter-select')[1].value,
+            date: document.querySelector('.filter-input[type="date"]').value,
+            //amountRange: document.querySelectorAll('.filter-select')[2].value
+        };
+
+        // Filter out empty/null values
+        const activeFilters = Object.fromEntries(
+            Object.entries(allFilters).filter(([key, value]) => value && value !== '')
+        );
+
+        // Always include page number (even if it's 1)
+        activeFilters.page = getCurrentPage();
+
+        console.log('Active Filters:', activeFilters);
+
+        return activeFilters;
+    }
+
+
+    function getCurrentPage() {
+        // Option 1: From URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const pageFromUrl = urlParams.get('page');
+
+        // Option 2: From active pagination button
+        const activePage = document.querySelector('.pagination .active')?.textContent;
+
+        // Option 3: From a hidden input or data attribute
+        const pageFromInput = document.querySelector('input[name="current_page"]')?.value;
+
+        // Return page number (default to 1 if not found)
+        return pageFromUrl || activePage || pageFromInput || 1;
+    }
 </script>

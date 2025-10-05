@@ -82,6 +82,87 @@ trait Model
         return $this->query($query, $data);
     }
 
+
+    public function whereIn($column, $values = [], $data = [], $data_not = [], $limit = '', $custom = '', $order_by = '', $order_type = '')
+    {
+        // Remove unwanted data
+        if (!empty($this->allowedColumns)) {
+            foreach ($data as $key => $value) {
+                if (!in_array($key, $this->allowedColumns)) {
+                    unset($data[$key]);
+                }
+            }
+            foreach ($data_not as $key => $value) {
+                if (!in_array($key, $this->allowedColumns)) {
+                    unset($data_not[$key]);
+                }
+            }
+
+            // Check if the IN column is allowed
+            if (!in_array($column, $this->allowedColumns)) {
+                return false;
+            }
+        }
+
+        if (!empty($order_by)) {
+            $this->order_column = $order_by;
+        }
+        if (!empty($order_type)) {
+            $this->order_type = $order_type;
+        }
+
+        $keys = array_keys($data);
+        $keys_not = array_keys($data_not);
+
+        $query = "select * from $this->table where ";
+
+        // Add WHERE IN clause
+        if (!empty($values)) {
+            $placeholders = [];
+            $bindData = [];
+
+            foreach ($values as $index => $value) {
+                $placeholder = $column . '_in_' . $index;
+                $placeholders[] = ':' . $placeholder;
+                $bindData[$placeholder] = $value;
+            }
+
+            $query .= $column . " IN (" . implode(', ', $placeholders) . ")";
+
+            // Add AND if there are other conditions
+            if (!empty($keys) || !empty($keys_not)) {
+                $query .= " AND ";
+            }
+        }
+
+        // Add regular WHERE conditions
+        foreach ($keys as $key) {
+            $query .= $key . " = :" . $key . " AND ";
+        }
+
+        // Add NOT conditions
+        foreach ($keys_not as $key) {
+            $query .= $key . " != :" . $key . " AND ";
+        }
+
+        $query = trim($query, " AND ");
+        $query .= " order by $this->order_column $this->order_type ";
+
+        if (!empty($limit)) {
+            $this->limit = $limit;
+            $query .= " limit $this->limit offset $this->offset ";
+        }
+
+        if (!empty($custom)) {
+            $query .= ' ' . $custom;
+        }
+
+        // Merge all data for binding
+        $allData = array_merge($bindData ?? [], $data, $data_not);
+
+        return $this->query($query, $allData);
+    }
+
     public function first($data, $data_not = [])
     {
         //remove unwanted data
