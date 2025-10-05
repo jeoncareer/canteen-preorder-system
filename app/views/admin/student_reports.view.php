@@ -202,6 +202,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+
         }
 
         .content-title {
@@ -261,6 +262,7 @@
             margin-bottom: 20px;
             padding-bottom: 15px;
             border-bottom: 1px solid #e1e5e9;
+
         }
 
         .email-from {
@@ -397,6 +399,7 @@
             margin-top: 30px;
             padding-top: 20px;
             border-top: 1px solid #e1e5e9;
+
         }
 
         .reply-form {
@@ -647,6 +650,10 @@
             line-height: 1.8;
         }
 
+        [hidden] {
+            display: none !important;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .reports-container {
@@ -738,17 +745,17 @@
 
                         <?php if (isset($conversations)): ?>
                             <?php foreach ($conversations as $conversation): ?>
-                                <div class="report-item unread active" onclick="selectReport(1)">
+                                <div class="report-item unread active" onclick="selectReport(<?= $conversation->id ?>)">
                                     <div class="report-header">
                                         <div class="student-name">
                                             <span class="priority-indicator priority-urgent"></span>
-                                            Emma Thompson
+                                            <?= $conversation->student->student_name ?>
                                         </div>
-                                        <div class="report-time">2 min ago</div>
+                                        <div class="report-time"><?= timeAgoOrDate($conversation->created_at, false, '1 day') ?></div>
                                     </div>
-                                    <div class="report-subject">Food Poisoning Complaint</div>
+                                    <div class="report-subject"><?= ucwords($conversation->subject) ?></div>
                                     <div class="report-preview">
-                                        I experienced severe food poisoning after eating the chicken curry from the main cafeteria yesterday. Several other students also reported similar symptoms...
+                                        <?= $conversation->messages[0]->message_text  ?>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
@@ -788,19 +795,16 @@
                             <div class="email-meta">
                                 <div class="meta-item">
                                     <span class="meta-label">Category:</span>
-                                    <span class="category-badge category-food">Food Quality</span>
+                                    <span class="category-badge">Food Quality</span>
                                 </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Priority:</span>
-                                    <span class="priority-badge urgent">Urgent</span>
-                                </div>
+
                                 <div class="meta-item">
                                     <span class="meta-label">Date:</span>
-                                    <span class="meta-value">March 15, 2024 - 2:30 PM</span>
+                                    <span class="meta-value date">March 15, 2024 - 2:30 PM</span>
                                 </div>
                                 <div class="meta-item">
                                     <span class="meta-label">Status:</span>
-                                    <span class="meta-value">Unread</span>
+                                    <span class="meta-value status">Unread</span>
                                 </div>
                             </div>
                         </div>
@@ -808,179 +812,7 @@
                         <!-- Original Student Message -->
                         <div class="email-body">
                             <div class="message-thread">
-                                <!-- Student Message -->
-                                <div class="message-item student-message">
-                                    <div class="message-header">
-                                        <div class="message-from">
-                                            <div class="message-avatar student-avatar">ET</div>
-                                            <div class="message-details">
-                                                <strong>Emma Thompson</strong>
-                                                <span class="message-time">March 15, 2024 - 2:30 PM</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="message-content">
-                                        <p><strong>Subject:</strong> Food Poisoning Complaint</p>
 
-                                        <p>Dear Admin,</p>
-
-                                        <p>I am writing to report a serious food safety issue that occurred yesterday at the main cafeteria. I ordered the chicken curry meal around 1:00 PM and consumed it immediately.</p>
-
-                                        <p>Within 2-3 hours of eating, I started experiencing severe symptoms including:</p>
-                                        <ul>
-                                            <li>Nausea and vomiting</li>
-                                            <li>Stomach cramps</li>
-                                            <li>Diarrhea</li>
-                                            <li>Fever</li>
-                                        </ul>
-
-                                        <p>I had to visit the college medical center and was diagnosed with food poisoning. The doctor confirmed that it was likely caused by contaminated food.</p>
-
-                                        <p>What's more concerning is that I've spoken to at least 4 other students who ate from the same cafeteria yesterday and experienced similar symptoms. This suggests a serious food safety issue that needs immediate attention.</p>
-
-                                        <p>I request you to:</p>
-                                        <ol>
-                                            <li>Investigate the food preparation and storage practices at the main cafeteria</li>
-                                            <li>Check if other students have reported similar issues</li>
-                                            <li>Take necessary action to prevent this from happening again</li>
-                                            <li>Consider temporary closure of the cafeteria until the issue is resolved</li>
-                                        </ol>
-
-                                        <p>I have attached my medical report for your reference. Please take this matter seriously as it affects the health and safety of all students.</p>
-
-                                        <p>I look forward to your prompt response and action on this matter.</p>
-
-                                        <p>Best regards,<br>
-                                            Emma Thompson<br>
-                                            Student ID: CS2021001<br>
-                                            Phone: +1 (555) 123-4567</p>
-                                    </div>
-                                </div>
-
-                                <!-- Admin Reply 1 -->
-                                <div class="message-item admin-message">
-                                    <div class="message-header">
-                                        <div class="message-from">
-                                            <div class="message-avatar admin-avatar">AD</div>
-                                            <div class="message-details">
-                                                <strong>College Administration</strong>
-                                                <span class="message-time">March 15, 2024 - 4:15 PM</span>
-                                                <span class="admin-badge">Admin Reply</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="message-content">
-                                        <p>Dear Emma,</p>
-
-                                        <p>Thank you for bringing this serious matter to our immediate attention. We sincerely apologize for the health issues you experienced and take full responsibility for this incident.</p>
-
-                                        <p><strong>Immediate Actions Taken:</strong></p>
-                                        <ul>
-                                            <li>✅ Main cafeteria has been temporarily closed for investigation</li>
-                                            <li>✅ All chicken curry batches from March 14th have been disposed of</li>
-                                            <li>✅ Kitchen staff and food preparation areas are being thoroughly sanitized</li>
-                                            <li>✅ We are contacting all students who may have been affected</li>
-                                        </ul>
-
-                                        <p><strong>Investigation Status:</strong> Our food safety team is conducting a comprehensive review of:</p>
-                                        <ul>
-                                            <li>Food storage temperatures and procedures</li>
-                                            <li>Kitchen hygiene protocols</li>
-                                            <li>Staff training records</li>
-                                            <li>Supplier quality certifications</li>
-                                        </ul>
-
-                                        <p>We will cover any medical expenses related to this incident. Please submit your medical bills to the administration office.</p>
-
-                                        <p>We expect to complete our investigation within 48 hours and will keep you updated on our findings and corrective measures.</p>
-
-                                        <p>Once again, we deeply apologize for this incident and appreciate your patience as we work to resolve this matter.</p>
-
-                                        <p>Best regards,<br>
-                                            Dr. Sarah Johnson<br>
-                                            Dean of Student Affairs<br>
-                                            Phone: +1 (555) 987-6543<br>
-                                            Email: admin@college.edu</p>
-                                    </div>
-                                </div>
-
-                                <!-- Student Follow-up -->
-                                <div class="message-item student-message">
-                                    <div class="message-header">
-                                        <div class="message-from">
-                                            <div class="message-avatar student-avatar">ET</div>
-                                            <div class="message-details">
-                                                <strong>Emma Thompson</strong>
-                                                <span class="message-time">March 16, 2024 - 10:30 AM</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="message-content">
-                                        <p>Dear Dr. Johnson,</p>
-
-                                        <p>Thank you for your prompt response and the immediate actions taken. I appreciate the seriousness with which you've handled this matter.</p>
-
-                                        <p>I'm feeling much better now, and I've submitted my medical bills to the administration office as requested.</p>
-
-                                        <p>I wanted to update you that two more students (David Chen - CS2021045 and Lisa Park - CS2021078) have also reported similar symptoms after eating from the main cafeteria on March 14th.</p>
-
-                                        <p>I look forward to hearing about the investigation results and the measures being implemented to prevent future incidents.</p>
-
-                                        <p>Thank you again for your quick action.</p>
-
-                                        <p>Best regards,<br>
-                                            Emma Thompson</p>
-                                    </div>
-                                </div>
-
-                                <!-- Final Admin Reply -->
-                                <div class="message-item admin-message">
-                                    <div class="message-header">
-                                        <div class="message-from">
-                                            <div class="message-avatar admin-avatar">AD</div>
-                                            <div class="message-details">
-                                                <strong>College Administration</strong>
-                                                <span class="message-time">March 17, 2024 - 2:00 PM</span>
-                                                <span class="admin-badge resolved">Case Resolved</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="message-content">
-                                        <p>Dear Emma,</p>
-
-                                        <p>Thank you for the additional information and for your patience during our investigation.</p>
-
-                                        <p><strong>Investigation Results:</strong></p>
-                                        <p>We identified the root cause as a refrigeration malfunction that occurred on March 13th evening, which compromised the chicken storage temperature. The issue went undetected until your report.</p>
-
-                                        <p><strong>Corrective Measures Implemented:</strong></p>
-                                        <ul>
-                                            <li>✅ All refrigeration units have been serviced and equipped with temperature monitoring alarms</li>
-                                            <li>✅ Enhanced food safety training completed for all kitchen staff</li>
-                                            <li>✅ New food safety protocols implemented with hourly temperature checks</li>
-                                            <li>✅ Third-party food safety audit scheduled monthly</li>
-                                            <li>✅ Student feedback system improved for faster reporting</li>
-                                        </ul>
-
-                                        <p><strong>Medical Expenses:</strong> All medical bills for affected students have been processed and reimbursed.</p>
-
-                                        <p>The main cafeteria has reopened with enhanced safety measures. We've also reached out to David Chen and Lisa Park to ensure they receive proper care.</p>
-
-                                        <p>We truly appreciate your responsible reporting, which helped us prevent a larger health crisis. As a token of our appreciation, we're providing you with a $100 dining credit.</p>
-
-                                        <p>Please don't hesitate to contact us if you have any further concerns.</p>
-
-                                        <p>Best regards,<br>
-                                            Dr. Sarah Johnson<br>
-                                            Dean of Student Affairs</p>
-
-                                        <div class="resolution-summary">
-                                            <strong>Case Status:</strong> ✅ Resolved<br>
-                                            <strong>Resolution Date:</strong> March 17, 2024<br>
-                                            <strong>Follow-up Required:</strong> None
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
 
@@ -991,17 +823,17 @@
 
                                 <div class="form-group">
                                     <label for="replyStatus">Update Status</label>
-                                    <select id="replyStatus">
-                                        <option value="investigating">Under Investigation</option>
-                                        <option value="in_progress">In Progress</option>
+                                    <select name="status" id="replyStatus">
+                                        <option value="open">Open</option>
+
                                         <option value="resolved">Resolved</option>
-                                        <option value="closed">Closed</option>
+
                                     </select>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="replyMessage">Response Message</label>
-                                    <textarea id="replyMessage" placeholder="Type your response to the student...">Dear Emma,
+                                    <textarea name="message" id="replyMessage" placeholder="Type your response to the student...">Dear Emma,
 
 Thank you for bringing this serious matter to our attention. We take food safety very seriously and are immediately investigating this incident.
 
@@ -1021,7 +853,7 @@ College Administration</textarea>
 
                                 <div class="reply-actions">
                                     <button class="btn-draft">💾 Save Draft</button>
-                                    <button class="btn-send">📧 Send Reply</button>
+                                    <button id="adminMessageSend" class="btn-send">📧 Send Reply</button>
                                 </div>
                             </div>
                         </div>
@@ -1030,13 +862,35 @@ College Administration</textarea>
             </div>
         </div>
     </div>
-
+    <script src="<?= ROOT ?>assets/js/functions.js"></script>
     <script>
+        let currentConversationId = null;
+        const emailHeader = document.querySelector('.email-header');
+        const contentHeader = document.querySelector('.content-header');
+        const replySection = document.querySelector('.reply-section');
+
+        emailHeader.hidden = true;
+        contentHeader.hidden = true;
+        replySection.hidden = true;
+
         function selectReport(id) {
             // Remove active class from all items
             document.querySelectorAll('.report-item').forEach(item => {
                 item.classList.remove('active');
             });
+
+            if (emailHeader.hidden) {
+                emailHeader.hidden = false;
+            }
+
+            // if (contentHeader.hidden) {
+            //     contentHeader.hidden = false;
+            // }
+
+            if (replySection.hidden) {
+                replySection.hidden = false;
+            }
+
 
             // Add active class to selected item
             event.currentTarget.classList.add('active');
@@ -1046,7 +900,101 @@ College Administration</textarea>
 
             // Update content based on selected report
             updateReportContent(id);
+            const messageThread = document.querySelector('.message-thread');
+            let url = ROOT + 'AdminMessagesController/conversationFetch/' + id;
+
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+
+                    let conversation = data.conversation;
+                    currentConversationId = conversation.id;
+                    console.log(currentConversationId);
+                    let messages = conversation.messages;
+
+                    messageThread.innerHTML = '';
+                    console.log(conversation);
+                    messages.forEach(message => {
+
+                        createMessageItem(conversation, message, messageThread);
+                        setEmailHeader(conversation);
+
+                    })
+
+
+
+                })
         }
+
+
+        const replyStatus = document.querySelector('#replyStatus');
+
+        replyStatus.addEventListener('change', e => {
+            let status = replyStatus.value;
+
+            let url = ROOT + 'AdminMessagesController/updateStatus/' + currentConversationId;
+            fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        status: status
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+
+                    document.querySelector('.email-meta .meta-item .status').textContent = status;
+                })
+
+        })
+
+
+
+
+        function createMessageItem(conversation, message, messageThread) {
+            let messageItem = document.createElement('div');
+            messageItem.classList.add('message-item');
+            messageItem.classList.add(message.sender_type + '-message');
+            messageItem.innerHTML = `
+                                          <div class="message-header">
+                                        <div class="message-from">
+                                            <div class="message-avatar student-avatar">ET</div>
+                                            <div class="message-details">
+                                                <strong>${conversation.student.student_name}</strong>
+                                                <span class="message-time">${timeAgoOrDate(message.created_at,false,'1 minutes')}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="message-content">
+                                        <p><strong>Subject:</strong> ${formatLabel(conversation.subject)}</p>
+
+                    ${message.message_text}
+                                    </div>
+
+                        
+                        `;
+
+            messageThread.prepend(messageItem);
+        }
+
+
+
+
+        function setEmailHeader(conversation) {
+            const emailHeader = document.querySelector('.email-header');
+            emailHeader.querySelector('.student-avatar').textContent = getInitials(conversation.student.student_name);
+            emailHeader.querySelector('.student-details h4').textContent = formatLabel(conversation.student.student_name);
+            emailHeader.querySelector('.student-details p').textContent = conversation.student.email;
+            emailHeader.querySelector('.email-meta .meta-item .category-badge').textContent = formatLabel(conversation.subject);
+            emailHeader.querySelector('.email-meta .meta-item .date').textContent = timeAgoOrDate(conversation.created_at, false, '1 day');
+            emailHeader.querySelector('.email-meta .meta-item .status').textContent = conversation.status;
+        }
+
+
+
+
 
         function updateReportContent(id) {
             // This would normally fetch content from server
@@ -1106,9 +1054,20 @@ College Administration</textarea>
             const status = document.getElementById('replyStatus').value;
 
             if (message.trim()) {
-                alert('Reply sent successfully!');
-                // Clear form
-                document.getElementById('replyMessage').value = '';
+                let url = ROOT + "AdminMessagesController/reply/" + currentConversationId;
+                fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            reply_message: message,
+                            status: status
+                        })
+                    }).then(res => res.json())
+                    .then(data => {
+                        location.reload();
+                    })
             } else {
                 alert('Please enter a response message.');
             }

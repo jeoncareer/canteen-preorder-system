@@ -39,23 +39,7 @@ class MessagesController extends Controller
     }
 
 
-    public function reply($conversation_id)
-    {
-        $messages = new Messages;
 
-
-        $reply_message = htmlspecialchars($_GET['reply_message']);
-        $student_id = $_SESSION['STUDENT']->id;
-
-        $messages->insert([
-            'conversation_id' => $conversation_id,
-            'sender_type' => 'student',
-            'sender_id' => $student_id,
-            'receiver_type' => 'admin',
-            'message_text' => $reply_message,
-        ]);
-        redirect('students/contact');
-    }
 
 
     public function deleteMessage($message_id)
