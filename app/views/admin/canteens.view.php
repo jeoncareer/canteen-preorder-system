@@ -66,15 +66,15 @@
                             <div class="canteen-status status-active">Active</div>
                             <div class="canteen-header">
                                 <h3 class="canteen-name">
-                                    🏢 Main Campus Canteen
+                                    <?= htmlspecialchars($canteen->canteen_name) ?>
                                 </h3>
                                 <p class="canteen-location">
-                                    📍 Main Campus Building, Ground Floor
+                                    <?= convertTime($canteen->open) ?> - <?= convertTime($canteen->close) ?>
                                 </p>
                             </div>
                             <div class="canteen-stats-grid">
                                 <div class="canteen-stat">
-                                    <p class="canteen-stat-value">156</p>
+                                    <p class="canteen-stat-value"><?= $canteen->total_orders ?></p>
                                     <p class="canteen-stat-label">Orders Today</p>
                                 </div>
                                 <div class="canteen-stat">
@@ -83,11 +83,14 @@
                                 </div>
                             </div>
                             <div class="canteen-actions">
-                                <div class="canteen-revenue">₹12,450 Today</div>
+                                <div class="canteen-revenue">₹<?= $canteen->total_revenue ?> Today</div>
                                 <div class="action-buttons">
                                     <a href="<?= ROOT ?>admin/canteenDetails/<?= $canteen->id ?>" class="action-btn view-btn">👁️ View</a>
-
-                                    <button class="action-btn delete-btn">🗑️ Block</button>
+                                    <?php if ($canteen->status === 'inactive'): ?>
+                                        <button onclick="blockCanteen(<?= $canteen->id ?>,this)" class="action-btn activate-btn">Unblock</button>
+                                    <?php else: ?>
+                                        <button onclick="blockCanteen(<?= $canteen->id ?>,this)" class="action-btn delete-btn">Block</button>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -154,6 +157,32 @@
                     let canteenTotalActiveStat = document.getElementById('total-canteens-active-stat');
                     canteenTotalActiveStat.innerText = data.count;
                 })
+        }
+
+
+        function blockCanteen(id, btn) {
+            let url = ROOT + 'CanteenController/blockCanteen/' + id;
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+
+                    console.log(data);
+
+                    if (data.action == 'unblocked') {
+                        btn.innerText = 'Block';
+                        btn.classList.remove('activate-btn');
+                        btn.classList.add('delete-btn');
+
+
+                    } else {
+                        btn.innerText = 'Unblock';
+                        btn.classList.remove('delete-btn');
+                        btn.classList.add('activate-btn');
+
+                    }
+
+                })
+
         }
     </script>
 </body>

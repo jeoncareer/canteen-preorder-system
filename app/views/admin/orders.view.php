@@ -899,8 +899,14 @@
 
         // Auto-filter setup
         function setupAutoFilters() {
-            function triggerFilters(e) {
+            function triggerFilters(e, isPagination = false) {
                 e.preventDefault();
+
+                // If it's not a pagination event, reset page to 1
+                if (!isPagination) {
+                    resetToPageOne();
+                }
+
                 const filters = applyFilters();
                 let url = ROOT + '/OrdersController/orders';
                 fetch(url, {
@@ -923,6 +929,7 @@
                             tbody.innerHTML = ''; // Clear existing rows
                             data.orders.forEach(order => appendOrders(order));
                             // You would typically update the DOM to reflect the new orders
+                            updatePaginationNumbers(data.totalPageNumbers);
                         } else {
                             //show error in the html
                             let tbody = document.querySelector('.orders-table tbody');
@@ -931,33 +938,47 @@
                     })
             }
 
+            // Function to reset pagination to page 1
+            function resetToPageOne() {
+                // Remove active class from all page buttons
+                document.querySelectorAll('.page-btn:not(.nav-btn)').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+
+                // Set first page as active
+                const firstPageBtn = document.querySelector('.page-btn:not(.nav-btn)');
+                if (firstPageBtn) {
+                    firstPageBtn.classList.add('active');
+                }
+            }
+
             // Debounced version for search input
             let searchTimeout;
 
             function debouncedFilter(e) {
                 clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => triggerFilters(e), 500);
+                searchTimeout = setTimeout(() => triggerFilters(e, false), 500); // false = not pagination
             }
 
-            // Event delegation for all filter elements
+            // Event delegation for all filter elements (NOT pagination)
             document.addEventListener('change', function(e) {
                 if (e.target.matches('.filter-select, .filter-input[type="date"]')) {
-                    triggerFilters(e);
+                    triggerFilters(e, false); // false = not pagination
                 }
             });
 
             // Special handling for search input (debounced)
             document.addEventListener('input', function(e) {
                 if (e.target.matches('.filter-input[placeholder*="Order ID"]')) {
-                    debouncedFilter(e);
+                    debouncedFilter(e); // This calls triggerFilters with false
                 }
             });
 
-            // Handle pagination clicks
+            // Handle pagination clicks (DON'T reset page)
             document.addEventListener('click', function(e) {
                 if (e.target.matches('.page-btn:not(.nav-btn), #prevBtn, #nextBtn')) {
                     // Small delay to let pagination update first
-                    setTimeout(() => triggerFilters(e), 100);
+                    setTimeout(() => triggerFilters(e, true), 100); // true = is pagination
                 }
             });
         }
@@ -1004,6 +1025,65 @@
                 <td><span class="status-badge status-${order.status}">${order.status}</span></td>
             `;
             tbody.appendChild(tr);
+        }
+
+
+
+        function updatePaginationNumbers(totalPages) {
+            // Get the page numbers container
+            const pageNumbersContainer = document.querySelector('.page-numbers');
+
+            if (!pageNumbersContainer) {
+                console.error('Page numbers container not found');
+                return;
+            }
+
+            // Clear existing page buttons (keep only non-page buttons like prev/next)
+            pageNumbersContainer.innerHTML = '';
+
+            // Create new page buttons based on totalPages parameter
+            for (let i = 1; i <= totalPages; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = 'page-btn';
+                pageBtn.textContent = i;
+
+                // Set first page as active by default
+                if (i === 1) {
+                    pageBtn.classList.add('active');
+                }
+
+                // Add click event listener for each button
+                pageBtn.addEventListener('click', function() {
+                    // Remove active class from all page buttons
+                    document.querySelectorAll('.page-btn:not(.nav-btn)').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+
+                    // Add active class to clicked button
+                    this.classList.add('active');
+
+                    // Trigger filters with pagination flag
+                    const event = new Event('click');
+                    setTimeout(() => triggerFilters(event, true), 100);
+
+                    // Scroll clicked button into view
+                    this.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'nearest',
+                        inline: 'center'
+                    });
+                });
+
+                // Append to container
+                pageNumbersContainer.appendChild(pageBtn);
+            }
+
+            // Update global pagination variables if they exist
+            if (typeof totalOrders !== 'undefined') {
+                window.totalPages = totalPages;
+            }
+
+            console.log(`Pagination updated: ${totalPages} pages created`);
         }
     </script>
 </body>

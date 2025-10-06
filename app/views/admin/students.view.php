@@ -823,7 +823,7 @@
 
                 // Fetch data from API
 
-                const url = ROOT + `/OrdersController/students?offset=${offset}&search=${encodeURIComponent(search)}&status=${status}&sort=${sort}`;
+                const url = ROOT + `/StudentController/students?offset=${offset}&search=${encodeURIComponent(search)}&status=${status}&sort=${sort}`;
                 fetch(url)
                     .then(res => res.json())
                     .then(data => {
@@ -886,7 +886,7 @@
                 <td>${student.reg_no}</td>
                 <td><span class="department-badge dept-cs">Computer Science</span></td>
                  <td>3rd Year</td>
-                <td>${student.status}</td>
+                <td><span class="status-badge status-${student.status}">${student.status}</span></td>
                 <td>${student.total_orders}</td>
                 <td>Jan 15, 2021</td>
                 <td>

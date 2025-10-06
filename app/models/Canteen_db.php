@@ -10,7 +10,8 @@ class Canteen_db
         "college_id",
         "canteen_name",
         "email",
-        "password"
+        "password",
+        'status'
     ];
 
 
@@ -45,7 +46,6 @@ class Canteen_db
             return true;
         }
         return false;
-
     }
 
     public function login_validate($data)
@@ -81,6 +81,5 @@ class Canteen_db
             return true;
         }
         return false;
-
     }
 }

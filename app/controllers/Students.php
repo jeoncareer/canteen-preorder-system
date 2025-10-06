@@ -7,11 +7,21 @@ class Students extends Controller
     {
 
         $cart = new Cart;
+        $student = new Student;
         $student_id = $_SESSION['STUDENT']->id;
 
         if (empty($_SESSION['STUDENT'])) {
             redirect('students/login');
         }
+
+        // if ($_SESSION['STUDENT']->status == 'suspended') {
+        //     $this->view('students/blocked');
+        //     return;
+        // }
+        // if ($_SESSION['STUDENT']->status == 'pending') {
+        //     $this->view('students/pending');
+        //     return;
+        // }
 
         $college_id = $_SESSION['STUDENT']->college_id;
 

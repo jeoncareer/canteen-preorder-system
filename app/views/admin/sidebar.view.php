@@ -47,14 +47,7 @@
             </a>
         </li>
 
-        <li class="nav-item">
-            <a href="<?= ROOT ?>admin/courses" class="nav-link <?php if ($page === 'courses') {
-                                                                    echo 'active';
-                                                                } ?>">
-                <span class="nav-icon">📚</span>
-                <span>Courses</span>
-            </a>
-        </li>
+
 
 
 

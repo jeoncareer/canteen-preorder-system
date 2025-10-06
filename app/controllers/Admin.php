@@ -2,6 +2,7 @@
 
 class Admin extends Controller
 {
+    use Database;
 
     public function index()
     {
@@ -127,6 +128,7 @@ class Admin extends Controller
     {
         $canteen = new Canteen_db;
         $items = new Items;
+        $order = new Orders;
 
         $data = [];
         $college = $_SESSION['COLLEGE'];
@@ -134,6 +136,13 @@ class Admin extends Controller
         $canteens_count = count($canteens);
         foreach ($canteens as $row) {
             $row->total_menu_items = $items->count(['canteen_id' => $row->id]);
+            $sql = "select count(*) as total_orders from orders where canteen_id = {$row->id} AND DATE_FORMAT(time,'%Y-%m-%d') = CURDATE()";
+            $result = $order->query($sql);
+            $row->total_orders = $result[0]->total_orders ?? 0;
+
+            $sql = "select sum(total) as total_revenue from orders where canteen_id = {$row->id} AND DATE_FORMAT(time,'%Y-%m-%d') = CURDATE()";
+            $result = $order->query($sql);
+            $row->total_revenue = $result[0]->total_revenue ?? 0;
         }
         $data['college'] = $college;
         $data['canteens'] = $canteens;
