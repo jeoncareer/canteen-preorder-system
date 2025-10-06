@@ -644,10 +644,10 @@
                             <span class="info-label">🏢 Canteen Name</span>
                             <span class="info-value"><?= $canteen->canteen_name ?></span>
                         </div>
-                        <div class="info-item">
+                        <!-- <div class="info-item">
                             <span class="info-label">📍 Location</span>
                             <span class="info-value">Main Campus Building, Ground Floor</span>
-                        </div>
+                        </div> -->
                         <div class="info-item">
                             <span class="info-label">🕒 Operating Hours</span>
                             <span class="info-value"><?= convertTime($canteen->open) ?>- <?= convertTime($canteen->close) ?></span>
@@ -748,7 +748,7 @@
                         <h3 class="analytics-title">� Rievenue & Orders Analytics</h3>
                         <div class="time-period-selector">
                             <button class="period-btn active" data-period="today">Today</button>
-                            <button class="period-btn" data-period="week">This Week</button>
+                            <!-- <button class="period-btn" data-period="week">This Week</button> -->
                             <button class="period-btn" data-period="month">This Month</button>
                             <button class="period-btn" data-period="year">This Year</button>
                         </div>

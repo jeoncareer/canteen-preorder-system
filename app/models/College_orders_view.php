@@ -18,6 +18,8 @@ class College_orders_view
         'college_name',
         'canteen_name',
         'college_email',
-        'canteen_email'
+        'canteen_email',
+        'status'
+
     ];
 }

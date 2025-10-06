@@ -831,22 +831,7 @@
 
                                 <div class="form-group">
                                     <label for="replyMessage">Response Message</label>
-                                    <textarea name="message" id="replyMessage" placeholder="Type your response to the student...">Dear Emma,
-
-Thank you for bringing this serious matter to our attention. We take food safety very seriously and are immediately investigating this incident.
-
-We have:
-1. Temporarily suspended the chicken curry from our menu
-2. Initiated a thorough inspection of our food preparation and storage facilities
-3. Contacted other students who may have been affected
-4. Arranged for additional food safety training for our kitchen staff
-
-We sincerely apologize for this incident and any inconvenience caused. Your health and safety are our top priority.
-
-We will keep you updated on our investigation and the steps we're taking to prevent such incidents in the future.
-
-Best regards,
-College Administration</textarea>
+                                    <textarea name="message" id="replyMessage" placeholder="Type your response to the student..."></textarea>
                                 </div>
 
                                 <div class="reply-actions">

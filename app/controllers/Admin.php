@@ -59,7 +59,9 @@ class Admin extends Controller
         $data['this_month_revenue'] =  $college_orders->query($this_month_revenue_sql)[0]->total;
         $data['canteens'] = $canteens;
         $data['students'] = $student->where(['college_id' => $college_id], [], 5);
-
+        $data['pending_students'] = $student->where(['college_id' => $college_id, 'status' => 'pending'], [], 5);
+        $data['pending_students_count'] = count($student->where(['college_id' => $college_id, 'status' => 'pending'])) ?: 0;
+        show($data['pending_students_count']);
 
 
 
@@ -229,6 +231,7 @@ class Admin extends Controller
         $student = new Student;
         $order_item = new Order_items;
         $item = new Items;
+        $college_orders = new College_orders_view;
         $data['college'] = $_SESSION['COLLEGE'];
         $college_id = $_SESSION['COLLEGE']->id;
         $canteens = $canteen->where(['college_id' => $college_id]);
@@ -261,10 +264,18 @@ class Admin extends Controller
                 $ord->items = trim($items, ',');
             }
             $data['orders'] = $orders;
-
-            show($orders);
         }
 
+        $data['total_orders'] = count($order->whereIn('canteen_id', $canteens_ids));
+        $data['total_pending_orders'] = count($college_orders->where(['college_id' => $college_id, 'status' => 'pending']));
+        $data['total_completed_orders'] = count($college_orders->where(['college_id' => $college_id, 'status' => 'completed']) ?: []);
+        $data['total_cancelled_orders'] = count($college_orders->where(['college_id' => $college_id, 'status' => 'rejected']) ?: []);
+        $data['total_revenue'] = $college_orders->query("select sum(total) as total from college_orders_view where college_id = {$college_id}")[0]->total ?: 0;
+        $data['totalRows'] = ceil($data['total_orders']);
+
+        $totalPageNumbers = ceil($data['totalRows'] / 10);
+        $data['totalPageNumbers'] = $totalPageNumbers;
+        show($data);
         $this->view('admin/orders', $data);
     }
 

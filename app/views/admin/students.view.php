@@ -568,6 +568,7 @@
                             <option value="verified">Verified</option>
                             <option value="pending">Pending</option>
                             <option value="suspended">Suspended</option>
+                            <option value="rejected">Rejected</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -872,6 +873,7 @@
 
                     data.forEach(student => {
                         const tr = document.createElement('tr');
+                        tr.dataset.studentId = student.id;
                         tr.innerHTML = `
                         
                         <td>

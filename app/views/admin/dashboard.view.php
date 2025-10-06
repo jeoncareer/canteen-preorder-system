@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/sidebar.css">
     <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/student-general.css">
     <link rel="stylesheet" href="/canteen-preorder-system/public/assets/css/canteen-common.css">
+    <script>
+        const ROOT = '<?= ROOT ?>';
+    </script>
     <style>
         /* Admin Dashboard Specific Styles */
         .admin-stats {
@@ -211,6 +214,11 @@
         }
 
         .status-inactive {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-suspended {
             background: #fee2e2;
             color: #991b1b;
         }
@@ -462,7 +470,7 @@
                             ⏳
                         </div>
                     </div>
-                    <h2 class="admin-stat-value">12</h2>
+                    <h2 class="admin-stat-value"><?= $pending_students_count ?></h2>
                     <p class="admin-stat-label">Pending Verifications</p>
                     <p class="admin-stat-change negative">
                         ⚠️ Requires attention
@@ -572,7 +580,7 @@
                                 <th>Student Name</th>
                                 <th>Reg No</th>
                                 <th>Status</th>
-                                <th>Actions</th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -581,12 +589,8 @@
                                     <tr>
                                         <td><strong><?= $student->email ?></strong></td>
                                         <td><?= $student->reg_no ?></td>
-                                        <td><span class="status-badge status-verified">Verified</span></td>
-                                        <td>
-                                            <div class="admin-actions">
-                                                <a href="#" class="admin-action-btn view-btn">👁️</a>
-                                            </div>
-                                        </td>
+                                        <td><span class="status-badge status-<?= $student->status ?>"><?= $student->status ?></span></td>
+
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>
@@ -614,61 +618,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><strong>Rahul Sharma</strong></td>
-                                <td>CS2021001</td>
-                                <td>2 days ago</td>
-                                <td>
-                                    <div class="admin-actions">
-                                        <button class="admin-action-btn view-btn">✅ Approve</button>
-                                        <button class="admin-action-btn delete-btn">❌ Reject</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Priya Patel</strong></td>
-                                <td>EC2021045</td>
-                                <td>1 day ago</td>
-                                <td>
-                                    <div class="admin-actions">
-                                        <button class="admin-action-btn view-btn">✅ Approve</button>
-                                        <button class="admin-action-btn delete-btn">❌ Reject</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Amit Kumar</strong></td>
-                                <td>ME2021078</td>
-                                <td>3 hours ago</td>
-                                <td>
-                                    <div class="admin-actions">
-                                        <button class="admin-action-btn view-btn">✅ Approve</button>
-                                        <button class="admin-action-btn delete-btn">❌ Reject</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Sneha Reddy</strong></td>
-                                <td>IT2021092</td>
-                                <td>5 hours ago</td>
-                                <td>
-                                    <div class="admin-actions">
-                                        <button class="admin-action-btn view-btn">✅ Approve</button>
-                                        <button class="admin-action-btn delete-btn">❌ Reject</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Vikash Singh</strong></td>
-                                <td>CE2021156</td>
-                                <td>1 hour ago</td>
-                                <td>
-                                    <div class="admin-actions">
-                                        <button class="admin-action-btn view-btn">✅ Approve</button>
-                                        <button class="admin-action-btn delete-btn">❌ Reject</button>
-                                    </div>
-                                </td>
-                            </tr>
+                            <?php if (!empty($pending_students)): ?>
+                                <?php foreach ($pending_students as $students): ?>
+                                    <tr>
+                                        <td><strong><?= $students->student_name ?></strong></td>
+                                        <td><?= $students->id ?></td>
+                                        <td><?= timeAgoOrDate($students->time, false, '1 months') ?></td>
+                                        <td>
+                                            <div class="admin-actions">
+                                                <button class="admin-action-btn view-btn" onclick="changeStatus(<?= $students->id ?>,'verified')">✅ Approve</button>
+                                                <button class="admin-action-btn delete-btn" onclick="changeStatus(<?= $students->id ?>,'rejected')">❌ Reject</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </tbody>
                     </table>
 
@@ -679,6 +643,40 @@
             </div>
         </div>
     </div>
+
+
+    <script>
+        function changeStatus(id, status) {
+
+            let url = ROOT + 'StudentController/toggleStudentStatus/' + id;
+            fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        "Content-type": "application/json"
+                    },
+                    body: JSON.stringify({
+
+                        status: status
+
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    let adminActions = document.querySelector('.admin-actions');
+                    adminActions.innerHTML = '';
+                    let btn = document.createElement('button');
+                    btn.classList.add('admin-action-btn');
+                    if (status == 'verified') {
+
+                        btn.textContent = 'verified';
+                    } else {
+                        btn.textContent = 'rejected';
+                    }
+                    adminActions.append(btn);
+                })
+
+        }
+    </script>
 </body>
 
 </html>

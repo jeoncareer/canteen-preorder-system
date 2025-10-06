@@ -586,50 +586,28 @@
             <!-- Statistics -->
             <div class="orders-stats">
                 <div class="stat-card total">
-                    <div class="stat-number">1,247</div>
+                    <div class="stat-number"><?= $total_orders ?></div>
                     <div class="stat-label">Total Orders</div>
                 </div>
                 <div class="stat-card pending">
-                    <div class="stat-number">23</div>
+                    <div class="stat-number"><?= $total_pending_orders ?></div>
                     <div class="stat-label">Pending Orders</div>
                 </div>
                 <div class="stat-card completed">
-                    <div class="stat-number">1,156</div>
+                    <div class="stat-number"><?= $total_completed_orders ?></div>
                     <div class="stat-label">Completed</div>
                 </div>
                 <div class="stat-card cancelled">
-                    <div class="stat-number">68</div>
+                    <div class="stat-number"><?= $total_cancelled_orders ?></div>
                     <div class="stat-label">Cancelled</div>
                 </div>
                 <div class="stat-card revenue">
-                    <div class="stat-number">₹89,450</div>
+                    <div class="stat-number">₹<?= $total_revenue ?></div>
                     <div class="stat-label">Today's Revenue</div>
                 </div>
             </div>
 
-            <!-- Quick Actions -->
-            <div class="quick-actions">
-                <div class="action-card" onclick="exportOrders()">
-                    <span class="action-card-icon">📊</span>
-                    <h3>Export Orders</h3>
-                    <p>Download orders report</p>
-                </div>
-                <div class="action-card" onclick="viewAnalytics()">
-                    <span class="action-card-icon">📈</span>
-                    <h3>View Analytics</h3>
-                    <p>Order trends & insights</p>
-                </div>
-                <div class="action-card" onclick="bulkUpdate()">
-                    <span class="action-card-icon">🔄</span>
-                    <h3>Bulk Update</h3>
-                    <p>Update multiple orders</p>
-                </div>
-                <div class="action-card" onclick="sendNotifications()">
-                    <span class="action-card-icon">📢</span>
-                    <h3>Send Notifications</h3>
-                    <p>Notify students & canteens</p>
-                </div>
-            </div>
+
 
             <!-- Filters -->
             <div class="filters-section">
@@ -660,7 +638,7 @@
                     </div>
                     <div class="filter-group">
                         <label>Date Range</label>
-                        <input type="date" class="filter-input" value="2025-10-06">
+                        <input type="date" class="filter-input">
                     </div>
 
 
@@ -733,31 +711,14 @@
                 <button class="page-btn nav-btn" id="prevBtn">Previous</button>
                 <div class="page-numbers-container">
                     <div class="page-numbers" id="pageNumbers">
-                        <button class="page-btn active">1</button>
-                        <button class="page-btn">2</button>
-                        <button class="page-btn">3</button>
-                        <button class="page-btn">4</button>
-                        <button class="page-btn">5</button>
-                        <button class="page-btn">6</button>
-                        <button class="page-btn">7</button>
-                        <button class="page-btn">8</button>
-                        <button class="page-btn">9</button>
-                        <button class="page-btn">10</button>
-                        <button class="page-btn">11</button>
-                        <button class="page-btn">12</button>
-                        <button class="page-btn">13</button>
-                        <button class="page-btn">14</button>
-                        <button class="page-btn">15</button>
-                        <button class="page-btn">16</button>
-                        <button class="page-btn">17</button>
-                        <button class="page-btn">18</button>
-                        <button class="page-btn">19</button>
-                        <button class="page-btn">20</button>
-                        <button class="page-btn">21</button>
-                        <button class="page-btn">22</button>
-                        <button class="page-btn">23</button>
-                        <button class="page-btn">24</button>
-                        <button class="page-btn">25</button>
+
+                        <?php for ($i = 1; $i <= $totalPageNumbers; $i++): ?>
+                            <?php if ($i == 1): ?>
+                                <button class="page-btn active"><?= $i ?></button>
+                            <?php else: ?>
+                                <button class="page-btn"><?= $i ?></button>
+                            <?php endif; ?>
+                        <?php endfor; ?>
                     </div>
                 </div>
                 <button class="page-btn nav-btn" id="nextBtn">Next</button>
