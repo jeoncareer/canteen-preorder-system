@@ -58,7 +58,7 @@
                                         <div class="item-details">
                                             <div class="item-name"><?= $item->name ?></div>
                                             <div class="item-specs">Qty: <?= $item->quantity ?> </div>
-                                            <div class="rating-stars">⭐⭐⭐⭐⭐</div>
+
                                         </div>
                                         <div class="item-price">₹<?= $item->price ?></div>
                                     </div>

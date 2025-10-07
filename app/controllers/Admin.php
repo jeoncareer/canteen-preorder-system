@@ -61,7 +61,7 @@ class Admin extends Controller
         $data['students'] = $student->where(['college_id' => $college_id], [], 5);
         $data['pending_students'] = $student->where(['college_id' => $college_id, 'status' => 'pending'], [], 5);
         $data['pending_students_count'] = count($student->where(['college_id' => $college_id, 'status' => 'pending'])) ?: 0;
-        show($data['pending_students_count']);
+
 
 
 
@@ -211,7 +211,7 @@ class Admin extends Controller
         }
 
         $data['college'] = $college;
-
+        show($data);
 
         $this->view('admin/student_reports', $data);
     }

@@ -64,6 +64,11 @@ class AdminMessagesController extends Controller
         $student = new Student;
 
         $conversation = $conversations->first(['id' => $conversation_id]);
+
+        if (!$conversation->is_read_by_admin) {
+            $conversations->update(['id' => $conversation_id], ['is_read_by_admin' => 1]);
+        }
+
         if ($conversation) {
 
             $conversation->messages = $messages->where(['conversation_id' => $conversation_id]);

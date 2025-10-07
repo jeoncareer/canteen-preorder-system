@@ -8,7 +8,9 @@
     <link rel="stylesheet" href="<?= ROOT ?>assets/css/student-general.css">
     <link rel="stylesheet" href="<?= ROOT ?>assets/css/my-orders.css">
     <link rel="stylesheet" href="<?= ROOT ?>assets/css/add-item.css">
-
+    <script>
+        let ROOT = "<?= ROOT ?>";
+    </script>
     <style>
 
 
@@ -37,9 +39,9 @@
                 <h2>My Orders</h2>
             </div>
 
-            <div class="search-bar">
+            <!-- <div class="search-bar">
                 <input type="text" placeholder="Search for orders...">
-            </div>
+            </div> -->
 
             <div class="orders-section">
                 <div class="section-title">Current Orders</div>
@@ -75,7 +77,7 @@
                                 <div class="order-total">Total: ₹<?= $order[$order_id]['total'] ?></div>
                                 <div class="order-actions">
                                     <?php if ($order[$order_id]['status'] === 'ready'): ?>
-                                        <button class="btn btn-primary">✓ Pick Up</button>
+                                        <button data-order-id="<?= $order_id ?>" class="btn btn-primary pickup">✓ Pick Up</button>
                                     <?php endif; ?>
                                     <button data-modal-target="#order-details-modal" class="btn btn-secondary">View Details</button>
                                 </div>
@@ -147,6 +149,42 @@
     <div id="overlay"></div>
 
     <script src="<?= ROOT ?>assets/js/add-item.js"></script>
+
+    <script>
+        const orderSelection = document.querySelector('.orders-section');
+        orderSelection.addEventListener('click', e => {
+
+            if (e.target.classList.contains('pickup')) {
+                let pickupElement = e.target;
+
+                let orderId = pickupElement.dataset.orderId;
+                let orderCard = pickupElement.parentElement.parentElement.parentElement;
+                console.log(orderCard);
+
+                console.log(orderId);
+                const url = ROOT + 'api/changeStatus';
+                fetch(url, {
+                        method: "POST",
+                        headers: {
+                            "Content-type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            order_id: orderId,
+                            new_status: 'completed'
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log("Status updated successfully");
+                            orderCard.querySelector('.order-status').textContent = "Completed";
+                            pickupElement.hidden = true;
+                        }
+                    });
+            }
+
+        })
+    </script>
 </body>
 
 </html>

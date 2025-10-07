@@ -743,10 +743,10 @@
 
                         <?php if (isset($conversations)): ?>
                             <?php foreach ($conversations as $conversation): ?>
-                                <div class="report-item unread active" onclick="selectReport(<?= $conversation->id ?>)">
+                                <div class="report-item <?= !$conversation->is_read_by_admin ? 'unread' : '' ?> " onclick="selectReport(<?= $conversation->id ?>)">
                                     <div class="report-header">
                                         <div class="student-name">
-                                            <span class="priority-indicator priority-urgent"></span>
+                                            <span class="priority-indicator "></span>
                                             <?= $conversation->student->student_name ?>
                                         </div>
                                         <div class="report-time"><?= timeAgoOrDate($conversation->created_at, false, '1 day') ?></div>
@@ -890,7 +890,7 @@
             fetch(url)
                 .then(res => res.json())
                 .then(data => {
-
+                    console.log(data);
                     let conversation = data.conversation;
                     currentConversationId = conversation.id;
                     console.log(currentConversationId);
