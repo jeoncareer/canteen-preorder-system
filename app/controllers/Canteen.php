@@ -2,8 +2,10 @@
 
 class Canteen extends Controller
 {
+    use Database;
     public function index()
     {
+
 
         if (!isset($_SESSION['CANTEEN'])) {
             redirect('canteen/login');
@@ -38,6 +40,41 @@ class Canteen extends Controller
         foreach ($result as $res) {
             $data['categories'][] = ['name' => $res->name, 'id' => $res->id];
         }
+        $data['total_orders'] = $this->query(
+            " SELECT COUNT(*) AS total
+                                            FROM canteen_orders_view
+                                            WHERE canteen_id = :canteen_id
+                                            AND DATE(time) = CURDATE();",
+            ['canteen_id' => CANTEEN_ID]
+        )[0]->total ?: 0;
+        $data['total_earnings'] = $this->query(
+            " SELECT SUM(total) AS total
+                                            FROM canteen_orders_view
+                                            WHERE canteen_id = :canteen_id
+                                            AND DATE(time) = CURDATE();",
+            ['canteen_id' => CANTEEN_ID]
+        )[0]->total ?: 0;
+
+
+        $data['completed_orders'] = $this->query(
+            " SELECT COUNT(*) AS total
+                                            FROM canteen_orders_view
+                                            WHERE canteen_id = :canteen_id
+                                            AND DATE(time) = CURDATE()
+                                            AND status = 'completed';",
+            ['canteen_id' => CANTEEN_ID]
+        )[0]->total ?: 0;
+
+        $data['rejected_orders'] = $this->query(
+            " SELECT COUNT(*) AS total
+                                            FROM canteen_orders_view
+                                            WHERE canteen_id = :canteen_id
+                                            AND DATE(time) = CURDATE()
+                                            AND status = 'rejected';",
+            ['canteen_id' => CANTEEN_ID]
+        )[0]->total ?: 0;
+
+
 
 
 
@@ -179,6 +216,12 @@ class Canteen extends Controller
             'orders.id'
         );
 
+
+        $data['pending_orders'] = count($order->where(['canteen_id' => CANTEEN_ID, 'status' => 'pending']) ?: []);
+        $data['accepted_orders'] = count($order->where(['canteen_id' => CANTEEN_ID, 'status' => 'accepted']) ?: []);
+        $data['rejected_orders'] = count($order->where(['canteen_id' => CANTEEN_ID, 'status' => 'rejected']) ?: []);
+        $data['completed_orders'] = count($order->where(['canteen_id' => CANTEEN_ID, 'status' => 'completed']) ?: []);
+        $data['ready_orders'] = count($order->where(['canteen_id' => CANTEEN_ID, 'status' => 'ready']) ?: []);
 
 
 

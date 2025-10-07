@@ -58,23 +58,23 @@
                 <!-- Stats Summary -->
                 <div class="stats-summary">
                     <div class="stat-summary-card stat-pending">
-                        <div class="stat-summary-value">23</div>
+                        <div class="stat-summary-value"><?= $pending_orders ?></div>
                         <div class="stat-summary-label">Pending Orders</div>
                     </div>
                     <div class="stat-summary-card stat-accepted">
-                        <div class="stat-summary-value">15</div>
+                        <div class="stat-summary-value"><?= $accepted_orders ?></div>
                         <div class="stat-summary-label">Accepted Orders</div>
                     </div>
                     <div class="stat-summary-card stat-ready">
-                        <div class="stat-summary-value">8</div>
+                        <div class="stat-summary-value"><?= $ready_orders ?></div>
                         <div class="stat-summary-label">Ready Orders</div>
                     </div>
                     <div class="stat-summary-card stat-completed">
-                        <div class="stat-summary-value">142</div>
+                        <div class="stat-summary-value"><?= $ready_orders ?></div>
                         <div class="stat-summary-label">Completed Today</div>
                     </div>
                     <div class="stat-summary-card stat-rejected">
-                        <div class="stat-summary-value">3</div>
+                        <div class="stat-summary-value"><?= $ready_orders ?></div>
                         <div class="stat-summary-label">Rejected Orders</div>
                     </div>
                 </div>
@@ -82,10 +82,10 @@
                 <!-- Filters Section -->
                 <div class="filters-section">
                     <div class="filters-grid">
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label class="form-label">Search Orders</label>
                             <input data-type="search" type="text" class="form-input" placeholder="Search by order ID, student name, or email..." id="searchInput">
-                        </div>
+                        </div> -->
                         <div class="form-group">
                             <label class="form-label">Status Filter</label>
                             <select data-type="status" class="form-select" id="statusFilter">
@@ -225,7 +225,7 @@
                     </table>
 
                     <!-- Pagination with Horizontal Scroll -->
-                    <div class="pagination">
+                    <!-- <div class="pagination">
                         <button class="page-btn nav-btn" id="prevBtn">Previous</button>
                         <div class="page-numbers-container">
                             <div class="page-numbers" id="pageNumbers">
@@ -242,7 +242,7 @@
                             </div>
                         </div>
                         <button class="page-btn nav-btn" id="nextBtn">Next</button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -379,5 +379,84 @@
 
         // Initialize pagination state
         updatePaginationState();
+
+
+
+        function updatePaginationNumbers(totalPages) {
+            // Get the page numbers container
+            const pageNumbersContainer = document.querySelector('.page-numbers');
+
+            if (!pageNumbersContainer) {
+                console.error('Page numbers container not found');
+                return;
+            }
+
+            // Clear existing page buttons
+            pageNumbersContainer.innerHTML = '';
+
+            // Create new page buttons based on totalPages parameter
+            for (let i = 1; i <= totalPages; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = 'page-btn';
+                pageBtn.textContent = i;
+                pageBtn.dataset.page = i;
+
+                // Set first page as active by default
+                if (i === 1) {
+                    pageBtn.classList.add('active');
+                }
+
+                // Add click event listener for each button
+                pageBtn.addEventListener('click', function() {
+                    // Remove active class from all page buttons
+                    document.querySelectorAll('.page-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+
+                    // Add active class to clicked button
+                    this.classList.add('active');
+
+                    // Update current page
+                    currentPage = parseInt(this.dataset.page);
+
+                    // Trigger any pagination logic here
+                    // Example: loadOrdersForPage(currentPage);
+
+                    // Scroll clicked button into view
+                    this.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'nearest',
+                        inline: 'center'
+                    });
+                });
+
+                // Append to container
+                pageNumbersContainer.appendChild(pageBtn);
+            }
+
+            // Update navigation button states
+            updateNavigationButtons(totalPages);
+
+            console.log(`Pagination updated: ${totalPages} pages created`);
+        }
+
+        // Helper function to update Previous/Next button states
+        function updateNavigationButtons(totalPages) {
+            const prevBtn = document.querySelector('#prevBtn, .prev-btn');
+            const nextBtn = document.querySelector('#nextBtn, .next-btn');
+
+            if (prevBtn) {
+                prevBtn.disabled = currentPage === 1;
+            }
+
+            if (nextBtn) {
+                nextBtn.disabled = currentPage >= totalPages;
+            }
+        }
+
+        // Usage examples:
+        // updatePaginationNumbers(5);   // Creates 5 page buttons (1, 2, 3, 4, 5)
+        // updatePaginationNumbers(10);  // Creates 10 page buttons (1, 2, 3, ..., 10)
+        // updatePaginationNumbers(25);  // Creates 25 page buttons (1, 2, 3, ..., 25)
     });
 </script>

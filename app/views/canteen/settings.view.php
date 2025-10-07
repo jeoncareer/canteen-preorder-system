@@ -334,7 +334,7 @@
             </div> -->
 
             <!-- Quick Actions -->
-            <div class="quick-actions">
+            <!-- <div class="quick-actions">
                 <div class="quick-action-card" onclick="toggleCanteenStatus()">
                     <span class="quick-action-icon">🔄</span>
                     <h4>Toggle Status</h4>
@@ -350,7 +350,7 @@
                     <h4>Holiday Hours</h4>
                     <p>Set special timings</p>
                 </div>
-            </div>
+            </div> -->
 
 
             <!-- Current Status -->
@@ -409,7 +409,7 @@
                 </div>
 
                 <!-- Manager Details -->
-                <div id="managerCard" class="settings-card">
+                <!-- <div id="managerCard" class="settings-card">
                     <h3>👨‍💼 Manager Details</h3>
 
 
@@ -457,7 +457,7 @@
                         <div class="error-message" id="employeeId-error"></div>
                     </div>
 
-                </div>
+                </div> -->
 
                 <!-- Operating Hours -->
                 <div class="settings-card">
@@ -528,7 +528,7 @@
             </div>
 
             <!-- Additional Settings -->
-            <div class="settings-card">
+            <!-- <div class="settings-card">
                 <h3>🔧 Additional Settings</h3>
 
                 <form method="POST" action="<?= ROOT ?>canteen/advanced-settings">
@@ -587,7 +587,7 @@
                         </button>
                     </div>
                 </form>
-            </div>
+            </div> -->
         </div>
     </div>
     <script src=" <?= ROOT ?>assets/js/functions.js"></script>
@@ -705,18 +705,18 @@
             }
             // If all validations pass, submit the form
             let url = ROOT + 'CanteenController/changeCanteenDate';
-            fetch(url,{
+            fetch(url, {
                 method: 'POST',
                 headers: {
                     "Content-type": "application/json"
                 },
                 body: JSON.stringify({
-                    name:name,
-                    email:email,
-                    phone:phone,
-                    experience:experience,
-                    address:address,
-                    
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    experience: experience,
+                    address: address,
+
                 })
             })
 

@@ -19,6 +19,7 @@ class OrdersController extends Controller
     public function ordersByDateCanteen()
     {
         $data = json_decode(file_get_contents("php://input"), true);
+        $order = new Orders;
 
         $where = $data['data'];
 
@@ -50,9 +51,14 @@ class OrdersController extends Controller
         $data = array_merge($where, $units);
         $orders = $this->query($query, $data);
 
+        $pending_orders = count($order->where(['canteen_id' => CANTEEN_ID, 'status' => 'pending'])) ?: 0;
+        $accepted_orders = count($order->where(['canteen_id' => CANTEEN_ID, 'status' => 'accepted'])) ?: 0;
+        $rejected_orders = count($order->where(['canteen_id' => CANTEEN_ID, 'status' => 'rejected'])) ?: 0;
+        $completed_orders = count($order->where(['canteen_id' => CANTEEN_ID, 'status' => 'completed'])) ?: 0;
+        $ready_orders = count($order->where(['canteen_id' => CANTEEN_ID, 'status' => 'ready'])) ?: 0;
 
 
-        echo json_encode(['orders' => $orders]);
+        echo json_encode(['orders' => $orders, 'pending_orders' => $pending_orders, 'accepted_orders' => $accepted_orders, 'rejected_orders' => $rejected_orders, 'completed_orders' => $completed_orders, 'ready_orders' => $ready_orders, 'query' => $query, 'results' => $orders]);
     }
 
 

@@ -91,9 +91,9 @@ class Api extends Controller
 
         $item_id = $data['item_id'];
         if (isset($item_id) && !empty($item_id)) {
-            $result = $carts->where(['item_Id' => $item_id, 'student_id' => STUDENT_ID]);
+            $result = $carts->where(['item_id' => $item_id, 'student_id' => STUDENT_ID]);
             if (!empty($result)) {
-                echo json_encode(['success' => true]);
+                echo json_encode(['success' => true, 'message' => "item on the cart"]);
             } else {
                 echo json_encode(['success' => false, "Message" => "item not in cart"]);
             }

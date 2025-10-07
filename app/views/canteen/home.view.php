@@ -381,11 +381,9 @@
               ₹
             </div>
           </div>
-          <h2 class="stat-value">₹12,500</h2>
+          <h2 class="stat-value">₹<?= $total_earnings ?></h2>
           <p class="stat-label">Total Earnings</p>
-          <p class="stat-change positive">
-            ↗ +12% from yesterday
-          </p>
+
         </div>
 
         <div class="stat-card orders">
@@ -394,11 +392,9 @@
               🛒
             </div>
           </div>
-          <h2 class="stat-value">320</h2>
+          <h2 class="stat-value"><?= $total_orders ?></h2>
           <p class="stat-label">Total Orders</p>
-          <p class="stat-change positive">
-            ↗ +8% from yesterday
-          </p>
+
         </div>
 
         <div class="stat-card completed">
@@ -407,11 +403,9 @@
               ✅
             </div>
           </div>
-          <h2 class="stat-value">280</h2>
+          <h2 class="stat-value"><?= $completed_orders ?></h2>
           <p class="stat-label">Completed Orders</p>
-          <p class="stat-change positive">
-            ↗ +5% from yesterday
-          </p>
+
         </div>
 
         <div class="stat-card rejected">
@@ -420,11 +414,9 @@
               ❌
             </div>
           </div>
-          <h2 class="stat-value">15</h2>
+          <h2 class="stat-value"><?= $rejected_orders ?></h2>
           <p class="stat-label">Rejected Orders</p>
-          <p class="stat-change negative">
-            ↘ -3% from yesterday
-          </p>
+
         </div>
       </div>
 
@@ -434,9 +426,9 @@
         <div class="orders-section">
           <div class="section-header">
             <h2 class="section-title">Recent Orders</h2>
-            <a href="#" class="view-all-btn" onclick="updateOrders()">
+            <!-- <a href="#" class="view-all-btn" onclick="updateOrders()">
               ↗ View All
-            </a>
+            </a> -->
           </div>
 
           <table class="orders-table">
@@ -479,7 +471,7 @@
                                                   } ?>>Rejected</option>
                       </select>
                     </td>
-                    <td><span class="order-time"><?= $order[0]->time ?></span></td>
+                    <td><span class="order-time"><?= timeAgoOrDate($order[0]->time, false, '1 day') ?></span></td>
                   </tr>
                 <?php endforeach; ?>
               <?php endif; ?>
@@ -502,17 +494,11 @@
               ➕ Add New Item
             </a>
 
-            <a href="#" class="action-btn">
+            <a href="<?= ROOT ?>canteen/menu_management" class="action-btn">
               📋 Manage Menu
             </a>
 
-            <a href="#" class="action-btn">
-              🏷️ Categories
-            </a>
 
-            <a href="#" class="action-btn">
-              📊 View Reports
-            </a>
           </div>
 
           <div id="overlay"></div>
@@ -577,7 +563,7 @@
           </div>
 
           <!-- Recent Activity -->
-          <div class="quick-actions recent-activity">
+          <!-- <div class="quick-actions recent-activity">
             <div class="section-header">
               <h2 class="section-title">Recent Activity</h2>
             </div>
@@ -621,7 +607,7 @@
                 <p class="activity-time">2 hours ago</p>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

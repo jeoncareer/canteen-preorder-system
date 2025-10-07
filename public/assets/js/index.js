@@ -169,7 +169,7 @@ function updateAddButton() {
             })
             .then(res => res.json())
             .then(data => {
-                //console.log('from',data);
+                console.log('from',data);
                 let con = item.querySelector('.item-footer');
                 const existBtn = con.querySelector("button");
                 if (existBtn) {
