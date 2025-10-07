@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 02, 2025 at 06:27 AM
+-- Generation Time: Oct 07, 2025 at 02:36 AM
 -- Server version: 8.0.42-0ubuntu0.24.04.2
 -- PHP Version: 8.3.6
 
@@ -49,7 +49,7 @@ CREATE TABLE `canteen` (
 
 INSERT INTO `canteen` (`id`, `canteen_name`, `college_id`, `email`, `password`, `description`, `special_hours`, `phn_no`, `working_days`, `status`, `is_open`, `open`, `close`) VALUES
 (16, 'canteen1', 11, 'canteen@gmail.com', '$2y$10$PS/OFS27BoYpuCZFQc8IBO7HDAx0.20PVI3kHY.mEa7CRJuLX5qre', 'Serving fresh and delicious meals to students and staff. We offer a variety of cuisines including Indian, Continental, japanese and Chinese dishes.', NULL, '+1 (555) 123-4567', '[\"monday\", \"tuesday\", \"wednesday\", \"thursday\", \"friday\"]', 'active', 0, '08:00:00', '20:00:00'),
-(17, 'canteen2', 11, 'canteen2@gmail.com', '$2y$10$EnBLafflrT1yQWbOOBxVc.T3kVrRFgKGG63usZVUf0PLXPaI7jk3W', 'Serving fresh and delicious meals to students and staff. We offer a variety of cuisines including Indian, Continental, and Chinese dishes.', NULL, '+1 (555) 123-4567', '[\"monday\", \"tuesday\", \"wednesday\", \"thursday\"]', 'inactive', 0, '08:00:00', '20:00:00');
+(17, 'canteen2', 11, 'canteen2@gmail.com', '$2y$10$EnBLafflrT1yQWbOOBxVc.T3kVrRFgKGG63usZVUf0PLXPaI7jk3W', 'Serving fresh and delicious meals to students and staff. We offer a variety of cuisines including Indian, Continental, and Chinese dishes.', NULL, '+1 (555) 123-4567', '[\"monday\", \"tuesday\", \"wednesday\", \"thursday\"]', 'active', 0, '08:00:00', '20:00:00');
 
 -- --------------------------------------------------------
 
@@ -79,6 +79,14 @@ CREATE TABLE `cart` (
   `count` int NOT NULL DEFAULT '1',
   `date` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cart`
+--
+
+INSERT INTO `cart` (`id`, `item_id`, `student_id`, `count`, `date`) VALUES
+(463, 93, 72, 2, '2025-10-07 00:20:21'),
+(464, 97, 72, 2, '2025-10-07 00:20:22');
 
 -- --------------------------------------------------------
 
@@ -171,8 +179,8 @@ CREATE TABLE `conversations` (
 --
 
 INSERT INTO `conversations` (`id`, `student_id`, `college_id`, `subject`, `status`, `created_at`, `updated_at`, `is_read_by_admin`) VALUES
-(14, 72, 11, 'order_issue', 'open', '2025-10-01 18:21:03', '2025-10-01 18:21:03', 0),
-(15, 72, 11, 'order_issue', 'open', '2025-10-01 18:24:17', '2025-10-01 18:24:17', 0);
+(14, 72, 11, 'order_issue', 'resolved', '2025-10-01 18:21:03', '2025-10-05 16:17:48', 0),
+(15, 72, 11, 'order_issue', 'open', '2025-10-01 18:24:17', '2025-10-05 16:15:35', 0);
 
 -- --------------------------------------------------------
 
@@ -268,7 +276,10 @@ INSERT INTO `messages` (`id`, `conversation_id`, `sender_type`, `sender_id`, `re
 (12, 15, 'student', 72, 'admin', 'afdsa', '2025-10-02 03:40:35'),
 (13, 15, 'student', 72, 'admin', 'asdf', '2025-10-02 04:04:33'),
 (14, 15, 'student', 72, 'admin', 'asdf', '2025-10-02 04:04:34'),
-(15, 15, 'student', 72, 'admin', 'fse', '2025-10-02 04:06:15');
+(15, 15, 'student', 72, 'admin', 'fse', '2025-10-02 04:06:15'),
+(16, 15, 'admin', 11, 'student', 'Dear Emma,\n\nThank you for bringing this serious matter to our attention. We take food safety very seriously and are immediately investigating this incident.\n\nWe have:\n1. Temporarily suspended the chicken curry from our menu\n2. Initiated a thorough inspection of our food preparation and storage facilities\n3. Contacted other students who may have been affected\n4. Arranged for additional food safety training for our kitchen staff\n\nWe sincerely apologize for this incident and any inconvenience caused. Your health and safety are our top priority.\n\nWe will keep you updated on our investigation and the steps we&#039;re taking to prevent such incidents in the future.\n\nBest regards,\nCollege Administration', '2025-10-05 10:34:11'),
+(17, 15, 'admin', 11, 'student', 'Dear Emma,\n\nThank you for bringing this serious matter to our attention. We take food safety very seriously and are immediately investigating this incident.\n\nWe have:\n1. Temporarily suspended the chicken curry from our menu\n2. Initiated a thorough inspection of our food preparation and storage facilities\n3. Contacted other students who may have been affected\n4. Arranged for additional food safety training for our kitchen staff\n\nWe sincerely apologize for this incident and any inconvenience caused. Your health and safety are our top priority.\n\nWe will keep you updated on our investigation and the steps we&#039;re taking to prevent such incidents in the future.\n\nBest regards,\nCollege Administration', '2025-10-05 10:54:27'),
+(18, 15, 'admin', 11, 'student', '\nhello', '2025-10-05 16:18:15');
 
 -- --------------------------------------------------------
 
@@ -290,11 +301,12 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `canteen_id`, `student_id`, `time`, `status`, `total`) VALUES
-(135, 16, 72, '2025-09-21 23:46:23', 'accepted', 170.00),
-(136, 16, 72, '2025-09-28 23:53:10', 'pending', 195.00),
-(137, 16, 72, '2025-09-30 13:16:33', 'pending', 195.00),
-(138, 16, 72, '2025-09-30 13:21:14', 'pending', 25.00),
-(139, 17, 72, '2025-09-30 13:24:36', 'pending', 150.00);
+(135, 16, 72, '2025-09-21 23:46:23', 'ready', 170.00),
+(136, 16, 72, '2025-09-28 23:53:10', 'ready', 195.00),
+(137, 16, 72, '2025-09-30 13:16:33', 'ready', 195.00),
+(138, 16, 72, '2025-09-30 13:21:14', 'ready', 25.00),
+(139, 17, 72, '2025-09-30 13:24:36', 'pending', 150.00),
+(140, 16, 72, '2025-10-06 02:43:13', 'accepted', 100.00);
 
 -- --------------------------------------------------------
 
@@ -326,7 +338,8 @@ INSERT INTO `order_items` (`id`, `order_id`, `item_id`, `quantity`) VALUES
 (47, 137, 97, 1),
 (48, 138, 95, 1),
 (49, 138, 96, 1),
-(50, 139, 98, 1);
+(50, 139, 98, 1),
+(51, 140, 93, 1);
 
 -- --------------------------------------------------------
 
@@ -350,7 +363,7 @@ CREATE TABLE `students` (
 --
 
 INSERT INTO `students` (`id`, `student_name`, `reg_no`, `college_id`, `email`, `status`, `time`, `password`) VALUES
-(72, 'jeon', '12345', 11, 'jeon@gmail.com', 'pending', '2025-09-20 14:13:19', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
+(72, 'jeon', '12345', 11, 'jeon@gmail.com', 'suspended', '2025-09-20 14:13:19', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
 (73, 'Student 1', '10001', 11, 'student1@demo.com', 'pending', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
 (74, 'Student 2', '10002', 11, 'student2@demo.com', 'pending', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
 (75, 'Student 3', '10003', 11, 'student3@demo.com', 'pending', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
@@ -391,16 +404,16 @@ INSERT INTO `students` (`id`, `student_name`, `reg_no`, `college_id`, `email`, `
 (110, 'Student 38', '10038', 11, 'student38@demo.com', 'pending', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
 (111, 'Student 39', '10039', 11, 'student39@demo.com', 'pending', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
 (112, 'Student 40', '10040', 11, 'student40@demo.com', 'pending', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
-(113, 'Student 41', '10041', 11, 'student41@demo.com', 'pending', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
-(114, 'Student 42', '10042', 11, 'student42@demo.com', 'pending', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
-(115, 'Student 43', '10043', 11, 'student43@demo.com', 'pending', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
-(116, 'Student 44', '10044', 11, 'student44@demo.com', 'pending', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
-(117, 'Student 45', '10045', 11, 'student45@demo.com', 'pending', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
-(118, 'Student 46', '10046', 11, 'student46@demo.com', 'pending', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
-(119, 'Student 47', '10047', 11, 'student47@demo.com', 'pending', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
+(113, 'Student 41', '10041', 11, 'student41@demo.com', 'rejected', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
+(114, 'Student 42', '10042', 11, 'student42@demo.com', 'rejected', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
+(115, 'Student 43', '10043', 11, 'student43@demo.com', 'verified', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
+(116, 'Student 44', '10044', 11, 'student44@demo.com', 'verified', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
+(117, 'Student 45', '10045', 11, 'student45@demo.com', 'verified', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
+(118, 'Student 46', '10046', 11, 'student46@demo.com', 'verified', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
+(119, 'Student 47', '10047', 11, 'student47@demo.com', 'verified', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
 (120, 'Student 48', '10048', 11, 'student48@demo.com', 'suspended', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
-(121, 'Student 49', '10049', 11, 'student49@demo.com', 'verified', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
-(122, 'Student 50', '10050', 11, 'student50@demo.com', 'suspended', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC');
+(121, 'Student 49', '10049', 11, 'student49@demo.com', 'suspended', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
+(122, 'Student 50', '10050', 11, 'student50@demo.com', 'verified', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC');
 
 -- --------------------------------------------------------
 
@@ -527,7 +540,7 @@ ALTER TABLE `canteen`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=455;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=465;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -569,19 +582,19 @@ ALTER TABLE `managers`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=140;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=141;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `students`
