@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 07, 2025 at 02:36 AM
+-- Generation Time: Nov 01, 2025 at 10:33 AM
 -- Server version: 8.0.42-0ubuntu0.24.04.2
 -- PHP Version: 8.3.6
 
@@ -79,14 +79,6 @@ CREATE TABLE `cart` (
   `count` int NOT NULL DEFAULT '1',
   `date` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `cart`
---
-
-INSERT INTO `cart` (`id`, `item_id`, `student_id`, `count`, `date`) VALUES
-(463, 93, 72, 2, '2025-10-07 00:20:21'),
-(464, 97, 72, 2, '2025-10-07 00:20:22');
 
 -- --------------------------------------------------------
 
@@ -171,16 +163,20 @@ CREATE TABLE `conversations` (
   `status` enum('open','resolved') COLLATE utf8mb4_general_ci DEFAULT 'open',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `is_read_by_admin` tinyint(1) DEFAULT '0'
+  `is_read_by_admin` tinyint(1) DEFAULT '0',
+  `is_read_by_student` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `conversations`
 --
 
-INSERT INTO `conversations` (`id`, `student_id`, `college_id`, `subject`, `status`, `created_at`, `updated_at`, `is_read_by_admin`) VALUES
-(14, 72, 11, 'order_issue', 'resolved', '2025-10-01 18:21:03', '2025-10-05 16:17:48', 0),
-(15, 72, 11, 'order_issue', 'open', '2025-10-01 18:24:17', '2025-10-05 16:15:35', 0);
+INSERT INTO `conversations` (`id`, `student_id`, `college_id`, `subject`, `status`, `created_at`, `updated_at`, `is_read_by_admin`, `is_read_by_student`) VALUES
+(14, 72, 11, 'order_issue', 'resolved', '2025-10-01 18:21:03', '2025-10-17 06:16:31', 1, 1),
+(15, 72, 11, 'order_issue', 'open', '2025-10-01 18:24:17', '2025-10-17 06:16:31', 1, 1),
+(16, 72, 11, 'order_issue', 'open', '2025-10-17 12:49:38', '2025-10-17 12:50:52', 1, 1),
+(17, 72, 11, 'order_issue', 'open', '2025-10-17 12:54:27', '2025-10-17 13:02:24', 1, 1),
+(18, 72, 11, 'order_issue', 'open', '2025-10-31 17:53:00', '2025-10-31 17:53:02', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -263,23 +259,27 @@ CREATE TABLE `messages` (
   `sender_id` int NOT NULL,
   `receiver_type` enum('student','admin') COLLATE utf8mb4_general_ci NOT NULL,
   `message_text` text COLLATE utf8mb4_general_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `is_read_by_admin` tinyint(1) NOT NULL DEFAULT '0',
+  `is_read_by_student` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `messages`
 --
 
-INSERT INTO `messages` (`id`, `conversation_id`, `sender_type`, `sender_id`, `receiver_type`, `message_text`, `created_at`) VALUES
-(8, 14, 'student', 72, 'admin', '                                Hi Admin,\n                                I&#039;m having trouble with my recent order #ORD-2024-001. The order was placed yesterday but I haven&#039;t received any confirmation. Could you please help me check the status?\n                                Thank you!\n                            ', '2025-10-01 18:21:03'),
-(11, 15, 'student', 72, 'admin', 'afdsa', '2025-10-02 03:40:32'),
-(12, 15, 'student', 72, 'admin', 'afdsa', '2025-10-02 03:40:35'),
-(13, 15, 'student', 72, 'admin', 'asdf', '2025-10-02 04:04:33'),
-(14, 15, 'student', 72, 'admin', 'asdf', '2025-10-02 04:04:34'),
-(15, 15, 'student', 72, 'admin', 'fse', '2025-10-02 04:06:15'),
-(16, 15, 'admin', 11, 'student', 'Dear Emma,\n\nThank you for bringing this serious matter to our attention. We take food safety very seriously and are immediately investigating this incident.\n\nWe have:\n1. Temporarily suspended the chicken curry from our menu\n2. Initiated a thorough inspection of our food preparation and storage facilities\n3. Contacted other students who may have been affected\n4. Arranged for additional food safety training for our kitchen staff\n\nWe sincerely apologize for this incident and any inconvenience caused. Your health and safety are our top priority.\n\nWe will keep you updated on our investigation and the steps we&#039;re taking to prevent such incidents in the future.\n\nBest regards,\nCollege Administration', '2025-10-05 10:34:11'),
-(17, 15, 'admin', 11, 'student', 'Dear Emma,\n\nThank you for bringing this serious matter to our attention. We take food safety very seriously and are immediately investigating this incident.\n\nWe have:\n1. Temporarily suspended the chicken curry from our menu\n2. Initiated a thorough inspection of our food preparation and storage facilities\n3. Contacted other students who may have been affected\n4. Arranged for additional food safety training for our kitchen staff\n\nWe sincerely apologize for this incident and any inconvenience caused. Your health and safety are our top priority.\n\nWe will keep you updated on our investigation and the steps we&#039;re taking to prevent such incidents in the future.\n\nBest regards,\nCollege Administration', '2025-10-05 10:54:27'),
-(18, 15, 'admin', 11, 'student', '\nhello', '2025-10-05 16:18:15');
+INSERT INTO `messages` (`id`, `conversation_id`, `sender_type`, `sender_id`, `receiver_type`, `message_text`, `created_at`, `is_read_by_admin`, `is_read_by_student`) VALUES
+(8, 14, 'student', 72, 'admin', '                                Hi Admin,\n                                I&#039;m having trouble with my recent order #ORD-2024-001. The order was placed yesterday but I haven&#039;t received any confirmation. Could you please help me check the status?\n                                Thank you!\n                            ', '2025-10-01 18:21:03', 0, 0),
+(11, 15, 'student', 72, 'admin', 'afdsa', '2025-10-02 03:40:32', 0, 0),
+(13, 15, 'student', 72, 'admin', 'asdf', '2025-10-02 04:04:33', 0, 0),
+(14, 15, 'student', 72, 'admin', 'asdf', '2025-10-02 04:04:34', 0, 0),
+(15, 15, 'student', 72, 'admin', 'fse', '2025-10-02 04:06:15', 0, 0),
+(16, 15, 'admin', 11, 'student', 'Dear Emma,\n\nThank you for bringing this serious matter to our attention. We take food safety very seriously and are immediately investigating this incident.\n\nWe have:\n1. Temporarily suspended the chicken curry from our menu\n2. Initiated a thorough inspection of our food preparation and storage facilities\n3. Contacted other students who may have been affected\n4. Arranged for additional food safety training for our kitchen staff\n\nWe sincerely apologize for this incident and any inconvenience caused. Your health and safety are our top priority.\n\nWe will keep you updated on our investigation and the steps we&#039;re taking to prevent such incidents in the future.\n\nBest regards,\nCollege Administration', '2025-10-05 10:34:11', 0, 0),
+(17, 15, 'admin', 11, 'student', 'Dear Emma,\n\nThank you for bringing this serious matter to our attention. We take food safety very seriously and are immediately investigating this incident.\n\nWe have:\n1. Temporarily suspended the chicken curry from our menu\n2. Initiated a thorough inspection of our food preparation and storage facilities\n3. Contacted other students who may have been affected\n4. Arranged for additional food safety training for our kitchen staff\n\nWe sincerely apologize for this incident and any inconvenience caused. Your health and safety are our top priority.\n\nWe will keep you updated on our investigation and the steps we&#039;re taking to prevent such incidents in the future.\n\nBest regards,\nCollege Administration', '2025-10-05 10:54:27', 0, 0),
+(18, 15, 'admin', 11, 'student', '\nhello', '2025-10-05 16:18:15', 0, 0),
+(19, 16, 'student', 72, 'admin', '                                Hi Admin,\n                                I&#039;m having trouble with my recent order #ORD-2024-001. The order was placed yesterday but I haven&#039;t received any confirmation. Could you please help me check the status?\n                                Thank you!\n                            ', '2025-10-17 12:49:38', 0, 0),
+(20, 17, 'student', 72, 'admin', '                                Hi Admin,\n                                I&#039;m having trouble with my recent order #ORD-2024-001. The order was placed yesterday but I haven&#039;t received any confirmation. Could you please help me check the status?\n                                Thank you!\n                            ', '2025-10-17 12:54:27', 0, 0),
+(21, 18, 'student', 72, 'admin', '                                Hi Admin,\n                                I&#039;m having trouble with my recent order #ORD-2024-001. The order was placed yesterday but I haven&#039;t received any confirmation. Could you please help me check the status?\n                                Thank you!\n                            ', '2025-10-31 17:53:00', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -301,12 +301,17 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `canteen_id`, `student_id`, `time`, `status`, `total`) VALUES
-(135, 16, 72, '2025-09-21 23:46:23', 'ready', 170.00),
-(136, 16, 72, '2025-09-28 23:53:10', 'ready', 195.00),
-(137, 16, 72, '2025-09-30 13:16:33', 'ready', 195.00),
-(138, 16, 72, '2025-09-30 13:21:14', 'ready', 25.00),
+(135, 16, 72, '2025-09-21 23:46:23', 'accepted', 170.00),
+(136, 16, 72, '2025-09-28 23:53:10', 'accepted', 195.00),
+(137, 16, 72, '2025-09-30 13:16:33', 'accepted', 195.00),
+(138, 16, 72, '2025-09-30 13:21:14', 'accepted', 25.00),
 (139, 17, 72, '2025-09-30 13:24:36', 'pending', 150.00),
-(140, 16, 72, '2025-10-06 02:43:13', 'accepted', 100.00);
+(140, 16, 72, '2025-10-06 02:43:13', 'accepted', 100.00),
+(141, 16, 72, '2025-10-17 18:51:31', 'completed', 340.00),
+(142, 16, 72, '2025-10-17 18:51:40', 'completed', 170.00),
+(143, 16, 72, '2025-10-30 21:17:23', 'completed', 100.00),
+(144, 16, 72, '2025-11-01 10:40:38', 'pending', 170.00),
+(145, 16, 72, '2025-11-01 10:40:55', 'pending', 170.00);
 
 -- --------------------------------------------------------
 
@@ -339,7 +344,16 @@ INSERT INTO `order_items` (`id`, `order_id`, `item_id`, `quantity`) VALUES
 (48, 138, 95, 1),
 (49, 138, 96, 1),
 (50, 139, 98, 1),
-(51, 140, 93, 1);
+(51, 140, 93, 1),
+(52, 141, 97, 2),
+(53, 141, 93, 2),
+(54, 142, 97, 1),
+(55, 142, 93, 1),
+(56, 143, 93, 1),
+(57, 144, 97, 1),
+(58, 144, 93, 1),
+(59, 145, 93, 1),
+(60, 145, 97, 1);
 
 -- --------------------------------------------------------
 
@@ -398,12 +412,12 @@ INSERT INTO `students` (`id`, `student_name`, `reg_no`, `college_id`, `email`, `
 (104, 'Student 32', '10032', 11, 'student32@demo.com', 'pending', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
 (105, 'Student 33', '10033', 11, 'student33@demo.com', 'pending', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
 (106, 'Student 34', '10034', 11, 'student34@demo.com', 'pending', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
-(107, 'Student 35', '10035', 11, 'student35@demo.com', 'pending', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
-(108, 'Student 36', '10036', 11, 'student36@demo.com', 'pending', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
-(109, 'Student 37', '10037', 11, 'student37@demo.com', 'pending', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
-(110, 'Student 38', '10038', 11, 'student38@demo.com', 'pending', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
-(111, 'Student 39', '10039', 11, 'student39@demo.com', 'pending', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
-(112, 'Student 40', '10040', 11, 'student40@demo.com', 'pending', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
+(107, 'Student 35', '10035', 11, 'student35@demo.com', 'rejected', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
+(108, 'Student 36', '10036', 11, 'student36@demo.com', 'verified', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
+(109, 'Student 37', '10037', 11, 'student37@demo.com', 'rejected', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
+(110, 'Student 38', '10038', 11, 'student38@demo.com', 'rejected', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
+(111, 'Student 39', '10039', 11, 'student39@demo.com', 'verified', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
+(112, 'Student 40', '10040', 11, 'student40@demo.com', 'verified', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
 (113, 'Student 41', '10041', 11, 'student41@demo.com', 'rejected', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
 (114, 'Student 42', '10042', 11, 'student42@demo.com', 'rejected', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
 (115, 'Student 43', '10043', 11, 'student43@demo.com', 'verified', '2025-09-20 14:19:42', '$2y$10$gSker7cX7zn05tsoHrnikOVtztj9z9z0b8RpzMD7lQpnAVaogXnrC'),
@@ -540,7 +554,7 @@ ALTER TABLE `canteen`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=465;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=473;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -558,7 +572,7 @@ ALTER TABLE `college`
 -- AUTO_INCREMENT for table `conversations`
 --
 ALTER TABLE `conversations`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `default_categories`
@@ -582,19 +596,19 @@ ALTER TABLE `managers`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=141;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=146;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `students`
