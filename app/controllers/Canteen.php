@@ -203,18 +203,12 @@ class Canteen extends Controller
     public function orders()
     {
         $order = new Orders;
+        $student = new Student;
+        $item = new Items;
+        $order_items = new Order_items;
 
-        $orders = $order->join(
-            [
-                'order_items' => 'orders.id = order_items.order_id',
-                'items' => 'order_items.item_id = items.id',
-                'students' => 'orders.student_id = students.id'
-            ],
-            ['orders.canteen_id' => CANTEEN_ID],
-            'orders.*, items.name,items.price,students.email,items.id as item_id, order_items.quantity',
-            'desc',
-            'orders.id'
-        );
+        $active_orders = $order->whereIn('status', ['pending', 'accepted', 'ready'], ['canteen_id' => CANTEEN_ID]);
+        $history_orders = $order->whereIn('status', ['completed', 'rejected'], ['canteen_id' => CANTEEN_ID], [], 10) ?: [];
 
 
         $data['pending_orders'] = count($order->where(['canteen_id' => CANTEEN_ID, 'status' => 'pending']) ?: []);
@@ -225,12 +219,25 @@ class Canteen extends Controller
 
 
 
-        $data['orders'] = [];
-        foreach ($orders as $order) {
-            $data['orders'][$order->id][] = $order;
+        foreach ($active_orders as $row) {
+            $row->student = $student->first(['id' => $row->student_id]);
+            $row->items = $order_items->where(['order_id' => $row->id]);
+            foreach ($row->items as $row) {
+                $row->item = $item->first(['id' => $row->item_id]);
+            }
         }
 
-        krsort(($data['orders']));
+        foreach ($history_orders as $row) {
+            $row->student = $student->first(['id' => $row->student_id]);
+            $row->items = $order_items->where(['order_id' => $row->id]);
+            foreach ($row->items as $row) {
+                $row->item = $item->first(['id' => $row->item_id]);
+            }
+        }
+
+        $data['active_orders'] = $active_orders;
+        $data['history_orders'] = $history_orders;
+        show($history_orders);
 
         $this->view('canteen/orders', $data);
     }

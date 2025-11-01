@@ -15,6 +15,7 @@ class Conversations
         'created_at',
         'updated_at',
         'status',
-        'is_read_by_admin'
+        'is_read_by_admin',
+        'is_read_by_student'
     ];
 }

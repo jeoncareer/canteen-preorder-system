@@ -403,6 +403,18 @@
             color: #991b1b;
         }
 
+        .stat-cancelled .stat-summary-value {
+            color: #dc2626;
+        }
+
+        .stat-revenue .stat-summary-value {
+            color: #059669;
+        }
+
+        .stat-avg .stat-summary-value {
+            color: #7c3aed;
+        }
+
         /* Orders Tabs */
         .orders-tabs {
             display: flex;
@@ -609,4 +621,237 @@ agination with Horizontal Scroll */
 
 .nav-btn {
     flex-shrink: 0;
+}
+/* St
+atus Badges for Order History */
+.status-badge {
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+}
+
+.status-badge.completed {
+    background: #ddd6fe;
+    color: #5b21b6;
+}
+
+.status-badge.cancelled {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.status-badge.rejected {
+    background: #fecaca;
+    color: #991b1b;
+}
+
+/* Filter Actions */
+.filter-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    justify-content: flex-end;
+}
+
+.filter-btn {
+    padding: 0.75rem 1.5rem;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.apply-filters {
+    background: var(--secondary-color);
+    color: white;
+    border-color: var(--secondary-color);
+}
+
+.apply-filters:hover {
+    background: #2980b9;
+    transform: translateY(-1px);
+}
+
+.clear-filters {
+    background: #f8fafc;
+    color: #64748b;
+    border-color: #e2e8f0;
+}
+
+.clear-filters:hover {
+    background: #e2e8f0;
+    color: #1f2937;
+}
+
+.export-filtered {
+    background: #059669;
+    color: white;
+    border-color: #059669;
+}
+
+.export-filtered:hover {
+    background: #047857;
+    transform: translateY(-1px);
+}
+
+/* Additional Action Buttons */
+.print-btn {
+    background: #7c3aed;
+    color: white;
+}
+
+.print-btn:hover {
+    background: #6d28d9;
+    transform: translateY(-1px);
+}
+
+.refund-btn {
+    background: #dc2626;
+    color: white;
+}
+
+.refund-btn:hover {
+    background: #b91c1c;
+    transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+    .filter-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-btn {
+        justify-content: center;
+    }
+}/
+* Additional Status Styles */
+.status-select.preparing {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.stat-preparing .stat-summary-value {
+    color: #d97706;
+}
+
+.stat-revenue .stat-summary-value {
+    color: #059669;
+}
+
+.stat-avg .stat-summary-value {
+    color: #7c3aed;
+}
+
+/* Action Button Styles */
+.accept-btn {
+    background: #10b981;
+    color: white;
+}
+
+.accept-btn:hover {
+    background: #059669;
+    transform: translateY(-1px);
+}
+
+.reject-btn {
+    background: #ef4444;
+    color: white;
+}
+
+.reject-btn:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+}
+
+.prepare-btn {
+    background: #f59e0b;
+    color: white;
+}
+
+.prepare-btn:hover {
+    background: #d97706;
+    transform: translateY(-1px);
+}
+
+.ready-btn {
+    background: #3b82f6;
+    color: white;
+}
+
+.ready-btn:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+}
+
+.complete-btn {
+    background: #8b5cf6;
+    color: white;
+}
+
+.complete-btn:hover {
+    background: #7c3aed;
+    transform: translateY(-1px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .order-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .order-action-btn {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.6rem;
+    }
+}/*
+ Tab Content Visibility */
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Tab Button Styles */
+.orders-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.tab-btn {
+    padding: 1rem 2rem;
+    border: none;
+    background: transparent;
+    color: #64748b;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+    position: relative;
+    bottom: -2px;
+}
+
+.tab-btn:hover {
+    color: #667eea;
+    background: rgba(103, 126, 234, 0.05);
+}
+
+.tab-btn.active {
+    color: #667eea;
+    border-bottom-color: #667eea;
+    background: rgba(103, 126, 234, 0.05);
 }

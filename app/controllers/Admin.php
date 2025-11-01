@@ -206,6 +206,7 @@ class Admin extends Controller
             foreach ($conversations as $row) {
                 $row->messages = $messages->where(['conversation_id' => $row->id], [], '', '', 'created_at', 'asc');
                 $row->student = $student->first(['id' => $row->student_id]);
+                $conversation->update(['id' => $row->id], ['is_read_by_admin' => 1]);
             }
             $data['conversations'] = $conversations;
         }

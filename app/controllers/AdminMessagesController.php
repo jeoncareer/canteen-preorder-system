@@ -100,4 +100,14 @@ class AdminMessagesController extends Controller
         $closed_conversations = $conversations->count(['college_id' => $college_id, 'status' => 'resolved']);
         echo json_encode(['total_conversations' => $total_conversations, 'open_conversations' => $open_conversations, 'closed_conversations' => $closed_conversations]);
     }
+
+    public function fetchNoOfConversationUnreadByAdmin()
+    {
+
+        $conversations = new Conversations;
+
+        $count = $conversations->count(['college_id' => $_SESSION['COLLEGE']->id, 'is_read_by_admin' => 0]);
+
+        echo json_encode(['count' => $count]);
+    }
 }

@@ -39,11 +39,12 @@
 
 
         <li class="nav-item">
-            <a href="<?= ROOT ?>admin/student_reports" class="nav-link <?php if ($page === 'student_reports') {
-                                                                            echo 'active';
-                                                                        } ?>">
+            <a id="contact_admin_button" href="<?= ROOT ?>admin/student_reports" class="nav-link <?php if ($page === 'student_reports') {
+                                                                                                        echo 'active';
+                                                                                                    } ?>">
                 <span class="nav-icon">📞</span>
                 <span>Student Reports</span>
+
             </a>
         </li>
 
@@ -59,3 +60,24 @@
         </li>
     </ul>
 </div>
+
+
+<script>
+    const contactAdminBtn = document.getElementById('contact_admin_button');
+    let url = ROOT + 'AdminMessagesController/fetchNoOfConversationUnreadByAdmin';
+    let notificationBadge = document.createElement('div');
+    notificationBadge.classList.add('notification-badge');
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            let count = data.count;
+            if (count != 0) {
+                notificationBadge.textContent = count;
+                contactAdminBtn.appendChild(notificationBadge);
+            }
+        })
+
+    contactAdminBtn.addEventListener('click', e => {
+        console.log("you click contact btn");
+    })
+</script>

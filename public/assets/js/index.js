@@ -208,7 +208,54 @@ function updateTotalPrice() {
 }
 
 
-  function ucWords(word)
-                {
-                    return word.charAt(0).toUpperCase()+word.slice(1);
-                }
+function ucWords(word) {
+    return word.charAt(0).toUpperCase()+word.slice(1);
+}
+
+// Modal Functions
+function showOrderModal() {
+    const modal = document.getElementById('orderModal');
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+}
+
+function closeOrderModal() {
+    const modal = document.getElementById('orderModal');
+    modal.classList.remove('show');
+    document.body.style.overflow = 'auto'; // Restore scrolling
+}
+
+function confirmOrder() {
+    // Get selected payment method
+    const selectedPayment = document.querySelector('input[name="payment"]:checked');
+    
+    if (!selectedPayment) {
+        alert('Please select a payment method');
+        return;
+    }
+    
+    // Show confirmation message
+    alert(`Order confirmed! Payment method: ${selectedPayment.value === 'cod' ? 'Cash on Delivery' : 'Online Payment'}`);
+    
+    // Close modal
+    closeOrderModal();
+    
+    // Here you would normally redirect to order confirmation page
+    // For now, just show a success message
+    console.log('Order placed successfully with payment method:', selectedPayment.value);
+}
+
+// Close modal when clicking outside
+document.addEventListener('click', function(event) {
+    const modal = document.getElementById('orderModal');
+    if (event.target === modal) {
+        closeOrderModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeOrderModal();
+    }
+});

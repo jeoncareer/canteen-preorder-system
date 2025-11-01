@@ -152,3 +152,32 @@ function getInitials(name) {
         .join('');
 }
 
+// Function 1: Get formatted time
+function formatTime(datetimeStr) {
+  const date = new Date(datetimeStr);
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12 || 12; // Convert to 12-hour format
+  minutes = minutes.toString().padStart(2, '0');
+  return `${hours}:${minutes} ${ampm}`;
+}
+
+// Function 2: Get human-readable date
+function formatDate(datetimeStr) {
+  const date = new Date(datetimeStr);
+  const today = new Date();
+  const yesterday = new Date();
+  yesterday.setDate(today.getDate() - 1);
+
+  const sameDay = (d1, d2) =>
+    d1.getFullYear() === d2.getFullYear() &&
+    d1.getMonth() === d2.getMonth() &&
+    d1.getDate() === d2.getDate();
+
+  if (sameDay(date, today)) return "Today";
+  if (sameDay(date, yesterday)) return "Yesterday";
+
+  return date.toLocaleString('en-US', { month: 'long', day: 'numeric' });
+}
+

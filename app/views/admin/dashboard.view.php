@@ -265,6 +265,8 @@
             color: white;
         }
 
+
+
         .edit-btn:hover {
             background: #d68910;
             transform: translateY(-1px);
@@ -669,8 +671,10 @@
                     if (status == 'verified') {
 
                         btn.textContent = 'verified';
+
                     } else {
                         btn.textContent = 'rejected';
+
                     }
                     adminActions.append(btn);
                 })

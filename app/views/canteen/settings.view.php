@@ -359,10 +359,10 @@
                 <div class="status-indicator status-open">
                     🟢 Currently Open
                 </div>
-                <p><strong>Manager:</strong> John Smith</p>
+                <!-- <p><strong>Manager:</strong> John Smith</p>
                 <p><strong>Phone:</strong> +1 (555) 123-4567</p>
                 <p><strong>Hours:</strong> 8:00 AM - 8:00 PM (Mon-Fri)</p>
-                <p><strong>Last Updated:</strong> March 15, 2024</p>
+                <p><strong>Last Updated:</strong> March 15, 2024</p> -->
             </div>
 
 

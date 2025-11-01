@@ -37,6 +37,56 @@
             border-color: #667eea !important;
             box-shadow: 0 0 0 4px rgba(103, 126, 234, 0.1) !important;
         }
+
+        /* Toast styles */
+        .order-toast {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 2000;
+            min-width: 260px;
+            max-width: 360px;
+            background: #10b981;
+            /* green */
+            color: #fff;
+            padding: 14px 16px;
+            border-radius: 10px;
+            box-shadow: 0 8px 28px rgba(16, 185, 129, 0.14);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            transform: translateY(-12px) scale(.98);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform .22s ease, opacity .22s ease;
+            font-weight: 600;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        }
+
+        .order-toast.show {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .order-toast .icon {
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        .order-toast .message {
+            flex: 1;
+            font-size: 0.95rem;
+        }
+
+        .order-toast.success {
+            background: #10b981;
+        }
+
+        .order-toast.error {
+            background: #ef4444;
+            /* red for errors */
+        }
     </style>
 
 
@@ -115,70 +165,154 @@
                         </div>
 
 
-                        <form action="<?= ROOT ?>students/order">
 
 
-                            <div class="cart-panel">
-                                <div class="cart-header">
-                                    <span class="cart-title">🛒 Your Order</span>
-                                </div>
-                                <div class="cart-items cart-item-template" id="cart-items">
-                                    <?php if (!empty($carts)): ?>
-                                        <?php foreach ($carts as $cart): ?>
-                                            <div class="cart-item">
 
-                                                <div class="item-details">
-                                                    <div class="item-name"><?= ucfirst($cart->name) ?></div>
-                                                    <div class="item-price">₹<?= $cart->price ?> each</div> <?php $total += ($cart->price * $cart->count) ?>
-                                                    <div class="quantity-controls">
-                                                        <button data-price="<?= $cart->price ?>" data-item-id="<?= $cart->item_id ?>" class="quantity-btn">−</button>
-                                                        <span data-item-id="<?= $cart->item_id ?>" class="quantity"><?= $cart->count ?></span>
-                                                        <button data-price="<?= $cart->price ?>" data-item-id="<?= $cart->item_id ?>" class="quantity-btn">+</button>
-                                                    </div>
+                        <div class="cart-panel">
+                            <div class="cart-header">
+                                <span class="cart-title">🛒 Your Order</span>
+                            </div>
+                            <div class="cart-items cart-item-template" id="cart-items">
+                                <?php if (!empty($carts)): ?>
+                                    <?php foreach ($carts as $cart): ?>
+                                        <div class="cart-item">
+
+                                            <div class="item-details">
+                                                <div class="item-name"><?= ucfirst($cart->name) ?></div>
+                                                <div class="item-price">₹<?= $cart->price ?> each</div> <?php $total += ($cart->price * $cart->count) ?>
+                                                <div class="quantity-controls">
+                                                    <button data-price="<?= $cart->price ?>" data-item-id="<?= $cart->item_id ?>" class="quantity-btn">−</button>
+                                                    <span data-item-id="<?= $cart->item_id ?>" class="quantity"><?= $cart->count ?></span>
+                                                    <button data-price="<?= $cart->price ?>" data-item-id="<?= $cart->item_id ?>" class="quantity-btn">+</button>
                                                 </div>
-                                                <div class="item-total"><span>₹</span>
-                                                    <div data-item-id="<?= $cart->item_id ?>" class="total-price"><?= $cart->price * $cart->count ?></div>
-                                                </div>
-                                                <button data-item-id="<?= $cart->item_id ?>" data-cart-id="<?= $cart->id ?>" class="remove-btn" onclick="removeItem(this)">×</button>
                                             </div>
-
-
-                                        <?php endforeach; ?>
-                                    <?php endif; ?>
-
-
-
-
-                                    <div class="cart-summary" id="cart-summary">
-                                        <div class="summary-row">
-                                            <span>Subtotal:</span>
-                                            <span id="subtotal">₹210</span>
+                                            <div class="item-total"><span>₹</span>
+                                                <div data-item-id="<?= $cart->item_id ?>" class="total-price"><?= $cart->price * $cart->count ?></div>
+                                            </div>
+                                            <button data-item-id="<?= $cart->item_id ?>" data-cart-id="<?= $cart->id ?>" class="remove-btn" onclick="removeItem(this)">×</button>
                                         </div>
-                                        <div class="summary-row">
-                                            <span>Tax (5%):</span>
-                                            <span id="tax">₹10.50</span>
-                                        </div>
-                                        <div class="summary-row summary-total">
-                                            <span>Total:</span>
-                                            <span id="total">₹ <h1=3 id="full-total-price"><?= $total ?></h3></span>
 
-                                        </div>
-                                        <button class="checkout-btn" id="checkout-btn" onclick="checkout()">
-                                            Place Order
-                                        </button>
+
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+
+
+
+
+                                <div class="cart-summary" id="cart-summary">
+                                    <div class="summary-row">
+                                        <span>Subtotal:</span>
+                                        <span id="subtotal">₹210</span>
                                     </div>
+                                    <div class="summary-row">
+                                        <span>Tax (5%):</span>
+                                        <span id="tax">₹10.50</span>
+                                    </div>
+                                    <div class="summary-row summary-total">
+                                        <span>Total:</span>
+                                        <span id="total">₹ <h1=3 id="full-total-price"><?= $total ?></h3></span>
+
+                                    </div>
+                                    <button class="checkout-btn" id="checkout-btn">
+                                        Place Order
+                                    </button>
                                 </div>
                             </div>
-                        </form>
+                        </div>
+
                     </div>
 
                     <div id="testing"></div>
 
+                    <!-- Order Confirmation Modal -->
+
+                    <!-- Order toast (place near end of body) -->
+                    <div id="order-toast" class="order-toast" aria-live="polite" role="status"></div>
 
                     <script src="<?= ROOT ?>assets/js/index.js"></script>
 
                     <script src="<?= ROOT ?>assets/js/get-items.js">
+                    </script>
 
+                    <script>
+                        const checkoutBtn = document.getElementById('checkout-btn');
+                        checkoutBtn.addEventListener('click', () => {
+
+                            let url = ROOT + 'students/order';
+                            fetch(url, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({})
+                                }).then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        showOrderToast('Order placed successfully!', 3000, 'success').then(() => {
+                                            // Optionally refresh the page or clear the cart
+                                            window.location.reload();
+                                        });
+                                    }
+                                });
+                        });
+                        /**
+                         * Show a temporary order toast.
+                         * @param {string} message - Text to show.
+                         * @param {number} duration - Milliseconds before auto-hide (default 3000).
+                         * @param {'success'|'error'} type - Visual type (default 'success').
+                         * @returns {Promise<boolean>} resolves true when shown.
+                         *
+                         * Example:
+                         *   showOrderToast('Order placed successfully', 3500);
+                         */
+                        function showOrderToast(message = 'Order placed successfully', duration = 3000, type = 'success') {
+                            return new Promise((resolve) => {
+                                const toast = document.getElementById('order-toast');
+                                if (!toast) return resolve(false);
+
+                                // Clear existing hide timer if any
+                                if (toast._hideTimer) {
+                                    clearTimeout(toast._hideTimer);
+                                    toast._hideTimer = null;
+                                }
+
+                                // Set content & classes
+                                toast.className = 'order-toast show ' + (type === 'error' ? 'error' : 'success');
+                                toast.innerHTML = `
+            <div class="icon">${type === 'error' ? '⚠️' : '✅'}</div>
+            <div class="message">${message}</div>
+        `;
+
+                                // Auto-hide
+                                toast._hideTimer = setTimeout(() => {
+                                    toast.classList.remove('show');
+                                    // remove content after transition
+                                    setTimeout(() => {
+                                        toast.innerHTML = '';
+                                        toast._hideTimer = null;
+                                        resolve(true);
+                                    }, 240);
+                                }, Math.max(800, duration)); // minimum visible time
+
+                                // Also allow click to dismiss instantly
+                                toast.onclick = () => {
+                                    if (toast._hideTimer) {
+                                        clearTimeout(toast._hideTimer);
+                                        toast._hideTimer = null;
+                                    }
+                                    toast.classList.remove('show');
+                                    setTimeout(() => {
+                                        toast.innerHTML = '';
+                                        resolve(true);
+                                    }, 240);
+                                };
+                            });
+                        }
+
+                        /* Optional convenience wrappers:
+                           showOrderToast('Order placed', 3000, 'success');
+                           showOrderToast('Failed to place order', 4000, 'error');
+                        */
                     </script>
 </body>
 

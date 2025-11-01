@@ -223,4 +223,23 @@ class OrdersController extends Controller
             echo json_encode(['success' => false, 'orders' => 'no results', 'query' => $sql, 'where' => $where]);
         }
     }
+
+    public function updateOrderStatus()
+    {
+        header('Content-Type: application/json');
+        $data = json_decode(file_get_contents("php://input"), true);
+        $order_id = htmlspecialchars($data['order_id']);
+        $status = htmlspecialchars($data['new_status']);
+        $order = new Orders;
+        $validStatus = array('pending', 'preparing', 'accepted', 'ready', 'completed', 'rejected');
+
+
+
+        if (in_array($status, $validStatus)) {
+            $order->update(['id' => $order_id], ['status' => $status]);
+            echo json_encode(['success' => true, 'order_id' => $order_id, 'new_status' => $status]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Invalid status provided.']);
+        }
+    }
 }

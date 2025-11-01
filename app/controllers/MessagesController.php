@@ -40,7 +40,15 @@ class MessagesController extends Controller
 
 
 
+    public function fetchNoOfConversationUnreadByStudents()
+    {
 
+        $conversations = new Conversations;
+
+        $count = $conversations->count(['student_id' => STUDENT_ID, 'is_read_by_student' => 0]);
+
+        echo json_encode(['count' => $count]);
+    }
 
     public function deleteMessage($message_id)
     {

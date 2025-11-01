@@ -93,3 +93,27 @@ function getInitials($name)
 
     return $initials;
 }
+
+
+// Function 1: Get formatted time
+function formatTime($datetime)
+{
+    $time = date('g:i A', strtotime($datetime)); // 12-hour format with AM/PM
+    return $time;
+}
+
+// Function 2: Get human-readable date
+function formatDate($datetime)
+{
+    $date = strtotime($datetime);
+    $today = strtotime('today');
+    $yesterday = strtotime('yesterday');
+
+    if (date('Y-m-d', $date) === date('Y-m-d', $today)) {
+        return "Today";
+    } elseif (date('Y-m-d', $date) === date('Y-m-d', $yesterday)) {
+        return "Yesterday";
+    } else {
+        return date('F j', $date); // Example: September 3
+    }
+}

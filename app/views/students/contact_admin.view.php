@@ -319,9 +319,13 @@
         .thread-messages {
             padding: 1.5rem;
             background: white;
-            display: flex;
+            display: none;
             flex-direction: column;
             gap: 1.5rem;
+        }
+
+        .thread-messages.show {
+            display: flex;
         }
 
         .message-item {

@@ -1,228 +1,416 @@
-  let table = document.querySelector('.orders-table');
-        let tBody = table.querySelector('tbody');
-        
-        // console.log(orders);
-        let checkboxs = document.querySelectorAll('.order-checkbox[data-order-id]');
-        checkboxs.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                let orderId = checkbox.dataset.orderId;
-                console.log("clicked checkbox with id " + orderId);
-            })
-        })
+// Simple Tab Switching Function
+function switchTab(tabName) {
+  console.log("Switching to tab:", tabName);
 
+  // Hide all tab contents
+  const allTabs = document.querySelectorAll(".tab-content");
+  allTabs.forEach((tab) => {
+    tab.classList.remove("active");
+    tab.style.display = "none";
+  });
 
-        let allCheckbox = document.getElementById('selectAllHeader');
+  // Remove active class from all tab buttons
+  const allButtons = document.querySelectorAll(".tab-btn");
+  allButtons.forEach((btn) => btn.classList.remove("active"));
 
-        allCheckbox.addEventListener('change', function() {
-            checkboxs.forEach(checkbox => {
-                checkbox.checked = allCheckbox.checked;
-                let orderId = checkbox.dataset.orderId;
-                console.log(" checkbox: " + orderId);
-            })
-        })
+  // Show target tab content
+  const targetTab = document.getElementById(tabName);
+  if (targetTab) {
+    targetTab.classList.add("active");
+    targetTab.style.display = "block";
+  }
 
-        let bulkBtns = document.querySelectorAll('.bulk-btn');
+  // Activate clicked button
+  const targetButton = document.querySelector(`[data-tab="${tabName}"]`);
+  if (targetButton) {
+    targetButton.classList.add("active");
+  }
 
-        bulkBtns.forEach(bulkBtn => {
-            bulkBtn.addEventListener('click', function() {
-                let newStatus = bulkBtn.dataset.type;
-                checkboxs.forEach(checkbox => {
-                    if (checkbox.checked) {
+  console.log("Tab switched successfully to:", tabName);
+}
 
+// Initialize tabs when page loads
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("Initializing tab system...");
 
-                        let orderId = checkbox.dataset.orderId;
-                        console.log("changing " + orderId);
-                        const url = ROOT + 'api/changeStatus';
-                        fetch(url, {
-                                method: "POST",
-                                headers: {
-                                    "Content-type": "application/json"
-                                },
-                                body: JSON.stringify({
-                                    order_id: orderId,
-                                    new_status: newStatus
-                                })
-                            })
-                            .then(res => res.json())
-                            .then(data => {
-                                if (data.success) {
-                                    let select = document.querySelector(`.status-select[data-id="${orderId}"]`);
-                                    console.log(select);
-                                    select.classList.remove('pending', 'accepted', 'completed', 'rejected', 'ready');
-                                    select.classList.add(newStatus);
-                                    select.value = newStatus;
-                                    console.log("Status updated successfully");
+  // Add click listeners to tab buttons
+  const tabButtons = document.querySelectorAll(".tab-btn");
+  tabButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      const tabName = this.getAttribute("data-tab");
+      switchTab(tabName);
+    });
+  });
 
-                                }
-                            });
-                    }
-                })
-            })
-        })
+  // Make sure active orders tab is shown by default
+  switchTab("active-orders");
 
+  console.log("Tab system initialized");
 
-        const selects = document.querySelectorAll('.form-select,.form-input');
-        selects.forEach(select => {
-            select.addEventListener('change', function() {
+  // Initialize pagination
+  initializePagination();
+  initializeHorizontalScroll();
 
-                let filter = [];
+  // Initialize status select dropdowns
+  initializeStatusSelects();
 
-                selects.forEach(select => {
-                    filter.push({
-                        type: select.dataset.type,
-                        value: select.value
+  // History Filter Functionality
+  const historyFilters = document.querySelectorAll(
+    "#order-history .form-input, #order-history .form-select"
+  );
+  const applyFiltersBtn = document.querySelector(".apply-filters");
+  const clearFiltersBtn = document.querySelector(".clear-filters");
+  const exportFilteredBtn = document.querySelector(".export-filtered");
 
+  // Apply Filters
+  if (applyFiltersBtn) {
+    applyFiltersBtn.addEventListener("click", function () {
+      const searchValue = document.getElementById("historySearchInput").value;
+      const statusValue = document.getElementById("historyStatusFilter").value;
+      const dateRangeValue = document.getElementById("dateRangeFilter").value;
+      const fromDateValue = document.getElementById("historyFromDate").value;
+      const toDateValue = document.getElementById("historyToDate").value;
+      const sortValue = document.getElementById("historySortBy").value;
 
-                    })
+      console.log("Applying filters:", {
+        search: searchValue,
+        status: statusValue,
+        dateRange: dateRangeValue,
+        fromDate: fromDateValue,
+        toDate: toDateValue,
+        sort: sortValue,
+      });
 
-                })
+      // Here you would normally make an API call to filter the data
+      // For now, just show a message
+      alert("Filters applied! (This is a demo - backend integration needed)");
+    });
+  }
 
-                const url = ROOT + "api/getOrdersByFilter";
+  // Clear Filters
+  if (clearFiltersBtn) {
+    clearFiltersBtn.addEventListener("click", function () {
+      document.getElementById("historySearchInput").value = "";
+      document.getElementById("historyStatusFilter").value = "";
+      document.getElementById("dateRangeFilter").value = "";
+      document.getElementById("historyFromDate").value = "";
+      document.getElementById("historyToDate").value = "";
+      document.getElementById("historySortBy").value = "date_desc";
 
-                console.log(filter[4].type);
-                fetch(url, {
-                        method: "POST",
-                        headers: {
-                            "Content-type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            filter: filter
-                        })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.success) {
-                            console.log("after backend calling");
+      console.log("Filters cleared");
+      alert("All filters cleared!");
+    });
+  }
 
-                            let orders = data.orders;
-                            // let testing = document.querySelector('#testing');
-                            // testing.innerHTML = `<pre>${JSON.stringify(orders, null, 2)}</pre>`;
-                            tBody.innerHTML = '';
-                            console.log(data.sql);
-                            console.log(orders);
-                            console.log(filter[4].value);
-                            if (filter[4].value !== "") {
-                                if (filter[4].value === 'desc') {
-                                    Object.entries(orders).sort((a, b) => b[0] - a[0]).forEach(([orderId, items]) => {
+  // Export Filtered Data
+  if (exportFilteredBtn) {
+    exportFilteredBtn.addEventListener("click", function () {
+      console.log("Exporting filtered data...");
+      alert(
+        "Export functionality will be implemented with backend integration"
+      );
+    });
+  }
 
-                                        filterOrders(orderId, items);
+  // Date Range Filter Change Handler
+  const dateRangeFilter = document.getElementById("dateRangeFilter");
+  const customDateInputs = document.querySelectorAll(
+    "#historyFromDate, #historyToDate"
+  );
 
-                                    })
-                                } else if (filter[4].value === 'asc') {
-                                    Object.entries(orders).sort((a, b) => a[0] - b[0]).forEach(([orderId, items]) => {
+  if (dateRangeFilter) {
+    dateRangeFilter.addEventListener("change", function () {
+      if (this.value === "custom") {
+        customDateInputs.forEach((input) => {
+          input.style.display = "block";
+          input.required = true;
+        });
+      } else {
+        customDateInputs.forEach((input) => {
+          input.style.display = "none";
+          input.required = false;
+          input.value = "";
+        });
+      }
+    });
+  }
 
-                                        filterOrders(orderId, items);
+  // Action Button Handlers for History Table
+  document.addEventListener("click", function (event) {
+    if (event.target.classList.contains("view-details-btn")) {
+      const orderId = event.target
+        .closest("tr")
+        .querySelector(".order-id").textContent;
+      console.log("Viewing details for order:", orderId);
+      alert(`Viewing details for order ${orderId}`);
+    }
 
-                                    })
-                                } else if (filter[4].value === 'total') {
-                                    Object.entries(orders)
-                                        .sort((a, b) => b[1][0].total - a[1][0].total)
-                                        .forEach(([orderId, items]) => {
-                                            filterOrders(orderId, items);
-                                        });
+    if (event.target.classList.contains("print-btn")) {
+      const orderId = event.target
+        .closest("tr")
+        .querySelector(".order-id").textContent;
+      console.log("Printing order:", orderId);
+      alert(`Printing order ${orderId}`);
+    }
 
-                                }
-                            } else {
-                                console.log("in else");
+    if (event.target.classList.contains("refund-btn")) {
+      const orderId = event.target
+        .closest("tr")
+        .querySelector(".order-id").textContent;
+      console.log("Processing refund for order:", orderId);
+      if (
+        confirm(`Are you sure you want to process refund for order ${orderId}?`)
+      ) {
+        alert(`Refund processed for order ${orderId}`);
+      }
+    }
+  });
+});
+// Pagination Functionality
+let currentActivePage = 1;
+let currentHistoryPage = 1;
+const itemsPerPage = 5;
 
-                                Object.entries(orders).forEach(([orderId, items]) => {
+function initializePagination() {
+  console.log("Initializing pagination...");
 
-                                    filterOrders(orderId, items);
+  // Active Orders Pagination
+  const activePrevBtn = document.getElementById("activePrevBtn");
+  const activeNextBtn = document.getElementById("activeNextBtn");
+  const activePageNumbers = document.querySelectorAll(
+    "#activePageNumbers .page-btn"
+  );
 
-                                })
-                            }
+  // History Orders Pagination
+  const historyPrevBtn = document.getElementById("historyPrevBtn");
+  const historyNextBtn = document.getElementById("historyNextBtn");
+  const historyPageNumbers = document.querySelectorAll(
+    "#historyPageNumbers .page-btn"
+  );
 
-                        } else {
-                            tBody.innerHTML = '';
-                        }
-                    });
+  // Active Orders Pagination Events
+  if (activePrevBtn) {
+    activePrevBtn.addEventListener("click", function () {
+      if (currentActivePage > 1) {
+        currentActivePage--;
+        updateActivePagination();
+      }
+    });
+  }
 
+  if (activeNextBtn) {
+    activeNextBtn.addEventListener("click", function () {
+      if (currentActivePage < 5) {
+        // Assuming 5 pages max
+        currentActivePage++;
+        updateActivePagination();
+      }
+    });
+  }
 
-                //table.removeChild(tbody);
+  // Active page number clicks
+  activePageNumbers.forEach((btn) => {
+    btn.addEventListener("click", function () {
+      currentActivePage = parseInt(this.dataset.page);
+      updateActivePagination();
+    });
+  });
 
+  // History Orders Pagination Events
+  if (historyPrevBtn) {
+    historyPrevBtn.addEventListener("click", function () {
+      if (currentHistoryPage > 1) {
+        currentHistoryPage--;
+        updateHistoryPagination();
+      }
+    });
+  }
 
+  if (historyNextBtn) {
+    historyNextBtn.addEventListener("click", function () {
+      if (currentHistoryPage < 8) {
+        // Assuming 8 pages max
+        currentHistoryPage++;
+        updateHistoryPagination();
+      }
+    });
+  }
 
-            })
-        })
+  // History page number clicks
+  historyPageNumbers.forEach((btn) => {
+    btn.addEventListener("click", function () {
+      currentHistoryPage = parseInt(this.dataset.page);
+      updateHistoryPagination();
+    });
+  });
 
-        function filterOrders(orderId, items) {
-            let tr = document.createElement('tr');
-            let itemsCount = '';
-            items.forEach(item => {
-                let name = item.name;
-                name = name.charAt(0).toUpperCase() + name.slice(1);
-                itemsCount += `
-                                       <div class="order-item">
-                                <span class="item-name">${name}</span>
-                                <span class="item-quantity">x${item.quantity}</span>
-                                </div>
-                                    `;
-            });
+  // Initialize pagination states
+  updateActivePagination();
+  updateHistoryPagination();
+}
 
-            let time = items[0].time;
-            const dateStr = time;
-            const date = new Date(dateStr.replace(" ", "T"));
+function updateActivePagination() {
+  console.log("Updating active orders pagination - Page:", currentActivePage);
 
-            const options = {
-                hour: 'numeric',
-                minute: '2-digit',
-                hour12: true
-            }
+  // Update page number buttons
+  const activePageNumbers = document.querySelectorAll(
+    "#activePageNumbers .page-btn"
+  );
+  activePageNumbers.forEach((btn) => {
+    btn.classList.remove("active");
+    if (parseInt(btn.dataset.page) === currentActivePage) {
+      btn.classList.add("active");
+    }
+  });
 
-            const dateOptions = {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            };
+  // Update prev/next button states
+  const activePrevBtn = document.getElementById("activePrevBtn");
+  const activeNextBtn = document.getElementById("activeNextBtn");
 
-            const formattedTime = date.toLocaleTimeString('en-US', options);
-            const realDate = date.toLocaleDateString('en-US', dateOptions);
+  if (activePrevBtn) {
+    activePrevBtn.disabled = currentActivePage === 1;
+  }
 
+  if (activeNextBtn) {
+    activeNextBtn.disabled = currentActivePage === 5;
+  }
 
-            tr.innerHTML = `
-                                
-                                <td>
-                                <input type="checkbox" class="order-checkbox" data-order-id="${items[0].id}">
-                                </td>
-                                <td><span class="order-id">#${items[0].id}</span></td>
-                                <td>
-                                <div class="student-info">
-                                <span class="student-name">${items[0].email}</span>
-                                <span class="student-email">${items[0].email}</span>
-                                </div>
-                                </td>
-                                <td>
-                                <div class="order-items-list">
-                                
-                             ${itemsCount}
-                                
-                                
-                                </div>
-                                </td>
-                                <td><span class="order-total">₹${items[0].total}</span></td>
-                                <td>
-                                <div class="order-time-info">
-                                <span class="order-time">${formattedTime}</span>
-                                <span class="order-date">${realDate}</span>
-                                </div>
-                                </td>
-                                <td>
-                                <select data-id='${items[0].id}' class="status-select ${items[0].status}">
-                                <option value="pending" ${items[0].status === 'pending' ? 'selected' : ''}>Pending</option>
-                                <option value="accepted" ${items[0].status === 'accepted' ? 'selected' : ''}>Accepted</option>
-                                <option value="completed" ${items[0].status === 'completed' ? 'selected' : ''}>Completed</option>
-                                <option value="ready" ${items[0].status === 'ready' ? 'selected' : ''}>Ready</option>
-                                <option value="rejected" ${items[0].status === 'rejected' ? 'selected' : ''}>Rejected</option>
-                                </select>
-                                </td>
-                                <!-- <td>
-                                <div class="order-actions">
-                                <button class="order-action-btn view-details-btn">👁️ Details</button>
-                                </div>
-                                </td> -->
-                                
-                                `;
+  // Simulate loading different data (in real app, this would fetch from API)
+  showActiveOrdersPage(currentActivePage);
+}
 
-            tBody.append(tr);
-        }
-    
+function updateHistoryPagination() {
+  console.log("Updating history orders pagination - Page:", currentHistoryPage);
+
+  // Update page number buttons
+  const historyPageNumbers = document.querySelectorAll(
+    "#historyPageNumbers .page-btn"
+  );
+  historyPageNumbers.forEach((btn) => {
+    btn.classList.remove("active");
+    if (parseInt(btn.dataset.page) === currentHistoryPage) {
+      btn.classList.add("active");
+    }
+  });
+
+  // Update prev/next button states
+  const historyPrevBtn = document.getElementById("historyPrevBtn");
+  const historyNextBtn = document.getElementById("historyNextBtn");
+
+  if (historyPrevBtn) {
+    historyPrevBtn.disabled = currentHistoryPage === 1;
+  }
+
+  if (historyNextBtn) {
+    historyNextBtn.disabled = currentHistoryPage === 8;
+  }
+
+  // Simulate loading different data (in real app, this would fetch from API)
+  showHistoryOrdersPage(currentHistoryPage);
+}
+
+function showActiveOrdersPage(page) {
+  // This is a demo function - in real app, you'd fetch data from API
+  console.log(`Loading active orders page ${page}`);
+
+  // You could hide/show different rows based on page
+  // For now, just show a message in console
+  const message = `Showing active orders page ${page} (Items ${
+    (page - 1) * itemsPerPage + 1
+  }-${page * itemsPerPage})`;
+  console.log(message);
+}
+
+function showHistoryOrdersPage(page) {
+  // This is a demo function - in real app, you'd fetch data from API
+  console.log(`Loading history orders page ${page}`);
+
+  // You could hide/show different rows based on page
+  // For now, just show a message in console
+  const message = `Showing history orders page ${page} (Items ${
+    (page - 1) * itemsPerPage + 1
+  }-${page * itemsPerPage})`;
+  console.log(message);
+}
+
+// Horizontal scrolling for page numbers
+function initializeHorizontalScroll() {
+  const pageContainers = document.querySelectorAll(".page-numbers-container");
+
+  pageContainers.forEach((container) => {
+    // Mouse wheel scrolling
+    container.addEventListener("wheel", function (e) {
+      e.preventDefault();
+      this.scrollLeft += e.deltaY;
+    });
+
+    // Touch scrolling for mobile
+    let isScrolling = false;
+    let startX = 0;
+    let scrollLeft = 0;
+
+    container.addEventListener("touchstart", function (e) {
+      isScrolling = true;
+      startX = e.touches[0].pageX - this.offsetLeft;
+      scrollLeft = this.scrollLeft;
+    });
+
+    container.addEventListener("touchmove", function (e) {
+      if (!isScrolling) return;
+      e.preventDefault();
+      const x = e.touches[0].pageX - this.offsetLeft;
+      const walk = (x - startX) * 2;
+      this.scrollLeft = scrollLeft - walk;
+    });
+
+    container.addEventListener("touchend", function () {
+      isScrolling = false;
+    });
+  });
+}
+// Status Change Functionality
+function initializeStatusSelects() {
+  let statusSelects = document.querySelectorAll(".status-select");
+  statusSelects.forEach((select) => {
+    select.addEventListener("change", function () {
+      let orderId = this.getAttribute("data-order-id");
+      let newStatus = this.value;
+      this.className = "status-select " + newStatus;
+      updateOrderStatus(orderId, newStatus);
+    });
+  });
+}
+
+// Function to simulate API call for status update
+function updateOrderStatus(orderId, newStatus) {
+  console.log(`Making API call to update order ${orderId} to ${newStatus}`);
+
+  // Simulate API call
+  const url = ROOT + "OrdersController/updateOrderStatus";
+  const data = {
+    order_id: orderId,
+    new_status: newStatus,
+  };
+
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        console.log("Status updated successfully");
+        alert(`Order ${orderId} status updated to ${newStatus}`);
+      } else {
+        console.error("Failed to update status");
+        alert("Failed to update order status. Please try again.");
+      }
+    })
+    .catch((error) => {
+      console.error("Error updating status:", error);
+      alert("Error updating order status. Please try again.");
+    });
+}

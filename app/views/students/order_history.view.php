@@ -73,10 +73,10 @@
                                     <div>Payment: Wallet</div>
                                 </div>
                                 <div class="order-total">Total: ₹<?= $order->total ?></div>
-                                <div class="order-actions">
+                                <!-- <div class="order-actions">
                                     <button class="btn btn-outline">Reorder</button>
                                     <button class="btn btn-secondary">View Receipt</button>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     <?php endforeach; ?>

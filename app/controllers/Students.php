@@ -288,10 +288,10 @@ class Students extends Controller
 
             foreach ($conversations as $row) {
                 $row->messages = $messages->where(['conversation_id' => $row->id], [], '', '', 'created_at', 'asc');
+                $conversation->update(['id' => $row->id], ['is_read_by_student' => 1]);
             }
             $data['conversations'] = $conversations;
         }
-        show($data);
 
 
 
@@ -336,10 +336,11 @@ class Students extends Controller
                 if (!empty($id)) {
                     $sql = 'DELETE FROM cart WHERE student_id = ' . STUDENT_ID;
                     $cart->query($sql);
-                    redirect('students');
                 }
             }
         }
+
+        echo json_encode(['success' => true]);
     }
 
     public function profile()
