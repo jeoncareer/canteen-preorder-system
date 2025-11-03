@@ -804,7 +804,7 @@
                                             <div class="reply-header">
                                                 <h4>💬 Add Reply</h4>
                                             </div>
-                                            <form action="<?= ROOT ?>MessagesController/reply/<?= $conversation->id ?>" class="reply-form">
+                                            <form method="post" action="<?= ROOT ?>MessagesController/reply/<?= $conversation->id ?>" class="reply-form">
                                                 <div class="form-group">
                                                     <textarea name="reply_message" class="reply-textarea" placeholder="Type your reply here..." required></textarea>
                                                 </div>

@@ -5,6 +5,8 @@ class MessagesController extends Controller
 {
     use Database;
 
+
+
     public function messages()
     {
 
@@ -56,5 +58,24 @@ class MessagesController extends Controller
         $messages->delete($message_id);
 
         echo json_encode(['message' => $message_id]);
+    }
+
+    public function reply($conversation_id)
+    {
+        $messages = new Messages;
+
+        $data = json_decode(file_get_contents('php://input'), true);
+        $reply_message = $_POST['reply_message'];
+
+
+        $messages->insert([
+            'conversation_id' => $conversation_id,
+            'sender_type' => 'student',
+            'sender_id' => STUDENT_ID,
+            'receiver_type' => 'college',
+            'message_text' => $reply_message,
+        ]);
+
+        redirect('students/contact');
     }
 }
