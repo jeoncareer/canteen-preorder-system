@@ -9,47 +9,66 @@
 
     <style>
         .error-msg {
-            color: red;
+            color: #dc2626;
             font-size: 0.85rem;
-            margin-top: 4px;
+            margin-top: 6px;
             display: block;
         }
     </style>
 </head>
 
 <body>
-    <div class="logo">Campus Canteen</div>
-    <form action="<?= ROOT ?>canteen/login" method="post">
+
+    <div class="login-wrapper">
+
+        <div class="logo">
+            <div class="logo-text">
+                <span class="logo-icon">🍽️</span> Campus Canteen
+            </div>
+        </div>
+
         <div class="auth-container">
+
             <div class="auth-header">
                 <h1 class="auth-title">Welcome!</h1>
                 <p class="auth-subtitle">Login to your account</p>
             </div>
-            <div class="form-group">
-                <label class="form-label">Email</label>
-                <input type="email" class="form-input" name="email" placeholder="Enter your email" required>
-                <?php if (!empty($errors['email'])): ?>
 
-                    <small class="error-msg"><?= $errors['email'] ?></small>
-                <?php endif; ?>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Password</label>
-                <input type="password" name="password" class="form-input" placeholder="Enter your password" required>
-                <?php if (!empty($errors['password'])): ?>
+            <form action="<?= ROOT ?>canteen/login" method="post">
 
-                    <small class="error-msg"><?= $errors['password'] ?></small>
-                <?php endif; ?>
-            </div>
-            <button type="submit" class="submit-btn">Login</button>
+                <!-- Email -->
+                <div class="form-group">
+                    <input type="email" class="form-input" name="email" placeholder=" " required>
+                    <label class="form-label">Email</label>
+                    <?php if (!empty($errors['email'])): ?>
+                        <small class="error-msg"><?= $errors['email'] ?></small>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <input type="password" name="password" class="form-input" placeholder=" " required>
+                    <label class="form-label">Password</label>
+                    <?php if (!empty($errors['password'])): ?>
+                        <small class="error-msg"><?= $errors['password'] ?></small>
+                    <?php endif; ?>
+                </div>
+
+                <button type="submit" class="submit-btn">Login</button>
+            </form>
+
             <div class="divider">
                 <span>or</span>
             </div>
+
             <div class="auth-switch">
                 Don't have an account? <a href="<?= ROOT ?>canteen/register">Register Here</a>
             </div>
+
         </div>
-    </form>
+
+    </div>
+
 </body>
 
 </html>

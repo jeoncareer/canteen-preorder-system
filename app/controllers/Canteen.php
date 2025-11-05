@@ -96,7 +96,7 @@ class Canteen extends Controller
             $data['colleges'][] = $col;
         }
 
-        show($data['colleges']);
+
         if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
             if ($canteen->validate($_POST)) {
@@ -144,6 +144,7 @@ class Canteen extends Controller
                 redirect('canteen/home');
             } else {
                 $data['errors'] = $canteen->errors;
+                show($canteen->errors);
                 $this->view('canteen/login', $data);
             }
         } else {
@@ -275,19 +276,27 @@ class Canteen extends Controller
     {
 
         $canteen = new Canteen_db();
-        $manager = new Managers();
+
 
         $canteen_id = $_SESSION['CANTEEN']->id;
         $canteen_data = $canteen->first(['id' => $canteen_id]);
-        $manager_data = $manager->where(['canteen_id' => $canteen_id]);
-        show($manager_data);
+
+
         show($canteen_data);
         $canteen_data->working_days = json_decode($canteen_data->working_days, true);
         $data['canteen'] = $canteen_data;
-        $data['managers'] = $manager_data;
+
 
 
 
         $this->view('canteen/settings', $data);
+    }
+
+
+    public function logout()
+    {
+        unset($_SESSION['CANTEEN']);
+
+        redirect('canteen/login');
     }
 }

@@ -37,9 +37,9 @@
         </li>
 
         <li class="nav-item">
-            <a href="#" class="nav-link <?php if ($page === 'order_history') {
-                                            echo 'active';
-                                        } ?>">
+            <a href="<?= ROOT ?>canteen/logout" class="nav-link <?php if ($page === 'order_history') {
+                                                                    echo 'active';
+                                                                } ?>">
                 <span class="nav-icon">📊</span>
                 <span>Logout</span>
             </a>

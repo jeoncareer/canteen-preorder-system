@@ -341,4 +341,11 @@ class Admin extends Controller
 
         $this->view('admin/canteen_details', $data);
     }
+
+    public function logout()
+    {
+        unset($_SESSION['COLLEGE']);
+
+        redirect('admin/login');
+    }
 }

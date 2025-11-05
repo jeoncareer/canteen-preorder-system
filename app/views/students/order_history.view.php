@@ -26,17 +26,9 @@
                 <h2>Order History</h2>
             </div>
 
-            <div class="search-bar">
-                <input type="text" placeholder="Search your order history...">
-            </div>
 
-            <div class="filter-tabs">
-                <div data-status="" class="filter-tab active">All Orders</div>
-                <div data-status="completed" class="filter-tab">Completed</div>
-                <div data-status="rejected" class="filter-tab">Rejected</div>
-                <div data-status="pending" class="filter-tab">Pending</div>
 
-            </div>
+
 
             <div class="history-section">
                 <div class="section-title">Recent Orders</div>

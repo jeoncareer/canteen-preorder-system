@@ -169,10 +169,11 @@ class Students extends Controller
 
     public function logout()
     {
-        session_destroy();
-        redirect('home');
+        if (isset($_SESSION['STUDENT'])) {
+            unset($_SESSION['STUDENT']);
+        }
+        redirect('students/login');
     }
-
 
 
 
