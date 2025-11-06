@@ -27,7 +27,7 @@
             </div>
 
             <!-- Error Message Example - Remove 'style="display: none;"' to show -->
-            <div class="error-message">
+            <!-- <div class="error-message">
                 <span class="error-icon">⚠️</span>
                 <span></span>
             </div>
@@ -35,7 +35,7 @@
             <div class="error-message">
                 <span class="error-icon">⚠️</span>
                 <span></span>
-            </div>
+            </div> -->
 
 
 
