@@ -184,54 +184,21 @@ class Students extends Controller
         if (!isset($_SESSION['STUDENT'])) {
             redirect('students/login');
         }
-        $orders = new Orders;
-
-        $results = $orders->join(
-            [
-                'order_items' => 'orders.id = order_items.order_id',
-                'items' => 'order_items.item_id = items.id'
-            ],
-            ['orders.student_id' => STUDENT_ID],
-            'orders.*, items.name,items.price, items.id as item_id, order_items.quantity',
-
-        );
-
-        if (empty($results)) {
-            $data['orders'] = [];
-            $this->view('students/my_orders', $data);
-            return;
-        }
-
-        $order = $orders->where(['student_id' => STUDENT_ID]);
-        foreach ($order as $or) {
-            $data['order'][$or->id] = ['total' => $or->total, 'status' => $or->status];
-        }
-
-        if (empty($data['order'])) {
-            $data['orders'] = [];
-            $this->view('students/my_orders', $data);
-            return;
-        } else {
-
-            $list_of_orders = [];
-
-
-            foreach ($results as $result) {
-                $list_of_orders[$result->id][] = $result;
+        $order = new Orders;
+        $order_item = new Order_items;
+        $item = new Items;
+        $orders = $order->whereIn('status', ['pending', 'accepted', 'ready'], ['student_id' => STUDENT_ID]);
+        foreach ($orders as $row) {
+            $row->items = $order_item->where(['order_id' => $row->id]);
+            foreach ($row->items as $row) {
+                $row->item = $item->where(['id' => $row->item_id]);
             }
-            $data['orders'] = $list_of_orders;
-
-
-            $this->view('students/my_orders', $data);
-            return;
         }
+        $data['orders'] = $orders;
+        show($orders);
 
-        //show($data['order']);
 
-
-
-        //show($list_of_orders);
-        $this->view('students/my_orders');
+        $this->view('students/my_orders', $data);
     }
 
     public function history()

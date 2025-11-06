@@ -280,6 +280,14 @@ class Admin extends Controller
         $this->view('admin/orders', $data);
     }
 
+    public function exportOrders($canteen_id = '')
+    {
+        $order = new Orders;
+        $college_id = $_SESSION['COLLEGE']->id;
+
+        $orders = $order->where(['canteen_id' => $canteen_id]);
+    }
+
     public function canteenDetails($canteen_id = '')
     {
         if (empty($canteen_id)) {

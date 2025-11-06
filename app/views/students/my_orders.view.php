@@ -46,24 +46,24 @@
             <div class="orders-section">
                 <div class="section-title">Current Orders</div>
                 <?php if (!empty($orders)): ?>
-                    <?php foreach ($orders as $order_id => $items): ?>
+                    <?php foreach ($orders as $row): ?>
                         <div class="order-card">
                             <div class="order-header">
                                 <div>
-                                    <div class="order-id">Order #<?= $order_id ?></div>
+                                    <div class="order-id">Order #<?= $row->id ?></div>
                                     <div class="order-time">Today, 11:30 AM</div>
                                 </div>
-                                <div class="order-status status-ready"><?= $order[$order_id]['status'] ?> </div>
+                                <div class="order-status status-ready"><?= $row->status ?> </div>
                             </div>
 
                             <div class="order-items">
-                                <?php foreach ($items as $item): ?>
+                                <?php foreach ($row->items as $item): ?>
                                     <div class="order-item">
                                         <div class="item-details">
-                                            <div class="item-name"><?= $item->name ?></div>
-                                            <div class="item-specs">Qty: <?= $item->quantity ?> </div>
+                                            <div class="item-name"><?= $item->item->name ?></div>
+                                            <div class="item-specs">Qty: <?= $item->item->quantity ?> </div>
                                         </div>
-                                        <div class="item-price">₹<?= $item->price * $item->quantity ?></div>
+                                        <div class="item-price">₹<?= $item->item->price * $item->item->quantity ?></div>
                                     </div>
                                 <?php endforeach; ?>
 
@@ -74,7 +74,7 @@
                                     <!-- <div>Pickup: Counter 2 - Main Canteen</div> -->
                                     <div>Status: Ready for collection</div>
                                 </div>
-                                <div class="order-total">Total: ₹<?= $order[$order_id]['total'] ?></div>
+                                <div class="order-total">Total: ₹<?= $row->total ?></div>
                                 <div class="order-actions">
                                     <?php if ($order[$order_id]['status'] === 'ready'): ?>
                                         <button data-order-id="<?= $order_id ?>" class="btn btn-primary pickup">✓ Pick Up</button>

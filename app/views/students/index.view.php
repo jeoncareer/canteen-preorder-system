@@ -200,14 +200,8 @@
 
 
                                 <div class="cart-summary" id="cart-summary">
-                                    <div class="summary-row">
-                                        <span>Subtotal:</span>
-                                        <span id="subtotal">₹210</span>
-                                    </div>
-                                    <div class="summary-row">
-                                        <span>Tax (5%):</span>
-                                        <span id="tax">₹10.50</span>
-                                    </div>
+
+
                                     <div class="summary-row summary-total">
                                         <span>Total:</span>
                                         <span id="total">₹ <h1=3 id="full-total-price"><?= $total ?></h3></span>
