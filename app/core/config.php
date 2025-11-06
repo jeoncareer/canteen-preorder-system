@@ -6,7 +6,7 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
     define('DBNAME', 'canteen_system');
     define('DBHOST', 'localhost');
     define('DBUSER', 'root');
-    define('DBPASS', '');
+    define('DBPASS', 'yourpassword');
     define('ROOT', 'http://localhost/canteen-preorder-system/public/');
 } else {
     define('DBNAME', 'canteen_sysem');
