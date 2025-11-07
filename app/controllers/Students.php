@@ -1,11 +1,26 @@
 <?php
 
+
 class Students extends Controller
 {
     use Database;
+
+    function checkStatus()
+    {
+        $student = new Student();
+        $student_data = $student->first(['id' => STUDENT_ID]);
+        if ($student_data->status == 'pending') {
+            $this->view('students/pending');
+            die;
+        } elseif ($student_data->status == 'suspended' || $student_data->status == 'rejected') {
+            $this->view('students/blocked');
+            die;
+        }
+    }
+
     public function index()
     {
-
+        $this->checkStatus();
         $cart = new Cart;
         $student = new Student;
         $student_id = $_SESSION['STUDENT']->id;
@@ -140,9 +155,9 @@ class Students extends Controller
 
         $student = new Student();
 
-        if (isset($_SESSION['STUDENT'])) {
-            redirect('students');
-        }
+        // if (isset($_SESSION['STUDENT'])) {
+        //     redirect('students');
+        // }
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
@@ -157,6 +172,7 @@ class Students extends Controller
             } else {
 
                 $data['errors'] = $student->errors;
+
                 $this->view('students/login', $data);
             }
         } else {
@@ -174,6 +190,15 @@ class Students extends Controller
         }
         redirect('students/login');
     }
+    public function blocked()
+    {
+        $this->view('students/blocked');
+    }
+
+    public function pending()
+    {
+        $this->view('students/pending');
+    }
 
 
 
@@ -181,6 +206,7 @@ class Students extends Controller
 
     public function my_orders()
     {
+        $this->checkStatus();
         if (!isset($_SESSION['STUDENT'])) {
             redirect('students/login');
         }
@@ -191,11 +217,11 @@ class Students extends Controller
         foreach ($orders as $row) {
             $row->items = $order_item->where(['order_id' => $row->id]);
             foreach ($row->items as $row) {
-                $row->item = $item->where(['id' => $row->item_id]);
+                $row->item = $item->first(['id' => $row->item_id]);
             }
         }
         $data['orders'] = $orders;
-        show($orders);
+        //show($orders);
 
 
         $this->view('students/my_orders', $data);
@@ -203,32 +229,23 @@ class Students extends Controller
 
     public function history()
     {
+        $this->checkStatus();
+        if (!isset($_SESSION['STUDENT'])) {
+            redirect('students/login');
+        }
         $order = new Orders;
         $order_item = new Order_items;
         $item = new Items;
-        $data = [];
-
-        $orders = $order->where(['student_id' => STUDENT_ID], ['status' => "pending"]);
-        if ($orders) {
-
-            foreach ($orders as $order) {
-                $order_items = $order_item->where(['order_id' => $order->id]);
-
-                $items = [];
-                $i = 0;
-                foreach ($order_items as $row) {
-                    $items[] = $item->first(['id' => $row->item_id]);
-                    $items[$i]->quantity = $row->quantity;
-                    $i++;
-                }
-
-                $order->items = $items;
+        $orders = $order->whereIn('status', ['completed', 'ready'], ['student_id' => STUDENT_ID]);
+        foreach ($orders as $row) {
+            $row->items = $order_item->where(['order_id' => $row->id]);
+            foreach ($row->items as $row) {
+                $row->item = $item->first(['id' => $row->item_id]);
             }
-            $data['orders'] = $orders;
         }
+        $data['orders'] = $orders;
+        //show($orders);
 
-
-        show($orders);
 
 
         $this->view('students/order_history', $data);
@@ -238,6 +255,7 @@ class Students extends Controller
 
     public function contact()
     {
+        $this->checkStatus();
         if (empty($_SESSION['STUDENT'])) {
             redirect('students/login');
         }
@@ -268,6 +286,7 @@ class Students extends Controller
 
     public function order()
     {
+        $this->checkStatus();
         $cart = new Cart;
         $item = new Items;
         $orders = new orders;

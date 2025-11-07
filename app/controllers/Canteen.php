@@ -144,7 +144,7 @@ class Canteen extends Controller
                 redirect('canteen/home');
             } else {
                 $data['errors'] = $canteen->errors;
-                show($canteen->errors);
+
                 $this->view('canteen/login', $data);
             }
         } else {
@@ -238,7 +238,7 @@ class Canteen extends Controller
 
         $data['active_orders'] = $active_orders;
         $data['history_orders'] = $history_orders;
-        show($history_orders);
+        //show($history_orders);
 
         $this->view('canteen/orders', $data);
     }

@@ -33,7 +33,6 @@
                     <label class="form-label">Name</label>
                     <?php if (!empty($errors['student_name'])): ?>
                         <div class="error-message">
-                            <span class="error-icon">⚠️</span>
                             <?= $errors['student_name'] ?>
                         </div>
                     <?php endif; ?>
@@ -45,7 +44,6 @@
                     <label class="form-label">Email</label>
                     <?php if (!empty($errors['email'])): ?>
                         <div class="error-message">
-                            <span class="error-icon">⚠️</span>
                             <?= $errors['email'] ?>
                         </div>
                     <?php endif; ?>
@@ -57,7 +55,6 @@
                     <label class="form-label">Register No:</label>
                     <?php if (!empty($errors['reg_no'])): ?>
                         <div class="error-message">
-                            <span class="error-icon">⚠️</span>
                             <?= $errors['reg_no'] ?>
                         </div>
                     <?php endif; ?>
@@ -74,7 +71,7 @@
                     <label class="form-label">College Name</label>
                     <?php if (!empty($errors['college_id'])): ?>
                         <div class="error-message">
-                            <span class="error-icon">⚠️</span>
+
                             <?= $errors['college_id'] ?>
                         </div>
                     <?php endif; ?>
@@ -86,7 +83,7 @@
                     <label class="form-label">Password</label>
                     <?php if (!empty($errors['password'])): ?>
                         <div class="error-message">
-                            <span class="error-icon">⚠️</span>
+
                             <?= $errors['password'] ?>, Try Again
                         </div>
                     <?php endif; ?>

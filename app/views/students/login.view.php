@@ -46,11 +46,29 @@
                 <div class="form-group">
                     <input type="email" class="form-input" name="email" placeholder="Email Address" required>
                     <label class="form-label">Email Address</label>
+                    <?php if (isset($errors['email'])): ?>
+                        <div class="error-message">
+
+                            <span><?= $errors['email'] ?></span>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (isset($errors['email_not_exist'])): ?>
+                        <div class="error-message">
+
+                            <span><?= $errors['email_not_exist'] ?></span>
+                        </div>
+                    <?php endif; ?>
                 </div>
 
                 <div class="form-group">
                     <input type="password" name="password" class="form-input" placeholder="Password" required>
                     <label class="form-label">Password</label>
+                    <?php if (isset($errors['wrong_password'])): ?>
+                        <div class="error-message">
+                            <span><?= $errors['wrong_password'] ?></span>
+                        </div>
+                    <?php endif; ?>
                 </div>
 
                 <button type="submit" class="submit-btn">Login</button>

@@ -242,4 +242,30 @@ class OrdersController extends Controller
             echo json_encode(['success' => false, 'message' => 'Invalid status provided.']);
         }
     }
+
+    public function exportOrders($canteen_id = '')
+    {
+        // Implementation for exporting orders
+        $order = new Orders;
+        if (!empty($canteen_id)) {
+            $sql = "select orders.id,students.id as student_id,students.student_name,orders.total from orders join 
+             students on orders.student_id = students.id where orders.canteen_id = :canteen_id";
+            $orders = $this->query($sql, ['canteen_id' => $canteen_id]);
+        } else {
+            $orders = $this->query("select orders.id,students.id as student_id,students.student_name,orders.total from orders join 
+             students on orders.student_id = students.id");
+        }
+
+
+        // Convert orders to CSV format
+        $csvData = "Order ID,Student ID,Student Name,Total\n";
+        foreach ($orders as $ord) {
+            $csvData .= "{$ord->id},{$ord->student_id},{$ord->student_name},{$ord->total}\n";
+        }
+
+        // Set headers for download
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="orders.csv"');
+        echo $csvData;
+    }
 }

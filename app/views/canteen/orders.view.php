@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="<?= ROOT ?>assets/css/orders.css">
     <script>
         const ROOT = "<?= ROOT ?>";
+        const CANTEEN_ID = <?= CANTEEN_ID ?>
     </script>
 </head>
 
@@ -38,9 +39,7 @@
                     <button class="export-btn">
                         📊 Export CSV
                     </button>
-                    <button class="refresh-btn">
-                        🔄 Refresh
-                    </button>
+
                 </div>
             </div>
 
@@ -281,10 +280,16 @@
     <script src="<?= ROOT ?>assets/js/orders.js"></script>
 
     <script>
+        // Assuming ROOT is already defined somewhere in your JS or template
 
 
-
+        document.querySelectorAll('.export-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                window.location.href = ROOT + `OrdersController/exportOrders/${CANTEEN_ID}`;
+            });
+        });
     </script>
+
 </body>
 
 </html>

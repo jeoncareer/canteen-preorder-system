@@ -52,20 +52,17 @@ body {
 }
 
 .error-message {
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #dc2626;
-  padding: 0.875rem 1rem;
-  border-radius: 8px;
+  color: #dc2626; /* red text */
   font-size: 0.875rem;
-  margin-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  margin-top: 0.5rem;
+  margin-left: 0.25rem;
+  display: block;
+  font-weight: 500;
 }
 
 .error-icon {
-  font-size: 1.125rem;
+  font-size: 1rem;
+  line-height: 1;
 }
 
 .success-message {
@@ -100,6 +97,8 @@ body {
 .form-group {
   margin-bottom: 2rem;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .form-label {
@@ -142,6 +141,9 @@ body {
   font-weight: 600;
   background: white;
   padding: 0 0.5rem;
+}
+.form-group.has-error {
+  margin-bottom: 1.5rem;
 }
 
 .form-input::placeholder {

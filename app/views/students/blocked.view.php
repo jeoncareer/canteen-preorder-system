@@ -4,326 +4,271 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Status - Campus Canteen</title>
+    <title>Account Rejected - Campus Canteen</title>
     <link rel="stylesheet" href="<?= ROOT ?>assets/css/base.css">
+    <link rel="stylesheet" href="<?= ROOT ?>assets/css/header.css">
     <style>
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .status-container {
+        .blocked-container {
             background: white;
             border-radius: 20px;
             padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
             max-width: 500px;
             width: 90%;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            animation: slideUp 0.6s ease-out;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .status-icon {
-            font-size: 5rem;
-            margin-bottom: 1.5rem;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.1);
-            }
+            margin: 2rem;
         }
 
         .blocked-icon {
-            color: #e74c3c;
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            color: #dc2626;
+            animation: shake 0.5s ease-in-out infinite alternate;
         }
 
-        .pending-icon {
-            color: #f39c12;
-        }
+        @keyframes shake {
+            0% {
+                transform: translateX(-5px);
+            }
 
-        .status-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--gray-800);
+            100% {
+                transform: translateX(5px);
+            }
         }
 
         .blocked-title {
-            color: #e74c3c;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 1rem;
         }
 
-        .pending-title {
-            color: #f39c12;
-        }
-
-        .status-message {
+        .blocked-message {
             font-size: 1.1rem;
-            color: var(--gray-600);
+            color: #6b7280;
             line-height: 1.6;
             margin-bottom: 2rem;
         }
 
-        .status-details {
-            background: #f8fafc;
+        .rejection-details {
+            background: #fef2f2;
             border-radius: 12px;
             padding: 1.5rem;
             margin-bottom: 2rem;
+            border-left: 4px solid #dc2626;
+        }
+
+        .rejection-details h3 {
+            color: #dc2626;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .rejection-reasons {
             text-align: left;
+            color: #7f1d1d;
+            line-height: 1.8;
         }
 
-        .detail-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid #e2e8f0;
+        .rejection-reasons li {
+            margin-bottom: 0.5rem;
         }
 
-        .detail-item:last-child {
-            border-bottom: none;
+        .next-steps {
+            background: #f0f9ff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid #0ea5e9;
         }
 
-        .detail-label {
-            font-weight: 600;
-            color: var(--gray-700);
+        .next-steps h3 {
+            color: #0369a1;
+            margin-bottom: 1rem;
         }
 
-        .detail-value {
-            color: var(--gray-600);
+        .next-steps ul {
+            text-align: left;
+            color: #0c4a6e;
+            line-height: 1.8;
+        }
+
+        .next-steps li {
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-info {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .contact-info h3 {
+            color: #374151;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info p {
+            color: #4b5563;
+            margin-bottom: 0.5rem;
         }
 
         .action-buttons {
             display: flex;
-            flex-direction: column;
             gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
-        .btn {
-            padding: 1rem 2rem;
+        .reapply-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
             border: none;
-            border-radius: 10px;
-            font-weight: 600;
+            padding: 1rem 2rem;
+            border-radius: 50px;
             font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
             display: inline-block;
         }
 
-        .btn-primary {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #5a67d8;
+        .reapply-btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
         }
 
-        .btn-secondary {
-            background: #f7fafc;
-            color: var(--gray-700);
-            border: 2px solid #e2e8f0;
-        }
-
-        .btn-secondary:hover {
-            background: #edf2f7;
-            border-color: #cbd5e1;
-        }
-
-        .contact-info {
-            background: #e6fffa;
-            border: 1px solid #81e6d9;
-            border-radius: 10px;
-            padding: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .contact-info h4 {
-            margin: 0 0 0.5rem 0;
-            color: #234e52;
-        }
-
-        .contact-info p {
-            margin: 0;
-            color: #2d3748;
-            font-size: 0.9rem;
-        }
-
-        .help-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-top: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .help-link {
-            color: var(--primary-color);
-            text-decoration: none;
+        .contact-btn {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
             font-weight: 600;
-            font-size: 0.9rem;
-            transition: color 0.3s ease;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
         }
 
-        .help-link:hover {
-            color: #5a67d8;
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .logout-link {
+            color: #6b7280;
+            text-decoration: none;
+            margin-top: 1rem;
+            display: block;
+            font-size: 0.9rem;
+        }
+
+        .logout-link:hover {
+            color: #374151;
             text-decoration: underline;
         }
 
+        .status-badge {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
         @media (max-width: 768px) {
-            .status-container {
-                padding: 2rem;
-                margin: 1rem;
-            }
-
-            .status-icon {
-                font-size: 4rem;
-            }
-
-            .status-title {
-                font-size: 1.5rem;
-            }
-
-            .help-links {
+            .action-buttons {
                 flex-direction: column;
-                gap: 1rem;
+                align-items: center;
+            }
+
+            .reapply-btn,
+            .contact-btn {
+                width: 100%;
+                max-width: 250px;
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="status-container">
-        <!-- Dynamic content based on status -->
-        <?php
-        $status = $_GET['status'] ?? 'blocked'; // Default to blocked
-        $reason = $_GET['reason'] ?? 'Account verification required';
-        ?>
+    <div class="blocked-container">
+        <div class="blocked-icon">❌</div>
 
-        <?php if ($status === 'blocked'): ?>
-            <!-- Blocked Status -->
-            <div class="status-icon blocked-icon">🚫</div>
-            <h1 class="status-title blocked-title">Account Blocked</h1>
-            <p class="status-message">
-                Your student account has been temporarily blocked. Please contact the administration to resolve this issue.
-            </p>
+        <div class="status-badge">Account Rejected</div>
 
-            <div class="status-details">
-                <div class="detail-item">
-                    <span class="detail-label">Status:</span>
-                    <span class="detail-value" style="color: #e74c3c; font-weight: 600;">Blocked</span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">Reason:</span>
-                    <span class="detail-value"><?= htmlspecialchars($reason) ?></span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">Date:</span>
-                    <span class="detail-value"><?= date('M d, Y') ?></span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">Reference ID:</span>
-                    <span class="detail-value">#BLK-<?= date('Ymd') ?>-<?= rand(1000, 9999) ?></span>
-                </div>
-            </div>
+        <h1 class="blocked-title">Registration Declined</h1>
 
-        <?php else: ?>
-            <!-- Pending Approval Status -->
-            <div class="status-icon pending-icon">⏳</div>
-            <h1 class="status-title pending-title">Pending Approval</h1>
-            <p class="status-message">
-                Your student account is currently under review. Please wait while our administration team verifies your information.
-            </p>
+        <p class="blocked-message">
+            We're sorry, but your registration request has been declined by our administrators.
+            This decision was made after careful review of your submitted information.
+        </p>
 
-            <div class="status-details">
-                <div class="detail-item">
-                    <span class="detail-label">Status:</span>
-                    <span class="detail-value" style="color: #f39c12; font-weight: 600;">Pending Review</span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">Submitted:</span>
-                    <span class="detail-value"><?= date('M d, Y') ?></span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">Expected Response:</span>
-                    <span class="detail-value">Within 24-48 hours</span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">Application ID:</span>
-                    <span class="detail-value">#APP-<?= date('Ymd') ?>-<?= rand(1000, 9999) ?></span>
-                </div>
-            </div>
-        <?php endif; ?>
+        <div class="rejection-details">
+            <h3>🚫 Common Rejection Reasons</h3>
+            <ul class="rejection-reasons">
+                <li>Invalid or unverifiable student registration number</li>
+                <li>Incomplete or incorrect personal information</li>
+                <li>Non-matching college email domain</li>
+                <li>Duplicate account registration</li>
+                <li>Violation of platform terms and conditions</li>
+            </ul>
+        </div>
 
-        <!-- Action Buttons -->
+        <div class="next-steps">
+            <h3>🔄 What You Can Do</h3>
+            <ul>
+                <li>Review and correct your registration information</li>
+                <li>Ensure your student ID and email are valid</li>
+                <li>Contact the admin team for specific rejection reasons</li>
+                <li>Reapply with correct and complete information</li>
+                <li>Visit the college office for manual verification if needed</li>
+            </ul>
+        </div>
+
+        <div class="contact-info">
+            <h3>📞 Get Help</h3>
+            <p><strong>Email:</strong> canteen.admin@college.edu</p>
+            <p><strong>Phone:</strong> +91 98765 43210</p>
+            <p><strong>Office:</strong> Student Services, Ground Floor</p>
+            <p><strong>Hours:</strong> Mon-Fri, 9:00 AM - 5:00 PM</p>
+        </div>
+
         <div class="action-buttons">
-            <a href="mailto:admin@campuscanteen.edu?subject=Account Status Inquiry" class="btn btn-primary">
+            <a href="<?= ROOT ?>register" class="reapply-btn">
+                🔄 Reapply Now
+            </a>
+            <a href="mailto:canteen.admin@college.edu" class="contact-btn">
                 📧 Contact Admin
             </a>
-            <a href="<?= ROOT ?>home" class="btn btn-secondary">
-                🏠 Back to Home
-            </a>
         </div>
 
-        <!-- Contact Information -->
-        <div class="contact-info">
-            <h4>📞 Need Immediate Help?</h4>
-            <p><strong>Email:</strong> admin@campuscanteen.edu</p>
-            <p><strong>Phone:</strong> +91 98765 43210</p>
-            <p><strong>Office:</strong> Admin Block, Room 201</p>
-        </div>
-
-        <!-- Help Links -->
-        <div class="help-links">
-            <a href="#" class="help-link">📋 Account Guidelines</a>
-            <a href="#" class="help-link">❓ FAQ</a>
-            <a href="#" class="help-link">📞 Support Center</a>
-        </div>
+        <a href="<?= ROOT ?>students/login" class="logout-link">← Return to Login Page</a>
     </div>
 
     <script>
-        // Auto-refresh page every 5 minutes for pending status
-        <?php if ($status === 'pending'): ?>
-            setTimeout(() => {
-                window.location.reload();
-            }, 300000); // 5 minutes
-        <?php endif; ?>
+        // Log the rejection for analytics
+        console.log('User account rejected - showing rejection page');
 
-        // Add some interactive feedback
-        document.querySelectorAll('.btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                this.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    this.style.transform = '';
-                }, 150);
-            });
+        // Optional: Track rejection reasons for improvement
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Rejection page loaded at:', new Date().toISOString());
         });
     </script>
 </body>

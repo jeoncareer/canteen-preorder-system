@@ -61,9 +61,9 @@
                                     <div class="order-item">
                                         <div class="item-details">
                                             <div class="item-name"><?= $item->item->name ?></div>
-                                            <div class="item-specs">Qty: <?= $item->item->quantity ?> </div>
+                                            <div class="item-specs">Qty: <?= $item->quantity ?> </div>
                                         </div>
-                                        <div class="item-price">₹<?= $item->item->price * $item->item->quantity ?></div>
+                                        <div class="item-price">₹<?= $item->item->price * $item->quantity ?></div>
                                     </div>
                                 <?php endforeach; ?>
 
@@ -76,8 +76,8 @@
                                 </div>
                                 <div class="order-total">Total: ₹<?= $row->total ?></div>
                                 <div class="order-actions">
-                                    <?php if ($order[$order_id]['status'] === 'ready'): ?>
-                                        <button data-order-id="<?= $order_id ?>" class="btn btn-primary pickup">✓ Pick Up</button>
+                                    <?php if ($row->status === 'ready'): ?>
+                                        <button data-order-id="<?= $row->id ?>" class="btn btn-primary pickup">✓ Pick Up</button>
                                     <?php endif; ?>
                                     <button data-modal-target="#order-details-modal" class="btn btn-secondary">View Details</button>
                                 </div>

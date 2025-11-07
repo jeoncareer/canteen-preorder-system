@@ -34,25 +34,25 @@
                 <div class="section-title">Recent Orders</div>
 
                 <?php if (!empty($orders)): ?>
-                    <?php foreach ($orders as $order): ?>
+                    <?php foreach ($orders as $row): ?>
                         <div class="order-card">
                             <div class="order-header">
                                 <div>
-                                    <div class="order-id">Order #<?= $order->id ?></div>
-                                    <div class="order-date"><?= $order->time ?></div>
+                                    <div class="order-id">Order #<?= $row->id ?></div>
+                                    <div class="order-date"><?= $row->time ?></div>
                                 </div>
-                                <div class="order-status status-<?= $order->status ?>"><?= $order->status ?></div>
+                                <div class="order-status status-<?= $row->status ?>"><?= $row->status ?></div>
                             </div>
 
                             <div class="order-items">
-                                <?php foreach ($order->items as $item): ?>
+                                <?php foreach ($row->items as $item): ?>
                                     <div class="order-item">
                                         <div class="item-details">
-                                            <div class="item-name"><?= $item->name ?></div>
+                                            <div class="item-name"><?= $item->item->name ?></div>
                                             <div class="item-specs">Qty: <?= $item->quantity ?> </div>
 
                                         </div>
-                                        <div class="item-price">₹<?= $item->price ?></div>
+                                        <div class="item-price">₹<?= $item->item->price ?></div>
                                     </div>
                                 <?php endforeach; ?>
 
@@ -62,9 +62,9 @@
                             <div class="order-footer">
                                 <div class="order-info">
 
-                                    <div>Payment: Wallet</div>
+                                    <div>Payment: COD</div>
                                 </div>
-                                <div class="order-total">Total: ₹<?= $order->total ?></div>
+                                <div class="order-total">Total: ₹<?= $row->total ?></div>
                                 <!-- <div class="order-actions">
                                     <button class="btn btn-outline">Reorder</button>
                                     <button class="btn btn-secondary">View Receipt</button>
