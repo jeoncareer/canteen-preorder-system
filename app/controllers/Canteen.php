@@ -272,6 +272,8 @@ class Canteen extends Controller
         }
     }
 
+
+
     public function settings()
     {
 
