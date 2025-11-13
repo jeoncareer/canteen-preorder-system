@@ -20,6 +20,9 @@ class Students extends Controller
 
     public function index()
     {
+        if (!isset($_SESSION['STUDENT'])) {
+            redirect('students/login');
+        }
         $this->checkStatus();
         $cart = new Cart;
         $student = new Student;

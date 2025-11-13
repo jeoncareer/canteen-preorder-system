@@ -87,6 +87,40 @@
             background: #ef4444;
             /* red for errors */
         }
+
+        .item-header {
+            align-items: center !important;
+            gap: 12px;
+        }
+
+        .item-title-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .item-canteen {
+            margin-top: 0;
+            padding: 6px 10px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(102, 126, 234, 0.18));
+            color: #3b4a6b;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.3px;
+        }
+
+        .item-canteen span {
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #526091;
+            letter-spacing: 0.6px;
+        }
     </style>
 
 
@@ -139,10 +173,16 @@
 
 
                                                 <div class="menu-item" data-item-id="<?= $value->item_id ?>">
-                                                    <div class="item-header">
+                                                <div class="item-header">
+                                                    <div class="item-title-group">
                                                         <div class="item-name"><?= ucwords($value->item_name) ?></div>
-                                                        <div class="item-price">₹<?= $value->price ?></div>
+                                                        <div class="item-canteen">
+                                                            <span>Canteen</span>
+                                                            Skyline Bites
+                                                        </div>
                                                     </div>
+                                                    <div class="item-price">₹<?= $value->price ?></div>
+                                                </div>
                                                     <div class="item-description">Fragrant basmati rice with tender chicken, aromatic spices, and boiled egg. Served with raita and pickle.</div>
                                                     <div class="item-footer">
                                                         <div class="availability available">Available</div>
