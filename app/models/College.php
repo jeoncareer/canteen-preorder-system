@@ -11,7 +11,8 @@ class College
         'id',
         'email',
         'college_id',
-        'password'
+        'password',
+        'college_name'
     ];
 
 

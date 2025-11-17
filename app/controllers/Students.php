@@ -216,7 +216,7 @@ class Students extends Controller
         $order = new Orders;
         $order_item = new Order_items;
         $item = new Items;
-        $orders = $order->whereIn('status', ['pending', 'accepted', 'ready'], ['student_id' => STUDENT_ID]);
+        $orders = $order->whereIn('status', ['pending', 'accepted', 'ready'], ['student_id' => STUDENT_ID]) ?: [];
         foreach ($orders as $row) {
             $row->items = $order_item->where(['order_id' => $row->id]);
             foreach ($row->items as $row) {
@@ -239,7 +239,7 @@ class Students extends Controller
         $order = new Orders;
         $order_item = new Order_items;
         $item = new Items;
-        $orders = $order->whereIn('status', ['completed', 'ready'], ['student_id' => STUDENT_ID]);
+        $orders = $order->whereIn('status', ['completed', 'ready'], ['student_id' => STUDENT_ID]) ?: [];
         foreach ($orders as $row) {
             $row->items = $order_item->where(['order_id' => $row->id]);
             foreach ($row->items as $row) {

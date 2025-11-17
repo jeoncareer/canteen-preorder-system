@@ -22,7 +22,7 @@ class Admin extends Controller
         $this_month = $firstDay->format('Y-m');
         $this_month_revenue_sql = "select sum(total) as total from college_orders_view where DATE_FORMAT(time,'%Y-%m') = '{$this_month}' AND college_id = {$college_id}";
 
-        $canteens = $canteen->where(['college_id' => $college_id]);
+        $canteens = $canteen->where(['college_id' => $college_id]) ?: [];
         foreach ($canteens as $cant) {
             $result = $canteen_orders->query("
                 SELECT COUNT(*) AS total_orders,SUM(total) AS total_revenue 
@@ -52,6 +52,7 @@ class Admin extends Controller
 
 
 
+
         $data['college'] = $_SESSION['COLLEGE'];
         $data['canteens_count'] = $canteen->count(['college_id' => $college_id]);
         $data['students_count'] = $student->count(['college_id' => $college_id]);
@@ -60,7 +61,7 @@ class Admin extends Controller
         $data['canteens'] = $canteens;
         $data['students'] = $student->where(['college_id' => $college_id], [], 5);
         $data['pending_students'] = $student->where(['college_id' => $college_id, 'status' => 'pending'], [], 5);
-        $data['pending_students_count'] = count($student->where(['college_id' => $college_id, 'status' => 'pending'])) ?: 0;
+        $data['pending_students_count'] = count($student->where(['college_id' => $college_id, 'status' => 'pending']) ?: []) ?: 0;
 
 
 
@@ -134,7 +135,7 @@ class Admin extends Controller
 
         $data = [];
         $college = $_SESSION['COLLEGE'];
-        $canteens = $canteen->where(['college_id' => $college->id]);
+        $canteens = $canteen->where(['college_id' => $college->id]) ?: [];
         $canteens_count = count($canteens);
         foreach ($canteens as $row) {
             $row->total_menu_items = $items->count(['canteen_id' => $row->id]);
@@ -149,7 +150,7 @@ class Admin extends Controller
         $data['college'] = $college;
         $data['canteens'] = $canteens;
         $data['canteens_count'] = $canteens_count;
-        show($canteens);
+
 
         $this->view('admin/canteens', $data);
     }
