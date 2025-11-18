@@ -731,11 +731,11 @@
                 <div class="reports-sidebar">
                     <div class="sidebar-header">
                         <h3>Student Messages</h3>
-                        <div class="filter-tabs">
+                        <!-- <div class="filter-tabs">
                             <button class="filter-tab active" onclick="filterReports('all')">All</button>
                             <button class="filter-tab" onclick="filterReports('unread')">Unread</button>
                             <button class="filter-tab" onclick="filterReports('urgent')">Urgent</button>
-                        </div>
+                        </div> -->
                     </div>
 
                     <div class="reports-list">

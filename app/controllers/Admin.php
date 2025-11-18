@@ -236,47 +236,62 @@ class Admin extends Controller
         $college_orders = new College_orders_view;
         $data['college'] = $_SESSION['COLLEGE'];
         $college_id = $_SESSION['COLLEGE']->id;
-        $canteens = $canteen->where(['college_id' => $college_id]);
+        $canteens = $canteen->where(['college_id' => $college_id])?: [];
         $canteens_ids = array();
         $canteens_names = [];
-        foreach ($canteens as $cant) {
-            $canteens_ids[] = $cant->id;
-            $canteens_names[$cant->id] = $cant->canteen_name;
-        }
+        if(!empty($canteens))
+        {
 
-        $data['canteens'] = $canteens_names;
-
-
-
-        $orders = $order->whereIn('canteen_id', $canteens_ids, [], [], 10, '', 'time', 'desc');
-        if ($orders) {
-
-            foreach ($orders as $ord) {
-                $items = '';
-                $ord->student = $student->first(['id' => $ord->student_id]);
-                $ord->canteen = $canteen->first(['id' => $ord->canteen_id]);
-
-                $order_items = $order_item->where(['order_id' => $ord->id]);
-
-                foreach ($order_items as $ordit) {
-                    $item_row = $item->first(['id' => $ordit->item_id]);
-                    $items .= ucfirst($item_row->name) . ' x' . $ordit->quantity . ',';
-                }
-
-                $ord->items = trim($items, ',');
+            foreach ($canteens as $cant) {
+                $canteens_ids[] = $cant->id;
+                $canteens_names[$cant->id] = $cant->canteen_name;
             }
-            $data['orders'] = $orders;
+    
+            $data['canteens'] = $canteens_names;
+    
+    
+    
+            $orders = $order->whereIn('canteen_id', $canteens_ids, [], [], 10, '', 'time', 'desc');
+            if ($orders) {
+    
+                foreach ($orders as $ord) {
+                    $items = '';
+                    $ord->student = $student->first(['id' => $ord->student_id]);
+                    $ord->canteen = $canteen->first(['id' => $ord->canteen_id]);
+    
+                    $order_items = $order_item->where(['order_id' => $ord->id]);
+    
+                    foreach ($order_items as $ordit) {
+                        $item_row = $item->first(['id' => $ordit->item_id]);
+                        $items .= ucfirst($item_row->name) . ' x' . $ordit->quantity . ',';
+                    }
+    
+                    $ord->items = trim($items, ',');
+                }
+                $data['orders'] = $orders;
+            }
+
+            $data['total_orders'] = count($order->whereIn('canteen_id', $canteens_ids));
+            $data['total_pending_orders'] = count($college_orders->where(['college_id' => $college_id, 'status' => 'pending']));
+            $data['total_completed_orders'] = count($college_orders->where(['college_id' => $college_id, 'status' => 'completed']) ?: []);
+            $data['total_cancelled_orders'] = count($college_orders->where(['college_id' => $college_id, 'status' => 'rejected']) ?: []);
+            $data['total_revenue'] = $college_orders->query("select sum(total) as total from college_orders_view where college_id = {$college_id}")[0]->total ?: 0;
+            $data['totalRows'] = ceil($data['total_orders']);
+    
+            $totalPageNumbers = ceil($data['totalRows'] / 10);
+            $data['totalPageNumbers'] = $totalPageNumbers;
+        }
+        else{
+            $data['total_orders'] = 0;
+            $data['total_pending_orders'] = 0;
+            $data['total_completed_orders'] = 0;
+            $data['total_cancelled_orders'] = 0;
+            $data['total_revenue'] = 0;
+            $data['totalRows'] = 0;
+            $data['totalPageNumbers'] = 0;
         }
 
-        $data['total_orders'] = count($order->whereIn('canteen_id', $canteens_ids));
-        $data['total_pending_orders'] = count($college_orders->where(['college_id' => $college_id, 'status' => 'pending']));
-        $data['total_completed_orders'] = count($college_orders->where(['college_id' => $college_id, 'status' => 'completed']) ?: []);
-        $data['total_cancelled_orders'] = count($college_orders->where(['college_id' => $college_id, 'status' => 'rejected']) ?: []);
-        $data['total_revenue'] = $college_orders->query("select sum(total) as total from college_orders_view where college_id = {$college_id}")[0]->total ?: 0;
-        $data['totalRows'] = ceil($data['total_orders']);
-
-        $totalPageNumbers = ceil($data['totalRows'] / 10);
-        $data['totalPageNumbers'] = $totalPageNumbers;
+       
         show($data);
         $this->view('admin/orders', $data);
     }

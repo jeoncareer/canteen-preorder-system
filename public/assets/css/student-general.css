@@ -160,7 +160,7 @@ body {
 
 .order-footer {
   display: flex;
-  justify-content: space-between;
+  justify-content:space-between;
   align-items: center;
   padding-top: 15px;
   border-top: 2px solid #f0f0f0;

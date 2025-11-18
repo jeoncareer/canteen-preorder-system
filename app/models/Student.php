@@ -24,6 +24,8 @@ class Student
             $this->errors['email'] = "email is required";
         } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             $this->errors['email'] = " Not a valid email";
+        }elseif(!validateEmail($data['email'])){
+            $this->errors['email'] ="Incorrect domain";
         }
 
         if (empty($data['reg_no'])) {
@@ -60,6 +62,7 @@ class Student
 
     public function login_validate($data)
     {
+        $student = new Student();
 
         $this->errors = [];
 
@@ -67,6 +70,12 @@ class Student
             $this->errors['email'] = "email is required";
         } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {               //checking if email is valid
             $this->errors['email'] = " Not a valid email";
+        }elseif(!validateEmail($data['email'])){
+            $this->errors['email'] ="Incorrect domain";
+        }elseif (empty($result = $this->first(['email' => $data['email']]))) {
+            $this->errors['email'] = "Email isn't registered yet";
+            return false;
+            // $real_password = $real_password->password;
         }
 
 

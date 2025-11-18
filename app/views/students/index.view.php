@@ -177,8 +177,8 @@
                                                     <div class="item-title-group">
                                                         <div class="item-name"><?= ucwords($value->item_name) ?></div>
                                                         <div class="item-canteen">
-                                                            <span>Canteen</span>
-                                                            Skyline Bites
+                                                            
+                                                            <?=$value->canteen_name?>
                                                         </div>
                                                     </div>
                                                     <div class="item-price">₹<?= $value->price ?></div>

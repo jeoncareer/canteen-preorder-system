@@ -31,7 +31,10 @@
                     <input name="email" type="email" class="form-input" placeholder=" " required>
                     <label class="form-label">Email</label>
                     <?php if (!empty($errors['email'])): ?>
-                        <small class="error-msg"><?= $errors['email'] ?></small>
+                        <div class="error-message">
+                            <span class="error-icon">⚠️</span>
+                            <?= $errors['email'] ?>
+                        </div>
                     <?php endif; ?>
                 </div>
 
@@ -40,7 +43,10 @@
                     <input type="text" name="canteen_name" class="form-input" placeholder=" " required>
                     <label class="form-label">Canteen Name</label>
                     <?php if (!empty($errors['canteen_name'])): ?>
-                        <small class="error-msg"><?= $errors['canteen_name'] ?></small>
+                        <div class="error-message">
+                            <span class="error-icon">⚠️</span>
+                            <?= $errors['canteen_name'] ?>
+                        </div>
                     <?php endif; ?>
                 </div>
 
@@ -54,7 +60,10 @@
                     </select>
                     <label class="form-label">College Name</label>
                     <?php if (!empty($errors['college_id'])): ?>
-                        <small class="error-msg"><?= $errors['college_id'] ?></small>
+                        <div class="error-message">
+                            <span class="error-icon">⚠️</span>
+                            <?= $errors['college_id'] ?>
+                        </div>
                     <?php endif; ?>
                 </div>
 
@@ -63,7 +72,10 @@
                     <input type="password" name="password" class="form-input" placeholder=" " required>
                     <label class="form-label">Password</label>
                     <?php if (!empty($errors['password'])): ?>
-                        <small class="error-msg"><?= $errors['password'] ?></small>
+                        <div class="error-message">
+                            <span class="error-icon">⚠️</span>
+                            <?= $errors['password'] ?>
+                        </div>
                     <?php endif; ?>
                 </div>
 
@@ -75,7 +87,11 @@
             <div class="auth-switch">
                 Already have an account? <a href="<?= ROOT ?>canteen/login">Login Here</a>
             </div>
-
+            <div class="back-home">
+                <a href="<?= ROOT ?>">
+                    ← Back to Home
+                </a>
+            </div>
         </div>
     </div>
 </body>

@@ -117,3 +117,58 @@ function formatDate($datetime)
         return date('F j', $date); // Example: September 3
     }
 }
+
+function isCurrentTimeBefore($time) {
+    $now = date("H:i:s");
+    return strtotime($now) < strtotime($time);
+}
+
+function isCurrentTimeAfter($time) {
+    $now = date("H:i:s");
+    return strtotime($now) > strtotime($time);
+}
+
+function isCurrentTimeBetween($start, $end) {
+    $now = strtotime(date("H:i:s"));
+    $startTime = strtotime($start);
+    $endTime = strtotime($end);
+
+    // Case 1: normal range (e.g., 08:00 to 17:00)
+    if ($startTime < $endTime) {
+        return ($now >= $startTime && $now <= $endTime);
+    }
+
+    // Case 2: range crossing midnight (e.g., 22:00 to 04:00)
+    return ($now >= $startTime || $now <= $endTime);
+}
+
+
+function formatDaysArray($days) {
+    return json_encode(array_values($days));
+}
+
+function validateEmail($email) {
+    // First, check if the email is properly formatted
+    
+
+    // Extract the domain part
+    $domain = strtolower(substr(strrchr($email, "@"), 1));
+
+    // List of allowed/known domains
+    $validDomains = [
+        'gmail.com',
+        'yahoo.com',
+        'hotmail.com',
+        'outlook.com',
+        'icloud.com',
+        'edu.com', // add any other domains you want to allow
+    ];
+
+    // Check if domain is in the allowed list
+    if (!in_array($domain, $validDomains)) {
+        return false; // Invalid domain
+    }
+
+    return true; // Email is valid
+}
+

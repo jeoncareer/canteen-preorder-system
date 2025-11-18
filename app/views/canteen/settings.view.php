@@ -356,9 +356,18 @@
             <!-- Current Status -->
             <div class="current-info">
                 <h4>Current Status</h4>
-                <div class="status-indicator status-open">
-                    🟢 Currently Open
-                </div>
+                <?php if(isCurrentTimeBetween($canteen->open,$canteen->close)): ?>
+                
+                    
+                    <div class="status-indicator status-open">
+                        🟢 Currently Open
+                    </div>
+                    <?php else: ?>
+                        <div class="status-indicator status-open">
+                        🔴 Currently Closed
+                    </div>
+                    <?php endif; ?>
+                
                 <!-- <p><strong>Manager:</strong> John Smith</p>
                 <p><strong>Phone:</strong> +1 (555) 123-4567</p>
                 <p><strong>Hours:</strong> 8:00 AM - 8:00 PM (Mon-Fri)</p>
@@ -463,7 +472,7 @@
                 <div class="settings-card">
                     <h3>🕒 Operating Hours</h3>
 
-                    <form method="POST" action="<?= ROOT ?>canteen/update-hours">
+                    <form id="hoursForm" method="POST" action="<?= ROOT ?>Canteen/updateHours">
                         <div class="form-group">
                             <label>Operating Days</label>
                             <div class="days-selector">
@@ -511,11 +520,6 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="specialHours">Special Hours/Notes</label>
-                            <textarea id="specialHours" name="special_hours" placeholder="Any special timing notes..."><?= $canteen->special_hours ?></textarea>
-                            <div class="error-message" id="specialHours-error"></div>
-                        </div>
 
                         <div class="form-actions">
                             <button type="button" class="btn-secondary">Reset</button>
@@ -615,7 +619,12 @@
         // Form validation
         document.querySelectorAll('form').forEach(form => {
             form.addEventListener('submit', function(e) {
-                e.preventDefault();
+
+                if(form.id === "hourseForm")
+            {
+                return;
+            }
+               // e.preventDefault();
 
                 // Show success message
                 const existingMessage = document.querySelector('.success-message');

@@ -64,7 +64,11 @@
             <div class="auth-switch">
                 Don't have an account? <a href="<?= ROOT ?>canteen/register">Register Here</a>
             </div>
-
+            <div class="back-home">
+                <a href="<?= ROOT ?>">
+                    ← Back to Home
+                </a>
+            </div>
         </div>
 
     </div>

@@ -120,7 +120,7 @@ class Canteen extends Controller
                 redirect('canteen/login');
             } else {
                 $data["errors"] = $canteen->errors;
-                show($canteen->errors);
+             
 
                 $this->view('canteen/register', $data);
             }
@@ -300,5 +300,17 @@ class Canteen extends Controller
         unset($_SESSION['CANTEEN']);
 
         redirect('canteen/login');
+    }
+
+    public function updateHours()
+    {
+        $canteen = new Canteen_db();
+        
+        $days = formatDaysArray($_POST['days']);
+        $open = $_POST['open_time'];
+        $close = $_POST['close_time'];
+        $canteen->update(['id' =>  CANTEEN_ID],['working_days' => $days,'open' => $open,'close' => $close]);
+
+        redirect('canteen/settings');
     }
 }

@@ -43,7 +43,7 @@ class Students extends Controller
 
         $college_id = $_SESSION['STUDENT']->college_id;
 
-        $sql = "select canteen.id as canteen_id,items.id as item_id, 
+        $sql = "select canteen_name ,canteen.id as canteen_id,items.id as item_id, 
         items.name as item_name,categories.name as category_name,
         items.price as price from items join canteen on items.canteen_id = canteen.id join 
         categories on items.category_id = categories.id join college
@@ -80,7 +80,7 @@ class Students extends Controller
 
 
 
-        // show($grouped);
+         show($grouped);
         // foreach ($grouped as $key => $value) {
         //     echo "<h1>".$key."</h1> <br>";
         //     foreach ($value as $v) {
@@ -143,7 +143,7 @@ class Students extends Controller
                 redirect('students/login');
             } else {
                 $data['errors'] = $student->errors;
-                show($student->errors);
+               
                 $this->view('students/register', $data);
             }
         } else {

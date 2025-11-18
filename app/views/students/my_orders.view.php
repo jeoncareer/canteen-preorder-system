@@ -75,12 +75,12 @@
                                     <div>Status: Ready for collection</div>
                                 </div>
                                 <div class="order-total">Total: ₹<?= $row->total ?></div>
-                                <div class="order-actions">
+                                <!-- <div class="order-actions">
                                     <?php if ($row->status === 'ready'): ?>
                                         <button data-order-id="<?= $row->id ?>" class="btn btn-primary pickup">✓ Pick Up</button>
                                     <?php endif; ?>
-                                    <button data-modal-target="#order-details-modal" class="btn btn-secondary">View Details</button>
-                                </div>
+                                  
+                                </div> -->
                             </div>
                         </div>
                     <?php endforeach; ?>

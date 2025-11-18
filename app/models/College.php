@@ -28,6 +28,8 @@ class College
 
             $this->errors['email'] = " Not a valid email";
             return false;
+        }elseif(!validateEmail($data['email'])){
+            $this->errors['email'] ="Incorrect domain";
         } elseif (empty($result = $this->first(['email' => $data['email']]))) {
             $this->errors['email'] = "Email isn't registered yet";
             return false;
@@ -68,6 +70,8 @@ class College
 
         if (empty($data['email'])) {
             $this->errors['email'] = "email is required";
+        }elseif(!validateEmail($data['email'])){
+            $this->errors['email'] ="Incorrect domain";
         } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             $this->errors['email'] = " Not a valid email";
         }

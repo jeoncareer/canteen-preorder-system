@@ -11,7 +11,10 @@ class Canteen_db
         "canteen_name",
         "email",
         "password",
-        'status'
+        'status',
+        'working_days',
+        'open',
+        'close'
     ];
 
 
@@ -24,6 +27,8 @@ class Canteen_db
             $this->errors['email'] = "email is required";
         } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             $this->errors['email'] = " Not a valid email";
+        }elseif(!validateEmail($data['email'])){
+            $this->errors['email'] ="Incorrect domain";
         } else {
 
             if (!empty($this->first(['email' => $data['email']]))) {
@@ -57,7 +62,9 @@ class Canteen_db
             $this->errors['email'] = "email is required";
         } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {               //checking if email is valid
             $this->errors['email'] = " Not a valid email";
-        }
+        } elseif(validateEmail($data['email'])){
+            $this->errors['email'] ="Incorrect domain";
+        } 
 
 
 
