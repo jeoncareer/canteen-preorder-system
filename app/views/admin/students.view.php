@@ -678,30 +678,15 @@
                         <p class="form-value" id="profile-email"></p>
                     </div>
                 </div>
+              
                 <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Phone</label>
-                        <p class="form-value" id="profile-phone"></p>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Department</label>
-                        <p class="form-value" id="profile-department"></p>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Year</label>
-                        <p class="form-value" id="profile-year"></p>
-                    </div>
+                   
                     <div class="form-group">
                         <label class="form-label">Status</label>
                         <span class="status-badge" id="profile-status"></span>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Address</label>
-                    <p class="form-value" id="profile-address"></p>
-                </div>
+               
                 <div class="form-group">
                     <label class="form-label">Joined On</label>
                     <p class="form-value" id="profile-joined"></p>
@@ -949,14 +934,12 @@
             document.getElementById('profile-id').textContent = student.id;
             document.getElementById('profile-name').textContent = student.student_name;
             document.getElementById('profile-email').textContent = student.email;
-            document.getElementById('profile-phone').textContent = student.phone || 'N/A';
-            document.getElementById('profile-department').textContent = student.department || 'N/A';
-            document.getElementById('profile-year').textContent = student.year || 'N/A';
+          
             const statusBadge = document.getElementById('profile-status');
             statusBadge.textContent = student.status;
             statusBadge.className = 'status-badge status-' + student.status;
-            document.getElementById('profile-address').textContent = student.address || 'N/A';
-            document.getElementById('profile-joined').textContent = new Date(student.created_at).toLocaleDateString();
+            
+            document.getElementById('profile-joined').textContent = new Date(student.time).toLocaleDateString();
             document.getElementById('profile-orders').textContent = student.total_orders || 0;
             let statusIndicatorBtn = modal.querySelector('.status-indicator');
             statusIndicatorBtn.dataset.studentId = student.id;
