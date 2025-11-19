@@ -378,7 +378,10 @@
             <!-- Settings Forms -->
             <div class="settings-container">
                 <!-- Basic Information -->
-                <div id="canteenSettings" class="settings-card">
+                 <form action="<?=ROOT?>canteen/settings" method="post">
+
+                 
+                <div id="canteenSettings" class="settings-card"> 
                     <h3>🏪 Basic Information</h3>
 
 
@@ -397,12 +400,17 @@
                     <div class="form-group">
                         <label for="email">Email Address</label>
                         <input type="email" id="email" name="email" value="<?= $canteen->email ?>" required>
-                        <div class="error-message" id="email-error"></div>
+                        <?php if(isset($error_email)): ?>
+                    
+                        <div id="email-domain-error" style="color: red; font-size: 14px; margin-top: 5px;"><?=$error_email?></div>
+                            <?php endif; ?>
                     </div>
+                    
 
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <textarea id="description" name="description" placeholder="Brief description of your canteen..."></textarea>
+                        <textarea id="description" name="description" placeholder="Brief description of your canteen...">
+                            <?=$canteen->description?></textarea>
                         <div class="error-message" id="description-error"></div>
                     </div>
 
@@ -416,57 +424,8 @@
                     </div>
 
                 </div>
+                </form>
 
-                <!-- Manager Details -->
-                <!-- <div id="managerCard" class="settings-card">
-                    <h3>👨‍💼 Manager Details</h3>
-
-
-                    <div class="form-group">
-                        <label for="managerName">Manager Name</label>
-                        <input type="text" id="managerName" name="manager_name" value="<?= $manager->name ?? 'jeon' ?>" required>
-                        <div class="error-message" id="managerName-error">testing</div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="managerEmail">Manager Email</label>
-                        <input type="email" id="managerEmail" name="manager_email" value="<?= $manager->email ?? 'jeon@gmail.com' ?>" required>
-                        <div class="error-message" id="managerEmail-error"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="managerPhone">Manager Phone</label>
-                        <input type="tel" id="managerPhone" name="manager_phone" value="<?= $manager->phone ?? '1234567890' ?>" required>
-                        <div class="error-message" id="managerPhone-error"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="experience">Experience (Years)</label>
-                        <input type="number" id="experience" name="experience" value="<?= $manager->experience ?? 1 ?>" min="0" max="50" required>
-                        <div class="error-message" id="experience-error"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="managerAddress">Manager Address</label>
-                        <textarea id="managerAddress" name="manager_address" placeholder="Enter manager's address..." required> <?= $manager->address ?? 'jeon' ?></textarea>
-                        <div class="error-message" id="managerAddress-error"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="employeeId">Employee ID</label>
-                        <input type="text" id="employeeId" name="employee_id" value="<?= $manager->id ?? 6 ?>" required>
-                        <div class="error-message" id="employeeId-error"></div>
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="button" class="btn-secondary">Cancel</button>
-                        <button type="submit" class="btn-primary">
-                            👨‍💼 Update Manager Details
-                        </button>
-                        <div class="error-message" id="employeeId-error"></div>
-                    </div>
-
-                </div> -->
 
                 <!-- Operating Hours -->
                 <div class="settings-card">
@@ -673,7 +632,7 @@
         });
 
 
-        const managerCard = document.getElementById('managerCard');
+      
         const canteenSettings = document.getElementById('canteenSettings');
 
         let updateButton = managerCard.querySelector('button.btn-primary');
@@ -735,36 +694,7 @@
 
 
 
-        saveChangesButton.addEventListener('click', e => {
-            let inputs = canteenSettings.querySelectorAll('input, textarea');
 
-            inputs.forEach(input => {
-                if (input.value.trim() === '') {
-                    setErrorMessage(input, 'This field is required');
-                } else {
-                    removeErrorMessage(input);
-                }
-
-            });
-
-            let phoneNumber = document.getElementById('phoneNumber');
-            let email = document.getElementById('email');
-
-            if (!isValidEmail(email.value.trim()) && email.value.trim()) {
-                removeErrorMessage(email);
-                setErrorMessage(email, 'Please enter email in correct format');
-            }
-
-            if (!isValidPhoneNumber(phoneNumber.value.trim()) && phoneNumber.value.trim()) {
-                removeErrorMessage(phoneNumber);
-                setErrorMessage(phoneNumber, 'Please enter phone in correct format');
-            }
-
-
-
-
-
-        })
 
 
         function clearFormInput(inputs) {
@@ -800,7 +730,108 @@
                 input.classList.remove('error');
             }
         }
-    </script>
+
+        
+
+// -------------------------------------------
+// EMAIL DOMAIN VALIDATION
+// -------------------------------------------
+
+function validateEmailDomain(email) {
+    const commonDomains = ["gmail.com", "yahoo.com", "hotmail.com", "outlook.com"];
+
+    if (!email.includes("@")) return false;
+
+    const domain = email.split("@")[1].toLowerCase();
+
+    // If the domain is exactly correct
+    if (commonDomains.includes(domain)) {
+        return true;
+    }
+
+    // Fuzzy match for typos
+    return commonDomains.some(correctDomain => {
+        return isCloseMatch(domain, correctDomain);
+    });
+}
+
+function isCloseMatch(a, b) {
+    const distance = levenshteinDistance(a, b);
+    return distance <= 2; // <=2 means it's a common typo
+}
+
+function levenshteinDistance(a, b) {
+    const matrix = Array.from({ length: a.length + 1 }, (_, i) =>
+        Array.from({ length: b.length + 1 }, (_, j) =>
+            i === 0 ? j : j === 0 ? i : 0
+        )
+    );
+
+    for (let i = 1; i <= a.length; i++) {
+        for (let j = 1; j <= b.length; j++) {
+            const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+            matrix[i][j] = Math.min(
+                matrix[i - 1][j] + 1,
+                matrix[i][j - 1] + 1,
+                matrix[i - 1][j - 1] + cost
+            );
+        }
+    }
+    return matrix[a.length][b.length];
+}
+
+
+// -------------------------------------------
+// FORM SUBMIT + API CALL
+// -------------------------------------------
+
+document.querySelector("#canteenSettings .btn-primary").addEventListener("click", function () {
+
+    // Clear previous error message
+    document.getElementById("email-error").textContent = "";
+
+    // Collect form values
+    const data = {
+        canteen_name: document.getElementById("canteenName").value.trim(),
+        phone_number: document.getElementById("phoneNumber").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        description: document.getElementById("description").value.trim()
+    };
+
+    // Validate email domain BEFORE sending API
+    if (!validateEmailDomain(data.email)) {
+    document.getElementById("email-domain-error").textContent =
+        "Invalid or misspelled email domain (e.g., gmail.com, yahoo.com).";
+    return;
+}
+
+    // Send POST request
+    fetch(ROOT + "canteen/canteen_information", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(response => {
+
+        if (response.status === "success") {
+            alert("Canteen information updated successfully!");
+        } else {
+            alert("Failed to update: " + response.message);
+        }
+
+    })
+    .catch(err => {
+        console.error("Request error:", err);
+        alert("Something went wrong!");
+    });
+
+});
+</script>
+
+    
 </body>
 
 </html>

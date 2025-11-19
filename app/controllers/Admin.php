@@ -213,7 +213,7 @@ class Admin extends Controller
         }
 
         $data['college'] = $college;
-        show($data);
+     
 
         $this->view('admin/student_reports', $data);
     }
@@ -292,16 +292,32 @@ class Admin extends Controller
         }
 
        
-        show($data);
+       
         $this->view('admin/orders', $data);
     }
 
-    public function exportOrders($canteen_id = '')
+    public function exportStudents()
     {
-        $order = new Orders;
+        $studen = new Student;
         $college_id = $_SESSION['COLLEGE']->id;
+        $where = "students.college_id = {$college_id}";
+        $sql = "SELECT students.email as student_email, students.student_name, students.reg_no,
+        students.status, students.id, count(orders.id) AS total_orders
+        FROM students
+        LEFT JOIN orders ON students.id = orders.student_id
+        WHERE {$where}
+        GROUP BY students.id
+        ORDER BY students.id desc";
 
-        $orders = $order->where(['canteen_id' => $canteen_id]);
+        $students = $studen->query($sql);
+
+        $csvData = "Student Email,Name,Reg_no,status,id,total Orders";
+        foreach($students as $student){
+            $csvData .= "{$student->student_email},{$student->student_name},{$student->reg_no},{$student->status},{$student->id},{$student->total_orders}\n";
+        }
+           // Set headers for download
+           header('Content-Type: text/csv');
+           header('Content-Disposition: attachment; filename="orders.csv"');
     }
 
     public function canteenDetails($canteen_id = '')

@@ -3,6 +3,18 @@
 class Canteen extends Controller
 {
     use Database;
+    function checkStatus()
+    {
+        $student = new Student();
+        $student_data = $student->first(['id' => STUDENT_ID]);
+        if ($student_data->status == 'pending') {
+            $this->view('students/pending');
+            die;
+        } elseif ($student_data->status == 'suspended' || $student_data->status == 'rejected') {
+            $this->view('students/blocked');
+            die;
+        }
+    }
     public function index()
     {
 
@@ -281,10 +293,30 @@ class Canteen extends Controller
 
 
         $canteen_id = $_SESSION['CANTEEN']->id;
+      
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST')
+        {
+            $where = ['id' =>  CANTEEN_ID];
+           
+    
+            if (!empty($canteen->first(['email' => $_POST['email']]))) {
+                $data['error_email'] = "email already exists";
+            }
+    
+            if(!validateEmail(trim($_POST['email'])))
+            {
+                $data['error_email'] =   "Invalid or misspelled email domain (e.g., gmail.com, yahoo.com).";
+            }
+
+            $canteen->update(['id' => $canteen_id],['canteen_name' => $_POST['canteen_name'],'phn_no' => $_POST['phone_number'],'email' => $_POST['email'],'description' => $_POST['description']]);
+
+        }
+
         $canteen_data = $canteen->first(['id' => $canteen_id]);
 
 
-        show($canteen_data);
+      
         $canteen_data->working_days = json_decode($canteen_data->working_days, true);
         $data['canteen'] = $canteen_data;
 
@@ -293,6 +325,17 @@ class Canteen extends Controller
 
         $this->view('canteen/settings', $data);
     }
+
+    // public function canteen_information()
+    // {
+    //     $canteen = new Canteen_db();
+     
+
+    //     $canteen->update(['id' => $canteen_id],['canteen_name' => $_POST['canteen_name'],'phn_no' => $_POST['phone_number'],'email' => $_POST['email'],'description' => $_POST['description']]);
+
+    //     $this->view('canteen/settings',$data);
+
+    // }
 
 
     public function logout()

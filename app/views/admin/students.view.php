@@ -527,7 +527,7 @@
                     <!-- <a href="#" class="add-student-btn">
                         ➕ Add New Student
                     </a> -->
-                    <a href="#" class="export-btn">
+                    <a href="<?=ROOT?>/admin/exportStudents" class="export-btn">
                         📊 Export Data
                     </a>
                 </div>
